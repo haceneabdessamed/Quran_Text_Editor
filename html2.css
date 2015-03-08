@@ -1,0 +1,15 @@
+.pub{
+    width: 240px;
+    padding-top : 10px;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.nextImage{
+    padding-top: 10px;
+}
+.texte{
+    display: inline-block;
+    position: relative;
+    top: -250px;
+}
