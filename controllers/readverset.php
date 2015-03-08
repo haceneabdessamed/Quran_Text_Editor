@@ -9,6 +9,6 @@ $xml_file=simplexml_load_file($filename);
 ///echo '<pre>';
 ///print_r($xml_file);
 $attr= $xml_file->sura[$aya]->aya[$soura]->attributes();
-echo $attr['text'];
+echo '['.$attr['text'].']';
 
 ?>

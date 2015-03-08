@@ -15,14 +15,28 @@ echo '<pre>';
    echo 'Query failed: ' . $cl->GetLastError() . "\n";
   }
    
+  else {
    if ($cl->GetLastWarning())
+   	{
+        echo 'WARNING: ' . $sphinx->GetLastWarning() . "\n";
+   	}
+	
+   if($result[0]['total']>0)
    {
-    echo 'WARNING: ' . $sphinx->GetLastWarning() . "\n";
+       foreach($result[0]['matches'] as $x => $x_value) 
+       {
+		    echo "id=" . $x;
+		    echo "<br>";
+	   }
+   	   
    }
-   foreach($result[0]['matches'] as $x => $x_value) {
-    echo "id=" . $x;
-    echo "<br>";
-}
+   else {
+       echo "aucun resultat";
+   }
    print_r($result);
+  }
+  
+   
+   
 
 ?>	

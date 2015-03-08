@@ -29,7 +29,7 @@ function inserer(text) {
  function post(){
  	                       
     var hr = new XMLHttpRequest();
-    var url = "readverset.php";
+    var url = "../Quran_Text_Editor/controllers/readverset.php";
     var fn = document.getElementById("aya").value;
     var ln = document.getElementById("soura").value;
     var vars = "aya="+fn+"&soura="+ln;
@@ -80,7 +80,7 @@ function insererBalise(text) {
         CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
         para =document.createElement("div");
         para.setAttribute("dir","rtl");
-        para.setAttribute("style","font-family:arabeyesqr;");
+        para.setAttribute("style","font-family:arabeyesqr;font-size:25px;");
         para.innerHTML = text;
         para.setAttribute("contenteditable","false");
         alert(para.outerHTML);
