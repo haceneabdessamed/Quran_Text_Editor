@@ -1,7 +1,7 @@
 <?php
 require 'C:\sphinx\api\sphinxapi.php';
 header('Content-Type: text/html; charset=utf-8');
-echo('الصمد');
+
 $cl = new SphinxClient();
 $cl->SetServer('127.0.0.1', 9300);
 $cl->SetLimits(0,1000000);
