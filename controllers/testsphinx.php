@@ -25,7 +25,4 @@ echo '<pre>';
 }
    print_r($result);
 
-$vowels = array("َ","ً","ُ","ٌ","ٌ","ِ","ٍ","ْ","ّ","ٰ");
-$onlyconsonants = str_replace($vowels, "", "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ");
-echo $onlyconsonants;
 ?>	
