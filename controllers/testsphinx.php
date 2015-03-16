@@ -25,7 +25,7 @@ echo '<pre>';
    ///if($result[0]['total']>0)
    {  foreach($result[0]['matches'] as $x => $x_value) 
        {
-		    echo "id=" . $x;
+		    getSoura($x);
 		    echo "<br>";
 	   }
    	   
@@ -33,7 +33,7 @@ echo '<pre>';
    ///else 
        echo "aucun resultat";
    }
-   print_r($result);
+   ///print_r($result);
   
   
    
