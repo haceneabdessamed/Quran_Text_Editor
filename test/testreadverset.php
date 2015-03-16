@@ -1,5 +1,9 @@
 <?php
 
+    $filename = "quran-simple.xml";
+	$xml_file=simplexml_load_file($filename);
+	echo "<pre>";
+	print_r($xml_file);
 
 function getVetset($soura,$aya){
 	$filename = "quran-simple.xml";
@@ -8,15 +12,6 @@ function getVetset($soura,$aya){
     return $attr['text'];
 }
 
-function getSoura($id)
-{
-	
-}
-
-function getAya($soura)
-{
-	
-}
 ?>
 
 

@@ -1,5 +1,6 @@
 <?php
 require 'C:\sphinx\api\sphinxapi.php';
+require 'readverset.php';
 header('Content-Type: text/html; charset=utf-8');
 
 $cl = new SphinxClient();
@@ -21,20 +22,19 @@ echo '<pre>';
         echo 'WARNING: ' . $sphinx->GetLastWarning() . "\n";
    	}
 	
-   if($result[0]['total']>0)
-   {
-       foreach($result[0]['matches'] as $x => $x_value) 
+   ///if($result[0]['total']>0)
+   {  foreach($result[0]['matches'] as $x => $x_value) 
        {
 		    echo "id=" . $x;
 		    echo "<br>";
 	   }
    	   
    }
-   else {
+   ///else 
        echo "aucun resultat";
    }
    print_r($result);
-  }
+  
   
    
    
