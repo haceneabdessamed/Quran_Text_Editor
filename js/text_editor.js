@@ -39,7 +39,6 @@ function inserer(text) {
     hr.onreadystatechange = function() {
 	    if(hr.readyState == 4 && hr.status == 200) {
 		    return_data = hr.responseText;
-		    alert(return_data);   
 		    insererBalise(return_data);
 	    }
     }
@@ -60,6 +59,7 @@ function InsererAya(){
     
         }
 });
+
 }
    
    function CherchrAya(){
@@ -83,7 +83,6 @@ function insererBalise(text) {
         para.setAttribute("style","font-family:arabeyesqr;font-size:25px;");
         para.innerHTML = text;
         para.setAttribute("contenteditable","false");
-        alert(para.outerHTML);
         CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
 }
 

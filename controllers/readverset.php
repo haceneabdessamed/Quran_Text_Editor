@@ -2,6 +2,11 @@
 
 require '../classes/aya.php';
 require '../classes/SqlConnexion.php';
+
+$ayaNumber=(int)$_POST['aya'];
+$souraNumber=(int)$_POST['soura'];
+echo getVetset($souraNumber, $ayaNumber);
+
 function getVetset($soura,$aya){
 	$filename = "quran-simple.xml";
 	$xml_file=simplexml_load_file($filename);
