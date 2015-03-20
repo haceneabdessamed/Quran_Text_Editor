@@ -3,7 +3,8 @@
 require '../classes/aya.php';
 require '../classes/SqlConnexion.php';
 header('Content-Type: text/html; charset=utf-8');
-TOTO
+
+ 
 /*
 $ayaNumber=(int)$_POST['aya'];
 $souraNumber=(int)$_POST['soura'];
