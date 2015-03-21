@@ -1,17 +1,31 @@
 CKEDITOR.plugins.add( 'quran', {
     icons: 'quran',
     init: function( editor ) {
-        editor.addCommand( 'insertQuran2', {
+    	
+        editor.addCommand( 'insertQuran', {
             exec: function( editor ) {
-                var now = new Date();
-                ///editor.insertHtml( 'The current date and time is: <em>' + now.toString() + '</em>' );
-                alert("toto");
+                InsererAya();
+            }
+        });
+        
+        editor.addCommand( 'InsertTimestamp', {
+            
+            exec: function( editor ) {
+                
+               InsererCitation();
             }
         });
         editor.ui.addButton( 'quran', {
-            label: 'Insert Timestamp2',
-            command: 'insertQuran2',
+            label: 'Insert Timestamp',
+            command: 'insertQuran',
             toolbar: 'insert'
         });
+        editor.ui.addButton( 'Timestamp', {
+        icon: 'quran',
+        label: 'Insert Timestamp',
+        command: 'InsertTimestamp',
+        toolbar: 'insert'
+         });
     }
 });
+

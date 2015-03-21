@@ -1,5 +1,4 @@
- <!DOCTYPE html>
-<html lang="en">
+<html>
 	<head>
 		<meta charset="utf-8">
 		<title>DevOOPS</title>
@@ -36,6 +35,15 @@
 		    window.addEventListener('popstate', function(event) {
 		    history.pushState(null, null, 'home.html');
 		    });
+    	</script>
+    	
+    	<script>
+    		var s ="[{'0':'soura'},3,6,{'0':'aya1'},{'0':'aya2'},{'0':'aya3'}]";
+			var myObject = eval('(' + s + ')');
+			for (i in myObject)
+			{
+			   alert(myObject[i]["0"]);
+			}
     	</script>
 		
 		

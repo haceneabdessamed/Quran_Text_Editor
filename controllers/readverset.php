@@ -4,12 +4,25 @@ require '../classes/aya.php';
 require '../classes/SqlConnexion.php';
 header('Content-Type: text/html; charset=utf-8');
 
- 
-/*
-$ayaNumber=(int)$_POST['aya'];
-$souraNumber=(int)$_POST['soura'];
-echo getVetset($souraNumber, $ayaNumber);
-*/
+$function =$_POST['function'];
+switch ($function) {
+	case 'LireVerset':
+		$ayaNumber=(int)$_POST['aya'];
+		$souraNumber=(int)$_POST['soura'];
+		echo getVetset($souraNumber, $ayaNumber);
+		break;
+	case 'LireCitation':
+		$souraNumber=(int)$_POST['soura'];
+		$ayaBegin=(int)$_POST['ayaBegin'];
+		$ayaEnd=(int)$_POST['ayaEnd'];
+		echo getCitation($souraNumber, $ayaBegin, $ayaEnd);
+		break;
+	default:                                                                    
+		
+		break;
+}
+
+
 function getVetset($soura,$aya){
 	$filename = "quran-simple.xml";
 	$xml_file=simplexml_load_file($filename);
@@ -19,9 +32,10 @@ function getVetset($soura,$aya){
 
 function getCitation($soura,$ayaBegin,$ayaEnd)
 {
+	/*
 	$count=$ayaBegin;
 	$citation=array();
-	array_push($citation, "[");
+	$citation['debut']="]";
 	while ($count <= $ayaEnd) {
 		array_push($citation,getVetset($soura, $count));
 		array_push($citation,$count);	
@@ -32,9 +46,22 @@ function getCitation($soura,$ayaBegin,$ayaEnd)
 	array_push($citation,getSouraName($soura));
 	array_push($citation," ".$ayaBegin);
 	array_push($citation,"-");
-	array_push($citation,$ayaBegin." ");
+	array_push($citation,$ayaEnd." ");
 	array_push($citation,")");
-	return $citation;	
+	return json_encode($citation, JSON_UNESCAPED_UNICODE);
+	 */
+	$count=$ayaBegin;
+	$indice=3;
+	$citation=array();
+	$citation[0]=getSouraName($soura);
+	$citation[1]=$ayaBegin;
+	$citation[2]=$ayaEnd;
+	while ($count <= $ayaEnd) {
+		$citation[$indice]=getVetset($soura, $count);
+		$indice=$indice+1;
+		$count=$count+1;
+	}
+	return (json_encode($citation,JSON_UNESCAPED_UNICODE));
 }
 
 function getSouraName($soura)

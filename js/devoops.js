@@ -411,10 +411,10 @@ function DrawKnob(elem){
 		},
 		release : function (value) {
 			//console.log(this.$.attr('value'));
-			console.log("release : " + value);
+			//console.log("release : " + value);
 		},
 		cancel : function () {
-			console.log("cancel : ", this);
+			//console.log("cancel : ", this);
 		},
 		draw : function () {
 			// "tron" case
@@ -1011,7 +1011,7 @@ function MorrisChart2(){
 		labels: ['Y', 'Z', 'M']
 		})
 		.on('click', function(i, row){
-			console.log(i, row);
+			//console.log(i, row);
 		});
 }
 //
