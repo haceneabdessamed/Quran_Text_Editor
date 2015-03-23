@@ -9,7 +9,8 @@ switch ($function) {
 	case 'LireVerset':
 		$ayaNumber=(int)$_POST['aya'];
 		$souraNumber=(int)$_POST['soura'];
-		echo getVetset($souraNumber, $ayaNumber);
+		echo getCitation($souraNumber, $ayaNumber, $ayaNumber);
+		///echo getVetset($souraNumber, $ayaNumber);
 		break;
 	case 'LireCitation':
 		$souraNumber=(int)$_POST['soura'];
@@ -32,24 +33,7 @@ function getVetset($soura,$aya){
 
 function getCitation($soura,$ayaBegin,$ayaEnd)
 {
-	/*
-	$count=$ayaBegin;
-	$citation=array();
-	$citation['debut']="]";
-	while ($count <= $ayaEnd) {
-		array_push($citation,getVetset($soura, $count));
-		array_push($citation,$count);	
-		$count=$count+1;
-	}
-	array_push($citation,"]");
-	array_push($citation,"(");
-	array_push($citation,getSouraName($soura));
-	array_push($citation," ".$ayaBegin);
-	array_push($citation,"-");
-	array_push($citation,$ayaEnd." ");
-	array_push($citation,")");
-	return json_encode($citation, JSON_UNESCAPED_UNICODE);
-	 */
+
 	$count=$ayaBegin;
 	$indice=3;
 	$citation=array();
@@ -76,6 +60,13 @@ function getSouraName($soura)
 	}
 	
 	
+}
+
+function getSouraIndex($souraName){
+	$xml = simplexml_load_file("quran-data.xml");
+	$result = $xml->xpath("suras//sura[@name='النحل']");
+	$index=$result[0]->attributes();
+	return $index['index'];
 }
 
 function getSoura($id)

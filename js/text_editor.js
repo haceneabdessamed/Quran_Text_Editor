@@ -30,38 +30,31 @@ function inserer(text) {
  	                       
     var hr = new XMLHttpRequest();
     var url = "../Quran_Text_Editor/controllers/readverset.php";
-    var fn = document.getElementById("aya").value;
-    var ln = document.getElementById("soura").value;
+    var fn = document.getElementById("ayaVerset").value;
+    var ln = document.getElementById("souraVerset").value;
     var vars = "aya="+fn+"&soura="+ln+"&function=LireVerset";
     var return_data ="";
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     hr.onreadystatechange = function() {
 	    if(hr.readyState == 4 && hr.status == 200) {
-		    return_data = hr.responseText;
-		    insererBalise(return_data);
-	    }
+		    return_data =hr.responseText;
+            var jsonObj = $.parseJSON(return_data);
+            InsererBaliseCitation(jsonObj);
+		    $('#InsererVersetWindows').modal('hide');
+
+    }
     }
     hr.send(vars); 
-                            
-    }
+                          
+   }
                                   
                                   
 
 function InsererCitation(){
-    bootbox.confirm("<form>\
-    soura:<input type='number' id='soura' placeholder='soura'/>\
-    de:<input type='number' id='ayaBegin' placeholder='aya'/>\
-    jusqu'à:<input type='number' id='ayaEnd' placeholder='aya'/>\
-    </form>", 
-    function(result) {
-        if(result)
-        {
-                       postCitation();
 
-        }
-});
-
+         $('#InsererCitationWindow').modal('show');
+         InitSouraArray('soura');
 }
 
 function postCitation()
@@ -80,43 +73,46 @@ function postCitation()
 		    return_data =hr.responseText;
 		    var jsonObj = $.parseJSON(return_data);
 		    InsererBaliseCitation(jsonObj);
+            $('#InsererCitationWindow').modal('hide');
 	    }
     }
     hr.send(vars);               
     }
 
 function InsererAya(){
-    bootbox.confirm("<form>\
-    <br>soura:<input type='number' id='soura' placeholder='soura'/>\
-    <br><br>aya:<input type='number' id='aya' placeholder='aya'/>\
-    </form>", 
-    function(result) {
-        if(result)
-        {
-                       post();
-
-        }
-});
-
+    $('#InsererVersetWindows').modal('show');
+    InitSouraArray('souraVerset');
 }
    
-   
 
-function insererBalise(text) {
-        
-        para =document.createElement("div");
-        CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
-        para =document.createElement("div");
-        para.setAttribute("dir","rtl");
-        para.setAttribute("style","font-family:arabeyesqr;font-size:25px;");
+function insererBaliseComplet(balise,direction,size,indice,font,text)
+{
+	    para =document.createElement("div");
+	    CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
+	    para =document.createElement(balise);
+        para.setAttribute("dir",direction);
+        para.setAttribute("style","font-family:"+font+";font-size:"+size+"px;");
         para.innerHTML = text;
         para.setAttribute("contenteditable","false");
         CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
 }
 
+function insererBalise(text) {
+                
+        para =document.createElement("div");
+        CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
+        para =document.createElement("div");
+        para.setAttribute("dir","rtl");
+        para.setAttribute("style","font-family:KFGQPC Uthmanic Script HAFS;font-size:25px;");
+        para.innerHTML = text;
+        para.setAttribute("contenteditable","false");
+        CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
+        
+}
+
 function InsererBaliseCitation(JsonObj){
 	 
-	 var citation='['
+	 var citation='[ '
 	 var ayaBegin=JsonObj[1];
 	 var ayaEnd=JsonObj[2];
 	 var count=3;
@@ -127,11 +123,36 @@ function InsererBaliseCitation(JsonObj){
      	count=count+1;
      	ayaCount=ayaCount+1;
      }
-     citation=citation+']';
+     citation=citation+'] ';
      var reference =' ('+JsonObj[0]["0"]+' '+ayaBegin+' - '+ayaEnd+' )';
      insererBalise(citation+reference);
 }
 
+function loadXMLDoc(filename)
+        {
+        if (window.XMLHttpRequest)
+          {
+          xhttp=new XMLHttpRequest();
+          }
+        else // code for IE5 and IE6
+          {
+          xhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+        xhttp.open("GET",filename,false);
+        xhttp.send();
+        return xhttp.responseXML;
+        }
 
+function InitSouraArray(id){
+    xmlDoc=loadXMLDoc("quran-data.xml");
+    x=xmlDoc.getElementsByTagName("sura");
+    var sel = document.getElementById(id);
+    for(var i = 0; i < x.length; i++) {
+        var opt = document.createElement('option');
+        opt.innerHTML = x[i].getAttribute('name');
+        opt.value = i+1;
+        sel.appendChild(opt);
+    }
+}
 
 

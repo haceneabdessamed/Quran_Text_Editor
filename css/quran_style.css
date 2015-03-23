@@ -64,11 +64,11 @@ a {
     top:100px;
 }
 
-@font-face{
-    font-family: 'ArabeyesQr';
-    src: url(../fonts/arabeyes-qr.ttf) format("truetype");
-}
 
+@font-face {
+    font-family: myfont;
+    src: url(../fonts/KFGQPCUthmanicScriptHAFS.woff);
+}
 
 .rouge{
         color: red;

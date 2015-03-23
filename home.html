@@ -34,22 +34,48 @@
 		    history.pushState(null, null, 'home.html');
 		    window.addEventListener('popstate', function(event) {
 		    history.pushState(null, null, 'home.html');
+		    $('#myModal').modal('show');
 		    });
     	</script>
-    	
-    	<script>
-    		var s ="[{'0':'soura'},3,6,{'0':'aya1'},{'0':'aya2'},{'0':'aya3'}]";
-			var myObject = eval('(' + s + ')');
-			for (i in myObject)
-			{
-			   alert(myObject[i]["0"]);
-			}
-    	</script>
-		
+	
 		
 	</head>  
 
 <body class="row header-shadow">
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inserer Un Verset</h4>
+      </div>
+      <div class="modal-body">
+ <div class="row">
+  <div class="col-lg-6">
+    <div class="input-group">
+      <select class="form-control" id="souraVerset"></select>
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+  <div class="col-lg-6">
+    <div class="input-group">
+      <input type="number" class="form-control" id="ayaVerset">
+    </div><!-- /input-group -->
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="post()">Inserer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class=".col-md-12">
 <!--Start Header-->
 <header class="navbar" style="POSITION: absolute; top: 0px; z-index:-5;">
@@ -106,9 +132,9 @@
 </div>
 <div>
     <div class="navbar navbar-inner block-header" class="span9" style="position:relative; top:100px;">
-                                <div class="muted pull-left col-md-offset-2">
+      <div class="muted pull-left col-md-offset-2">
 								
-									<form method="post">
+								<form method="post">
 										<p>
 											<br />
 											<textarea id="editor1" name="editor1">&lt;p&gt;Initial value.&lt;/p&gt;</textarea>
@@ -116,7 +142,7 @@
 												CKEDITOR.replace( 'editor1' );
 											</script>
 										</p>
-									</form>
+								</form>
 									<button class="btn btn-success" onclick="InsererAya()">Inserer un verset</button>	
                               	<form id="myForm" action="upload.php" method="post" enctype="multipart/form-data">
                                         Select image to upload:
@@ -126,10 +152,6 @@
                             	</form>
                                 <br>
 		                 		<div class="progress">
-										  	<div class="progress-bar progress-bar-striped active" role="progressbar"
-										  	aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-						    				</div>
-								</div>
 								<form action="controllers/testsphinx.php" method="post">
 									<input type="text" name="query">
 									<input type="submit" value="rechercher">
@@ -142,8 +164,11 @@
                                     
                                 <br>
 								</div>
-                            </div>
+     </div>
 </div>
+<script>
+		
+</script>
 </body>
     
 </html>
