@@ -1,0 +1,55 @@
+<html>
+<head>
+
+<!--
+Author: Richard Ngo
+E-Mail: rngo@tk20.com
+ -->
+<script type="text/javascript" src="keyboard.js" charset="UTF-8"></script>
+<link rel="stylesheet" type="text/css" href="keyboard.css"/>
+<script>!window.jQuery && document.write('<script src="http://code.jquery.com/jquery-1.4.2.min.js"><\/script>');</script>
+<script>
+
+function gup( name )
+{
+  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  var regexS = "[\\?&]"+name+"=([^&#]*)";
+  var regex = new RegExp( regexS );
+  var results = regex.exec( window.location.href );
+  if( results == null )
+    return "";
+  else
+    return results[1];
+}
+
+function updateParent(){
+var i = gup('parentEditor');
+parent.CKEDITOR.instances[i].insertHtml(document.getElementById('textareabox').value);
+}
+
+function openKeyboard(){
+if(!document.getElementById('textareabox').VKI_attached){
+VKI_attach(document.getElementById('textareabox'));
+}
+}
+
+$(document).ready(function () {
+  if(!document.getElementById('textareabox').VKI_attached){
+    VKI_attach(document.getElementById('textareabox'));
+    }
+    $("#textareabox").focus();
+});
+
+</script>
+</head>
+<body onload="openKeyboard();">
+<input type="button" onclick="updateParent();" value="Append to Editor"/>
+<br/>
+<textarea rows="15" cols="40" id="textareabox" value=""></textarea>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+</body>
+</html>
