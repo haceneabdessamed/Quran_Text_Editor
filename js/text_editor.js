@@ -14,13 +14,16 @@ $(function() {
             	},
             	complete:function(response){
             		inserer(response.responseText);
+            		
             	}
             }); 
     		$(".progress").hide();
         }); 
 
 
-
+function ImporterWord(){
+     $('#ImportWord').modal('show');    
+}
 function inserer(text) {
 		  CKEDITOR.instances.editor1.insertText("["+text+"]"); 
           return 0;
@@ -48,8 +51,10 @@ function inserer(text) {
     hr.send(vars); 
                           
    }
-                                  
-                                  
+function ImporterWord(){
+     $('#ImportWord').modal('show');    
+}                                  
+                            
 
 function InsererCitation(){
 
@@ -78,6 +83,26 @@ function postCitation()
     }
     hr.send(vars);               
     }
+    
+  function postFileUpload()
+{
+    var hr = new XMLHttpRequest();
+    var url = "../Quran_Text_Editor/controllers/upload.php";
+    var vars="";
+    var return_data ="";
+    var formData = new FormData();
+    formData.append('file', document.getElementById("fileToUpload").files[0]);
+    hr.open("POST", url, true);
+    hr.setRequestHeader("Content-Type", "multipart/form-data");
+    hr.onreadystatechange = function() {
+        if(hr.readyState == 4 && hr.status == 200) {
+            return_data =hr.responseText;
+            alert (return_data);
+            $('#ImportWord').modal('hide');
+        }
+    }
+    hr.send(formData);               
+}
 
 function InsererAya(){
     $('#InsererVersetWindows').modal('show');

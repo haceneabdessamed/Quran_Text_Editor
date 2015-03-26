@@ -34,7 +34,6 @@
 		    history.pushState(null, null, 'home.html');
 		    window.addEventListener('popstate', function(event) {
 		    history.pushState(null, null, 'home.html');
-		    $('#myModal').modal('show');
 		    });
     	</script>
 	
@@ -42,26 +41,27 @@
 	</head>  
 
 <body class="row header-shadow">
-
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+<div class="modal fade" id="ImportWord" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserer Un Verset</h4>
+        <h4 class="modal-title" id="myModalLabel">Importer un fichier word</h4>
       </div>
       <div class="modal-body">
  <div class="row">
   <div class="col-lg-6">
     <div class="input-group">
-      <select class="form-control" id="souraVerset"></select>
-    </div><!-- /input-group -->
-  </div><!-- /.col-lg-6 -->
-  <div class="col-lg-6">
-    <div class="input-group">
-      <input type="number" class="form-control" id="ayaVerset">
+      <form id="myForm" action="upload.php" method="post" enctype="multipart/form-data">
+                                        Select image to upload:
+                                        <input type="file" name="fileToUpload" id="fileToUpload">
+                                        <input type="submit" class="btn btn-primary" value="Upload Image" name="submit">
+                            </form>
+		                 	<div class="progress">
+										  	<div class="progress-bar progress-bar-striped active" role="progressbar"
+										  	aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+						    				</div>
+							</div>
     </div><!-- /input-group -->
   </div><!-- /.col-lg-6 -->
 </div><!-- /.row -->
@@ -69,13 +69,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="post()">Inserer</button>
       </div>
     </div>
   </div>
 </div>
-
-
 <div class=".col-md-12">
 <!--Start Header-->
 <header class="navbar" style="POSITION: absolute; top: 0px; z-index:-5;">
@@ -144,14 +141,14 @@
 										</p>
 								</form>
 									<button class="btn btn-success" onclick="InsererAya()">Inserer un verset</button>	
-                              	<form id="myForm" action="upload.php" method="post" enctype="multipart/form-data">
+                              	<!--form id="myForm" action="controllers/upload.php" method="post" enctype="multipart/form-data">
                                         Select image to upload:
                                         <input type="file" name="fileToUpload" id="fileToUpload">
                                         <br>
                                         <input type="submit" class="btn btn-primary" value="importer pdf" name="submit">
                             	</form>
                                 <br>
-		                 		<div class="progress">
+		                 		<div class="progress"-->
 								<form action="controllers/testsphinx.php" method="post">
 									<input type="text" name="query">
 									<input type="submit" value="rechercher">
