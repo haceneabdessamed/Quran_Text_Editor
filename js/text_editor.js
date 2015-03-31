@@ -2,28 +2,42 @@ $(function() {
 	        
             // bind 'myForm' and provide a simple callback function 
             $("#myForm").ajaxForm({ 
-            	beforeSend:function(){           		
-            		$(".progress").show();
+            	beforeSend:function(){  
+            	    $(".progress").show(); 
+            	    $(".progress-bar").width('0%');        		
             	},
             	uploadProgress:function(event,position,total,percentComplete){
             		    $(".progress-bar").width(percentComplete+'%');
             	},
             	success:function(){
             		
-            		
+            		$(".progress").hide();
             	},
             	complete:function(response){
-            		inserer(response.responseText);
-            		
+            	    if(response.responseText ==' Sorry, there was an error uploading your file.') {
+                        alert('Sorry, there was an error uploading your file.');
+                    } 
+                    else {
+                        inserer(response.responseText);
+                    }
+                    $('#ImportWord').modal('hide');  
+
             	}
             }); 
-    		$(".progress").hide();
+            $(".progress").hide();
+
+
         }); 
 
+function search() {
+     $('#recherche').modal('show');
+}
 
 function ImporterWord(){
      $('#ImportWord').modal('show');    
 }
+
+
 function inserer(text) {
 		  CKEDITOR.instances.editor1.insertText("["+text+"]"); 
           return 0;
@@ -46,7 +60,7 @@ function inserer(text) {
             InsererBaliseCitation(jsonObj);
 		    $('#InsererVersetWindows').modal('hide');
 
-    }
+            }
     }
     hr.send(vars); 
                           
@@ -83,8 +97,8 @@ function postCitation()
     }
     hr.send(vars);               
     }
-    
-  function postFileUpload()
+/*   
+function postFileUpload()
 {
     var hr = new XMLHttpRequest();
     var url = "../Quran_Text_Editor/controllers/upload.php";
@@ -103,6 +117,56 @@ function postCitation()
     }
     hr.send(formData);               
 }
+*/
+/*
+function postSearch () {
+    
+    var hr = new XMLHttpRequest();
+    var url = "../Quran_Text_Editor/controllers/SearchController.php";
+    var query = document.getElementById("query").value;
+    var vars = "query="+query+"&function="+"";
+    var return_data ="";
+    hr.open("POST", url, true);
+    hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    hr.onreadystatechange = function() {
+        if(hr.readyState == 4 && hr.status == 200) {
+            return_data =hr.responseText;
+            var jsonObj = $.parseJSON(return_data);
+            ///alert(jsonObj[999]['ayaId']);
+            alert('toto');
+            alert (return_data); 
+        }
+    }
+    hr.send(vars);            
+    }
+*/
+function postSearch () {
+    var hr = new XMLHttpRequest();
+    var url = "../Quran_Text_Editor/controllers/SearchController.php";
+    var query=document.getElementById('query').value
+    var vars = "query="+query+"&function="+"";
+    var return_data ="";
+    hr.open("POST", url, true);
+    hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    hr.onreadystatechange = function() {
+        
+        if(hr.readyState == 4 && hr.status == 200) {
+            return_data =hr.responseText;
+            return_data =hr.responseText;
+            alert(return_data);
+            var jsonObj = $.parseJSON(return_data);
+            angular.element(document.getElementById('test')).scope().$apply(function(scope){
+            scope.names = jsonObj;
+            scope.show = function(message) {
+            alert(message);
+            };
+            
+         });
+         
+        }
+    }
+    hr.send(vars);    
+    } 
 
 function InsererAya(){
     $('#InsererVersetWindows').modal('show');
@@ -180,4 +244,10 @@ function InitSouraArray(id){
     }
 }
 
+function getSouraName(souraId)
+{
+    xmlDoc=loadXMLDoc("quran-data.xml");
+    x=xmlDoc.getElementsByTagName("sura");
+    return x[souraId-1].getAttribute('name');
+}
 

@@ -64,7 +64,7 @@ function getSouraName($soura)
 
 function getSouraIndex($souraName){
 	$xml = simplexml_load_file("quran-data.xml");
-	$result = $xml->xpath("suras//sura[@name='النحل']");
+	$result = $xml->xpath("suras//sura[@name=$souraName]");
 	$index=$result[0]->attributes();
 	return $index['index'];
 }
@@ -73,13 +73,12 @@ function getSoura($id)
 {
 	$connection =new SqlConexion("localhost","root","","quran");
 	$connection->connecter();
-	echo "<pre>";
 	$stmt=$connection->SelectQuery("select * from quran where ID=".$id);
 	$row = $stmt->fetch();
-	$aya=new aya(0,0);
+	$aya=new aya(0,0,0);
 	$aya->souraId=$row['SuraID'];
     $aya->ayaId=$row['VerseID'];
-	echo getVetset($aya->souraId, $aya->ayaId);
+	$aya->texte=getVetset($aya->souraId,$aya->ayaId);
 	return $aya;
 	
 }

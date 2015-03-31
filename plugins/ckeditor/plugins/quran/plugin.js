@@ -1,5 +1,5 @@
 CKEDITOR.plugins.add( 'quran', {
-    icons: 'quran,verset,word',
+    icons: 'quran,verset,word,search',
     init: function( editor ) {
     	
         editor.addCommand( 'insertQuran', {
@@ -22,6 +22,13 @@ CKEDITOR.plugins.add( 'quran', {
                ImporterWord();
             }
         });
+        editor.addCommand( 'Recherche', {
+            
+            exec: function( editor ) {
+                
+               search();
+            }
+        });
         editor.ui.addButton( 'quran', {
             icon:'verset',
             label: 'Inserer un verset',
@@ -29,16 +36,25 @@ CKEDITOR.plugins.add( 'quran', {
             toolbar: 'insert'
             
         });
+        
         editor.ui.addButton( 'Timestamp', {
         icon: 'quran',
         label: 'Insert une plusieurs versets',
         command: 'InsertCitation',
         toolbar: 'insert'
          });
+         
         editor.ui.addButton( 'Timestamp2', {
         icon: 'word',
         label: 'Insert une plusieurs versets',
         command: 'ImportFile',
+        toolbar: 'insert'
+         });
+         
+        editor.ui.addButton( 'Timestamp3', {
+        icon: 'search',
+        label: 'chercher des versets',
+        command: 'Recherche',
         toolbar: 'insert'
          });
     }

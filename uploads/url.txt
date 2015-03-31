@@ -1,0 +1,1 @@
+https://localhost:8080/alfresco/service/bluexml/init/list?format=html

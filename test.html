@@ -36,32 +36,46 @@
 		    history.pushState(null, null, 'index.html');
     	</script>
 	</head>  
-<div id="test" ng-app="" ng-init="firstName='John'">
+<div id="test" ng-app="" ng-init="names=[]">
+  <div ng-repeat="x	in names" >
+  	  
+  	 <p>
+  		    {{x.texte["0"] }}
 
-<p>The name is <span ng-bind="firstName"></span></p>
+  	</p>
+  	  		    <input type="button" class="btn btn-primary" value="imprimer" ng-click="show(x.texte['0'])"/>
 
+  </div>
 </div>
 
 <SCRIPT>
-    function test () {
-    	var hr = new XMLHttpRequest();
-    var url = "../controllers/readverset.php";
-    var query="محمد";
+
+
+	
+   
+    function postSearch (q) {
+    var hr = new XMLHttpRequest();
+    var url = "controllers/SearchController.php";
+    var query=q;
     var vars = "query="+query+"&function="+"";
     var return_data ="";
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     hr.onreadystatechange = function() {
+    	
         if(hr.readyState == 4 && hr.status == 200) {
             return_data =hr.responseText;
             return_data =hr.responseText;
+            alert(return_data);
             var jsonObj = $.parseJSON(return_data);
-            /*
             angular.element(document.getElementById('test')).scope().$apply(function(scope){
-            scope.firstName = return_data;
+            scope.names = jsonObj;
+            scope.show = function(message) {
+            alert(message);
+            };
             
          });
-         */
+         
         }
     }
     hr.send(vars);    
