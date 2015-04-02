@@ -29,6 +29,7 @@ $(function() {
 
         }); 
 
+
 function search() {
      $('#recherche').modal('show');
 }
@@ -73,7 +74,7 @@ function ImporterWord(){
 function InsererCitation(){
 
          $('#InsererCitationWindow').modal('show');
-         InitSouraArray('soura');
+         
 }
 
 function postCitation()
@@ -97,49 +98,8 @@ function postCitation()
     }
     hr.send(vars);               
     }
-/*   
-function postFileUpload()
-{
-    var hr = new XMLHttpRequest();
-    var url = "../Quran_Text_Editor/controllers/upload.php";
-    var vars="";
-    var return_data ="";
-    var formData = new FormData();
-    formData.append('file', document.getElementById("fileToUpload").files[0]);
-    hr.open("POST", url, true);
-    hr.setRequestHeader("Content-Type", "multipart/form-data");
-    hr.onreadystatechange = function() {
-        if(hr.readyState == 4 && hr.status == 200) {
-            return_data =hr.responseText;
-            alert (return_data);
-            $('#ImportWord').modal('hide');
-        }
-    }
-    hr.send(formData);               
-}
-*/
-/*
-function postSearch () {
-    
-    var hr = new XMLHttpRequest();
-    var url = "../Quran_Text_Editor/controllers/SearchController.php";
-    var query = document.getElementById("query").value;
-    var vars = "query="+query+"&function="+"";
-    var return_data ="";
-    hr.open("POST", url, true);
-    hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    hr.onreadystatechange = function() {
-        if(hr.readyState == 4 && hr.status == 200) {
-            return_data =hr.responseText;
-            var jsonObj = $.parseJSON(return_data);
-            ///alert(jsonObj[999]['ayaId']);
-            alert('toto');
-            alert (return_data); 
-        }
-    }
-    hr.send(vars);            
-    }
-*/
+
+
 function postSearch () {
     var hr = new XMLHttpRequest();
     var url = "../Quran_Text_Editor/controllers/SearchController.php";
@@ -158,7 +118,16 @@ function postSearch () {
             angular.element(document.getElementById('test')).scope().$apply(function(scope){
             scope.names = jsonObj;
             scope.show = function(message) {
-            alert(message);
+            insererBalise(message);
+            };
+            
+            scope.getJson=function(x){
+                var versetCitation = new Array({"0":getSouraName(x.souraId)},x.ayaId,x.ayaId,x.texte);
+                return versetCitation;                
+            };
+            
+            scope.ajouterVerset=function(x){
+                InsererBaliseCitation(x);
             };
             
          });
@@ -170,7 +139,7 @@ function postSearch () {
 
 function InsererAya(){
     $('#InsererVersetWindows').modal('show');
-    InitSouraArray('souraVerset');
+    
 }
    
 
@@ -198,6 +167,7 @@ function insererBalise(text) {
         CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
         
 }
+
 
 function InsererBaliseCitation(JsonObj){
 	 
@@ -250,4 +220,5 @@ function getSouraName(souraId)
     x=xmlDoc.getElementsByTagName("sura");
     return x[souraId-1].getAttribute('name');
 }
-
+InitSouraArray('souraVerset');
+InitSouraArray('soura');

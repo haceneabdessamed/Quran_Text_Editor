@@ -10,7 +10,7 @@ function getResults($query)
 {
 $cl = new SphinxClient();
 $cl->SetServer('127.0.0.1', 9300);
-$cl->SetLimits(0,10);
+$cl->SetLimits(0,20);
 ///$cl->SetMatchMode(SPH_MATCH_PHRASE);
 $cl->AddQuery($query, 'test1');
 $result = $cl->RunQueries();
