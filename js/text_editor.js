@@ -112,11 +112,28 @@ function postSearch () {
         
         if(hr.readyState == 4 && hr.status == 200) {
             return_data =hr.responseText;
-            return_data =hr.responseText;
-            alert(return_data);
             var jsonObj = $.parseJSON(return_data);
+            if (jsonObj[3] == 0)
+            {
+                
+                showDiv('danger');
+                angular.element(document.getElementById('test')).scope().$apply(function(scope){
+                scope.names = [];
+                });
+            }
+            else{
+                hideDiv('danger');
+                
+            }
+            
+            
+            
+            var resultData=document.getElementById('searchInfo');
+            var info= "Mots-clés : "+Object.keys(jsonObj[2]).length+"; Résultats : "+jsonObj[0]+"; Temps d'exécution : "+jsonObj[1]+" s";
+            resultData.innerHTML=info;
+            
             angular.element(document.getElementById('test')).scope().$apply(function(scope){
-            scope.names = jsonObj;
+            scope.names = jsonObj[3];
             scope.show = function(message) {
             insererBalise(message);
             };
@@ -187,6 +204,14 @@ function InsererBaliseCitation(JsonObj){
      insererBalise(citation+reference);
 }
 
+function showDiv(divId) {
+  $("#"+divId).removeClass('hidden');
+}
+
+function hideDiv(divId){
+  $("#"+divId).addClass('hidden');
+}
+
 function loadXMLDoc(filename)
         {
         if (window.XMLHttpRequest)
@@ -220,5 +245,8 @@ function getSouraName(souraId)
     x=xmlDoc.getElementsByTagName("sura");
     return x[souraId-1].getAttribute('name');
 }
+
+
+
 InitSouraArray('souraVerset');
 InitSouraArray('soura');
