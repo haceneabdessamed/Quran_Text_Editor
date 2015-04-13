@@ -246,6 +246,11 @@ function getSouraName(souraId)
     return x[souraId-1].getAttribute('name');
 }
 
+function normalize (str) {
+str = str.replace(/َ|ً|ُ|ٌ|ِ|ٍ|ْ|ْ|ّ| ۗ| ۚ|/g,'')
+return(str);
+}
+
 
 
 InitSouraArray('souraVerset');

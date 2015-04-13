@@ -24,7 +24,7 @@ if (file_exists($target_file)) {
 // Check file size
 if ($_FILES["fileToUpload"]["size"] > 500000) {
     ///echo "Sorry, your file is too large.";
-    $uploadOk = 0;
+    ///$uploadOk = 0;
 }
 // Allow certain file formats
 
@@ -47,10 +47,10 @@ if ($uploadOk == 0) {
         $docObj = new Doc2Txt($target_file);
         $txt = $docObj->convertToText();
 		echo $txt;
-		unlink($target_file);
         }
         
-        
+        		unlink($target_file);
+		
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
