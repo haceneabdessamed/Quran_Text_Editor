@@ -28,7 +28,13 @@ function getVetset($soura,$aya){
 	$filename = "quran-simple.xml";
 	$xml_file=simplexml_load_file($filename);
 	$attr= $xml_file->sura[$soura-1]->aya[$aya-1]->attributes();
-    return $attr['text'];
+	if ($aya==1) {
+		$res=$attr['text'];
+		return $res;
+	} else {
+		return $attr['text'];
+	}
+	
 }
 
 function getCitation($soura,$ayaBegin,$ayaEnd)

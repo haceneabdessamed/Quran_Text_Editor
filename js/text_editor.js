@@ -29,6 +29,12 @@ $(function() {
 
         }); 
 
+function hilight(id){
+     var a=document.getElementById(id);
+     alert(a.textContent);
+     a.innerHTML=a.textContent;
+
+}
 
 function search() {
      $('#recherche').modal('show');
@@ -92,7 +98,7 @@ function postCitation()
 	    if(hr.readyState == 4 && hr.status == 200) {
 		    return_data =hr.responseText;
 		    var jsonObj = $.parseJSON(return_data);
-		    InsererBaliseCitation(jsonObj);
+		    InsererBalise(jsonObj );
             $('#InsererCitationWindow').modal('hide');
 	    }
     }
@@ -113,42 +119,55 @@ function postSearch () {
         if(hr.readyState == 4 && hr.status == 200) {
             return_data =hr.responseText;
             var jsonObj = $.parseJSON(return_data);
-            if (jsonObj[3] == 0)
-            {
-                
+            if (jsonObj[3] == "0")
+            {   
+                $("#result").html('');
                 showDiv('danger');
-                angular.element(document.getElementById('test')).scope().$apply(function(scope){
-                scope.names = [];
-                });
+                showDiv('suggestion');
+                for (var i=0; i < jsonObj[4].length; i++) {
+                    $('#suggestion').append("<span class='label label-primary' style'position:relative; right:5px;'> "+jsonObj[4][i]+" </span><vr>");
+                }
             }
             else{
                 hideDiv('danger');
+                hideDiv('suggestion');
+                $('#suggestion').html('');
+                $("#result").html('');
+           for (var i=0; i < jsonObj[3].length; i++) {
+            $(function() { 
+                if (jsonObj[3][i].texte[0].length==1) {
+                  $("#result").append("<span style='color: #0088cc;'>[</span>");
+                  $("#result").append("<span>"+jsonObj[3][i].texte+"</span>");
+                  $("#result").append("<span style='color: #0088cc; '>]</span></br></br>");
+                  $("#result").append(
+                    $('<button/>', {
+                    text: 'imprimer', //set text 1 to 10
+                    click: function () { InsererBaliseCitation(getJsonBold(citation)); }
+                    })
+                    
+                );
+                  
+                } else{
+                  $("#result").append("<span style='color: #0088cc;'>[</span>");
+                  $("#result").append("<span>"+jsonObj[3][i].texte["0"]+"</span>");
+                  $("#result").append("<span style='color: #0088cc; '>]</span></br></br>");
+                  $("#result").append(
+                    $('<button/>', {
+                    text: 'imprimer', //set text 1 to 10
+                    click: function () { InsererBaliseCitation(getJson(citation)); }
+                    })
+                    
+                );
+                };
+                $("#result").append("</br></br>");
+                var citation=jsonObj[3][i];
+            });
+           };
                 
             }
-            
-            
-            
             var resultData=document.getElementById('searchInfo');
             var info= "Mots-clés : "+Object.keys(jsonObj[2]).length+"; Résultats : "+jsonObj[0]+"; Temps d'exécution : "+jsonObj[1]+" s";
             resultData.innerHTML=info;
-            
-            angular.element(document.getElementById('test')).scope().$apply(function(scope){
-            scope.names = jsonObj[3];
-            scope.show = function(message) {
-            insererBalise(message);
-            };
-            
-            scope.getJson=function(x){
-                var versetCitation = new Array({"0":getSouraName(x.souraId)},x.ayaId,x.ayaId,x.texte);
-                return versetCitation;                
-            };
-            
-            scope.ajouterVerset=function(x){
-                InsererBaliseCitation(x);
-            };
-            
-         });
-         
         }
     }
     hr.send(vars);    
@@ -247,11 +266,30 @@ function getSouraName(souraId)
 }
 
 function normalize (str) {
-str = str.replace(/َ|ً|ُ|ٌ|ِ|ٍ|ْ|ْ|ّ| ۗ| ۚ|/g,'')
-return(str);
+var str1 = str.replace(/َ|ً|ُ|ٌ|ِ|ٍ|ْ|ْ|ّ| ۗ| ۚ|/g,'')
+return(str1);
 }
 
+function getMatchPositions(str,query)
+{
+    /// 1.get words of str   
+    var res = str.split(" ");
+    for(var i=0,j=res.length; i<j; i++){
+      alert(res[i]);
+    };
+    /// 2.get words of query
+    /// 3.get position of str that are part of query
+    
+}
 
+function getJsonBold (verset) {
+   var versetCitation = new Array({"0":getSouraName(verset.souraId)},verset.ayaId,verset.ayaId,{"0":verset.texte});
+   return versetCitation; 
+}
+function getJson (verset) {
+   var versetCitation = new Array({"0":getSouraName(verset.souraId)},verset.ayaId,verset.ayaId,verset.texte);
+   return versetCitation; 
+}
 
 InitSouraArray('souraVerset');
 InitSouraArray('soura');

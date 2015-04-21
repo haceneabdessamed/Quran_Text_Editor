@@ -3,14 +3,16 @@ require 'C:\sphinx\api\sphinxapi.php';
 require 'readverset.php';
 header('Content-Type: text/html; charset=utf-8');
 
-
+///getMotsAlternatif("رحم");
 ///echo (getNormalizedVerset(2,7));
-///print_r(getMotsAlternatifQuery("لبيالسلاسيلاس"));
-$query=$_POST["query"];
-echo getResults($query);
-
-/*
-$query="محمد";
+///$query=$_POST["query"];
+///echo getResults($query);
+echo "<pre>";
+$propositions=getMotsAlternatifQuery("ييبلبيسليسايلساسياقفلالياسيلاسيسايلاسي");
+print_r($propositions);
+ 
+ /*
+$query="الله";
 $index="test1";
 $resultats=array();
 $opts=array();
@@ -49,16 +51,17 @@ $res=$cl->BuildExcerpts($resultats,"test1",$query,$opts);
 foreach ($res as $key1 => $value1) {
 	$cpt=$key1;
 	foreach (explode(" ",$res[$key1]) as $key => $value) {
-	if ($value[0]=="<"){
+	if (substr($value, 0, 1)=="<"){
 		$word=explode(" ", $resultat[$key1]->texte);
-		echo ($res[$key1]);
-		echo "<br>";
 		$resultat[$key1]->texte=str_replace($word[$key],"<b>".$word[$key]."</b>", $resultat[$key1]->texte);
-		echo ($resultat[$key1]->texte);
-		echo "<br>";
 	}
-
 	}
+	///echo ($res[$key1]);
+	///echo "<br>";
+	echo ($resultat[$key1]->texte);
+	echo "<br>";
+	
+	
 }
 
 foreach (explode(" ",$res[0]) as $key => $value) {
@@ -72,13 +75,35 @@ foreach (explode(" ",$res[0]) as $key => $value) {
 	}
 }
 */
+/*
+$cl = new SphinxClient();
+$cl->SetServer('127.0.0.1', 9300);
+$cl->SetLimits(0,20);
+$cl->SetMatchMode(SPH_MATCH_ANY);
+$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
+$cl->AddQuery($query, 'test1');
+$result = $cl->RunQueries();
 
+foreach ($result as $key => $value) {
+	
+}
+
+
+$ngramme = "مدو";
+
+$resultat = "محمد رسول الله احم يحمدون";
+foreach (explode(" ", $resultat) as $key => $value) {
+	if (strpos($value,$ngramme) !== false) {
+    echo $value;
+	echo "<br>";
+}
+}
+*/
 function getResults($query)
 {
 $resultats=array();
 $opts=array();
 $opts["before_match"]="<b>";
-$opts["limit"]="100000000000000";
 $cl = new SphinxClient();
 
 $cl->SetServer('127.0.0.1', 9300);
@@ -130,7 +155,12 @@ $result = $cl->RunQueries();
 			if (substr($value, 0, 1)=="<"){
 				/// $word les mots de resultats
 				$word=explode(" ", $result_copy[$key1]->texte);
-				$resultat[$key1]->texte=str_replace($word[$key],"<b>".$word[$key]."</b>", $resultat[$key1]->texte);
+				if ($word!="الله") {
+					$resultat[$key1]->texte=str_replace($word[$key],"<b>".$word[$key]."</b>", $resultat[$key1]->texte);
+				}
+				else {
+					///$resultat[$key1]->texte=str_replace('الله',"<b>الله</b>", $resultat[$key1]->texte);	
+				}
 			}
 		
 			}
@@ -140,7 +170,6 @@ $result = $cl->RunQueries();
    }
    else 
    	$metadata[3]="0";
-    $metadata[4]=getMotsAlternatifQuery($query);
     return  (json_encode($metadata,JSON_UNESCAPED_UNICODE));
    }
    
@@ -158,39 +187,39 @@ function getNormalizedVerset($soura,$aya)
 function getNormalisedResults($cl,$query)
 {
 		$cl->SetServer('127.0.0.1', 9300);
-		$cl->SetLimits(0,2);
+		$cl->SetLimits(0,7000);
 		$cl->SetMatchMode(SPH_MATCH_ANY);
 		$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
 		$cl->AddQuery($query, 'test1');
 		$result = $cl->RunQueries();
-		if ($result == false)
-		{
-			return "0";
-		}
-		else 
-		{
-			if ($cl->GetLastWarning())
-			{
-				return "0";
-			}
-			else 
-			{
+			if ($result == false)
+			  {
+			   return "0";
+			  }
+			else {
+			   if ($cl->GetLastWarning())
+			   	{
+			        return "0";
+			   	}
+				else {
 				if($result[0]['total']>0)
-				{
-				$resultats=array();
-				$resultat=array();
-				$indice=0;
-				foreach($result[0]['matches'] as $x => $x_value) 
-					{      	    
-					$aya=getSoura($x);
-					$resultats[$indice]=getNormalizedVerset($aya->souraId, $aya->ayaId);
-					$indice=$indice+1;
-					}
-	                return $resultats;
-				}
+				   {
+				   	  $resultats=array();
+				   	  $resultat=array();
+				   	  $indice=0;
+				   	  foreach($result[0]['matches'] as $x => $x_value) 
+				       {
+				       	    
+						    $aya=getSoura($x);
+							$resultats[$indice]=getNormalizedVerset($aya->souraId, $aya->ayaId);
+						    $indice=$indice+1;
+					   }
+                       return $resultats;
+				   }
 					
+				}
+			
 			}
-		}
 }
 
 function getMotsAlternatif($ngramme)
@@ -230,6 +259,7 @@ function getMotsAlternatifQuery($query){
 	$suggestion=array();
 	$ngrams=getNgramms($query);
 	foreach ($ngrams as $key => $value) {
+		echo($value)."<br>";
 		if (getMotsAlternatif($value)!=0) {
 			foreach (getMotsAlternatif($value) as $key1 => $value1) {
 		     array_push($suggestion,$value1);
@@ -239,5 +269,6 @@ function getMotsAlternatifQuery($query){
 	}
 	return $suggestion;
 }
+
 
 ?>	
