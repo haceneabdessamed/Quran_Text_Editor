@@ -26,7 +26,6 @@
         <link rel="stylesheet" href="css/keyboard.css" />
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/jquery-2.1.3.js"></script>
-		<script type="text/javascript" src="js/text_editor.js"></script>
 		<script src="http://malsup.github.com/jquery.form.js"></script> 
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -182,7 +181,9 @@
 			  <!--input type="button" class="form-control btn btn-primary" value="Rechercher Simple" onclick="postSearch()"--->
             <div class="row">
             <div class="input-group col-md-6 col-md-offset-3">
-            <input type="text" class="keyboardInput form-control search-query" placeholder="Search..." id="query" vki_attached="true"/> 
+            <div class="ui-front">
+            	<input type="text" class="form-control search-query ui-widget" placeholder="Search..." id="query" vki_attached="true" autocomplete="off"/> 
+            </div>
             <span class="input-group-btn">
             <button  class="btn btn-primary"onclick="postSearch()"> Search</button>
             </span>
@@ -233,7 +234,7 @@
 			 <br><br>
 			<div class="row">
             <div class="input-group col-md-6 col-md-offset-3">
-            <input type="text" class="form-control search-query" placeholder="Search..." id="query"/> <span class="input-group-btn">
+            <input type="text" class="form-control search-query" placeholder="Search..."/> <span class="input-group-btn">
             <button  class="btn btn-primary"onclick="postSearch()"> Search</button>
             </span>
             </div>
@@ -502,15 +503,21 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins)>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="plugins/jquery/jquery-2.1.0.min.js"></script>
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed --->
 <!--script src="plugins/bootstrap/bootstrap.min.js"></script>
 <script src="plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
 <script src="plugins/tinymce/tinymce.min.js"></script>
 <script src="plugins/tinymce/jquery.tinymce.min.js"></script>
 <!-- All functions for this theme + document.ready processing -->
+<!--script src="plugins/jquery-ui/jquery-ui.min.js"></script-->
+<script src="js/jquery-ui.js"></script>
 <script src="js/devoops.js"></script>
 <script type="text/javascript" src="js/text_editor.js"></script> 
 <script src="js/keyboard.js"></script>
+  <link rel="stylesheet" href="/Quran_Text_Editor/css/bootstrap.css"/>
+  <!---link rel="stylesheet" href="/Quran_Text_Editor/css/jquery-ui.css" /--->
+  <!---script src="/Quran_Text_Editor/js/bootstrap.js"></script--->
+  <!--script src="/Quran_Text_Editor/js/jquery1.7.js"></script--->
+  <!--script src="/Quran_Text_Editor/js/jquery-ui.js"></script-->
 </body>
 </html>

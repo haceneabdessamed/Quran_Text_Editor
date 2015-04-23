@@ -6,8 +6,18 @@ header('Content-Type: text/html; charset=utf-8');
 
 ///echo (getNormalizedVerset(2,7));
 ///print_r(getMotsAlternatifQuery("لبيالسلاسيلاس"));
-$query=$_POST["query"];
-echo getResults($query);
+switch ($function=$_POST["function"]) {
+	case 'simple':
+		$query=$_POST["query"];
+		echo getResults($query);
+		break;
+	case 'suggestion':
+		$query=$_POST["query"];
+		echo getRealTimeSuggestion($query);
+		break;
+	default:
+		break;
+}
 
 /*
 $query="محمد";
@@ -72,6 +82,53 @@ foreach (explode(" ",$res[0]) as $key => $value) {
 	}
 }
 */
+function getRealTimeSuggestion($query){
+	$cl = new SphinxClient();
+	$cl->SetServer('127.0.0.1', 9300);
+	$cl->SetLimits(0,20);
+	//$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
+	$cl->SetMatchMode(SPH_MATCH_ANY);
+	$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
+	$cl->AddQuery($query, 'test1');
+	$result = $cl->RunQueries();
+	if ($result == false) {
+		return 'Query failed: ' . $cl->GetLastError() . "\n";	
+	} else {
+	   if ($cl->GetLastWarning())
+	   	{
+	        return 'WARNING: ' . $sphinx->GetLastWarning() . "\n";
+	   	}
+   		$metadata=array(); 
+	   	$metadata[0]=$result[0]['total'];
+	   	$metadata[1]=$result[0]['time'];
+	   	$metadata[2]=$result[0]['words'];
+	   	if($result[0]['total']>0)
+	   	{
+	   	 
+	   		$resultat=array();
+	   	  	$indice=0;
+	   	  	foreach($result[0]['matches'] as $x => $x_value) 
+	       	{
+	       	    
+				$aya=getSoura($x);
+				$resultat[$indice]=$aya;
+				$resultats[$indice]=getNormalizedVerset($aya->souraId, $aya->ayaId);
+			    $indice=$indice+1;
+		   }
+		$metadata[3]=$resultats;
+	   	   return  (json_encode($metadata,JSON_UNESCAPED_UNICODE));
+	   }
+	   else 
+	   	$metadata[3]="0";
+	    $metadata[4]=getMotsAlternatifQuery($query);
+	    return  (json_encode($metadata,JSON_UNESCAPED_UNICODE));
+	   }
+		
+		
+	}
+	
+
+
 
 function getResults($query)
 {
@@ -80,7 +137,6 @@ $opts=array();
 $opts["before_match"]="<b>";
 $opts["limit"]="100000000000000";
 $cl = new SphinxClient();
-
 $cl->SetServer('127.0.0.1', 9300);
 $cl->SetLimits(0,20);
 //$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
@@ -88,7 +144,6 @@ $cl->SetMatchMode(SPH_MATCH_ANY);
 $cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
 $cl->AddQuery($query, 'test1');
 $result = $cl->RunQueries();
-
 
   if ($result == false)
   {

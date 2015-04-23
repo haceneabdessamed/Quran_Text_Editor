@@ -1,3 +1,72 @@
+$(function() {
+    var availableTags = [
+          "محمد رسل الله",
+          "ما كان محمد أبا أحد من رجالكم",
+          "نبيا من بعدي اسمه أحمد",
+          "C++",
+          "Clojure",
+          "COBOL",
+          "ColdFusion",
+          "Erlang",
+          "Fortran",
+          "Groovy",
+          "Haskell",
+          "Java",
+          "JavaScript",
+          "Lisp",
+          "Perl",
+          "PHP",
+          "Python",
+          "Ruby",
+          "Scala",
+          "Scheme"
+    ];
+    /*
+    $( "#query" ).autocomplete({
+        source: availableTags
+    });
+    */
+    $("#query").autocomplete({source: availableTags})
+    .data("ui-autocomplete")._renderItem = function (ul, item) {
+        var newText = String(item.value).replace(
+                new RegExp(this.term, "gi"),
+                "&#x200d;<b>$&&#x200d;</b>&#x200d;");
+
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append("<a>" + newText + "</a>")
+            .appendTo(ul);
+    };
+    
+    $('#query').unbind('click').bind('click', function (e) {
+        var hr = new XMLHttpRequest();
+        var url = "../Quran_Text_Editor/controllers/SearchController.php";
+        var query=document.getElementById('query').value;
+        var vars = "query="+query+"&function="+"suggestion";
+        var return_data ="";
+        hr.open("POST", url, true);
+        hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            hr.onreadystatechange = function() {
+        
+        if(hr.readyState == 4 && hr.status == 200) {
+            return_data =hr.responseText;
+            var jsonObj = $.parseJSON(return_data);
+            for (var i=0; i < 20; i++) {
+              availableTags[i]=jsonObj[3][i];
+            }
+            $( "#query" ).autocomplete({
+            source: availableTags
+            });
+        }
+    }
+    hr.send(vars); 
+    availableTags=[]; 
+     
+   });
+   
+});
+    
+
 $(function() { 
 	        
             // bind 'myForm' and provide a simple callback function 
