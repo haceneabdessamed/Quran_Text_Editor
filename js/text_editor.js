@@ -38,7 +38,7 @@ $(function() {
             .appendTo(ul);
     };
     
-    $('#query').unbind('click').bind('click', function (e) {
+    $('#query').unbind('keyup').bind('keyup', function (e) {
         var hr = new XMLHttpRequest();
         var url = "../Quran_Text_Editor/controllers/SearchController.php";
         var query=document.getElementById('query').value;
@@ -51,7 +51,7 @@ $(function() {
         if(hr.readyState == 4 && hr.status == 200) {
             return_data =hr.responseText;
             var jsonObj = $.parseJSON(return_data);
-            for (var i=0; i < 20; i++) {
+            for (var i=0; i < jsonObj[3].length; i++) {
               availableTags[i]=jsonObj[3][i];
             }
             $( "#query" ).autocomplete({

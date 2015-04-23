@@ -185,7 +185,7 @@ $result = $cl->RunQueries();
 			if (substr($value, 0, 1)=="<"){
 				/// $word les mots de resultats
 				$word=explode(" ", $result_copy[$key1]->texte);
-				$resultat[$key1]->texte=str_replace($word[$key],"<b>".$word[$key]."</b>", $resultat[$key1]->texte);
+				$resultat[$key1]->texte=str_replace($word[$key],"&#x200d;<b>".$word[$key]."</b>", $resultat[$key1]->texte);
 			}
 		
 			}
