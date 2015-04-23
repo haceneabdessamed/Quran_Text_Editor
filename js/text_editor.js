@@ -30,7 +30,7 @@ $(function() {
     .data("ui-autocomplete")._renderItem = function (ul, item) {
         var newText = String(item.value).replace(
                 new RegExp(this.term, "gi"),
-                "&#x200d;<b>$&&#x200d;</b>&#x200d;");
+                "&#x200d;<b>$&&#x200d;</b>");
 
         return $("<li></li>")
             .data("item.autocomplete", item)
@@ -179,7 +179,7 @@ function postSearch () {
     var hr = new XMLHttpRequest();
     var url = "../Quran_Text_Editor/controllers/SearchController.php";
     var query=document.getElementById('query').value
-    var vars = "query="+query+"&function="+"";
+    var vars = "query="+query+"&function="+"simple";
     var return_data ="";
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
