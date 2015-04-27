@@ -9,7 +9,8 @@ header('Content-Type: text/html; charset=utf-8');
 switch ($function=$_POST["function"]) {
 	case 'simple':
 		$query=$_POST["query"];
-		echo getResults($query);
+		$page =(int)$_POST["page"];
+		echo getResults($query,$page);
 		break;
 	case 'suggestion':
 		$query=$_POST["query"];
@@ -130,17 +131,18 @@ function getRealTimeSuggestion($query){
 
 
 
-function getResults($query)
+function getResults($query,$page)
 {
+$inf=$page-1;
 $resultats=array();
 $opts=array();
 $opts["before_match"]="<b>";
 $opts["limit"]="100000000000000";
 $cl = new SphinxClient();
 $cl->SetServer('127.0.0.1', 9300);
-$cl->SetLimits(0,20);
+$cl->SetLimits(20*($page-1),20);
 //$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
-$cl->SetMatchMode(SPH_MATCH_ANY);
+$cl->SetMatchMode(SPH_MATCH_EXTENDED);
 $cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
 $cl->AddQuery($query, 'test1');
 $result = $cl->RunQueries();

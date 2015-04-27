@@ -164,8 +164,9 @@
        <button type="button" class="close" data-deismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
        <h4 class="modal-title">Recherche</h4>
        <ul class="nav nav-tabs">
-		  <li role="presentation" class="active"><a href="#simple" data-toggle="tab">Recherche Simple</a></li>
-		  <li role="presentation"><a href="#advanced" data-toggle="tab">Recherche Avancée</a></li>
+		  <li role="presentation" class="active"><a href="#simple" data-toggle="tab">Simple</a></li>
+		  <li role="presentation"><a href="#advanced" data-toggle="tab">Avancée</a></li>
+		  <li role="presentation"><a href="#advanced" data-toggle="tab">Coran</a></li>
 	   </ul>
       </div>
       <div class="modal-body">
@@ -180,14 +181,20 @@
 			      <br><br>
 			  <!--input type="button" class="form-control btn btn-primary" value="Rechercher Simple" onclick="postSearch()"--->
             <div class="row">
-            <div class="input-group col-md-6 col-md-offset-3">
-            <div class="ui-front">
-            	<input type="text" class="form-control search-query ui-widget" placeholder="Search..." id="query" vki_attached="true" autocomplete="off"/> 
+            	<div class="col-lg-6 col-md-offset-3" style="background: url('loading.gif');background-size: 80px 60px;background-repeat: no-repeat;">
+            		
+            	</div>
             </div>
-            <span class="input-group-btn">
-            <button  class="btn btn-primary"onclick="postSearch()"> Search</button>
-            </span>
-            </div>
+            <div class="row">
+        	 	
+            	<div class="input-group col-md-6 col-md-offset-3">
+            		<div class="ui-front">
+            			<input type="text" dir="rtl" class="form-control search-query ui-widget" placeholder="Search..." id="query" vki_attached="true" autocomplete="off"/> 
+            		</div>
+            		<span class="input-group-btn">
+            			<button  class="btn btn-primary"onclick="postSearch(1)"> Search</button>
+            		</span>
+            	</div>
 			</div>
 			<br>
 			<div class="row-fluid">
@@ -226,18 +233,52 @@
 					<span class="label label-primary"   >بشق</span -->
 				</div>
 			</div>
-			      
-			    </div><!-- /input-group -->
+			
+			
+		</div><!-- /input-group -->
 			    <!-- end Tab 1 recherche simple -->
 			    <!-- Tab 2 recherche avancée -->
-			 <div class="input-group tab-pane" id="advanced">
+		 	<div class="input-group tab-pane" id="advanced">
+		 	
 			 <br><br>
 			<div class="row">
-            <div class="input-group col-md-6 col-md-offset-3">
-            <input type="text" class="form-control search-query" placeholder="Search..."/> <span class="input-group-btn">
-            <button  class="btn btn-primary"onclick="postSearch()"> Search</button>
-            </span>
-            </div>
+            	<div class="input-group col-md-6 col-md-offset-3">
+            		<input type="text" class="form-control search-query" placeholder="Search..."/> <span class="input-group-btn">
+            		<button  class="btn btn-primary"onclick="postSearch()"> Search</button>
+            		</span>
+            	</div>
+			</div>
+			<br/><br/>
+			<div class="row">
+				<a class="col-md-6 col-md-offset-3 text-center" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+					<i class="glyphicon glyphicon-question-sign"></i>
+        			Aide [+]
+				</a>
+			<br /><br>
+			</div>
+			<div class="row collapse" id="collapseExample">
+				<div class="col-md-10 col-md-offset-1">
+  					<div>
+						<div class="radio">
+  <label>
+    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+    Option one is this and that&mdash;be sure to include why it's great
+  </label>
+</div>
+<div class="radio">
+  <label>
+    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+    Option two can be something else and selecting it will deselect option one
+  </label>
+</div>
+<div class="radio disabled">
+  <label>
+    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
+    Option three is disabled
+  </label>
+</div>
+					</div>
+				</div>
 			</div>
 			<br><br>
 			<!---input type="button" class="form-control btn btn-primary" value="Rechercher Avancée" onclick="postSearch()"--->
@@ -270,9 +311,20 @@
   
     </div>
      </-->
-     <div id="result" style="font-family:KFGQPC Uthmanic Script HAFS;font-size:20px; line-height: 130%;" dir="rtl">
+     <div id="result" style="font-family:KFGQPC Uthmanic Script HAFS;font-size:20px; line-height: 130%;" dir="rtl" background="loading.gif">
+      
            
     </div>
+    <div class="text-center">
+		<ul class="pagination">
+			<li class="active"><a>1</a></li>
+			<li><a>2</a></li>
+			<li><a>3</a></li>
+			<li><a>4</a></li>
+			<li><a>5</a></li>
+			<li><a onclick="suivant()">next</a></li>
+		</ul>
+	</div>
 
       </div>
       <div class="modal-footer">

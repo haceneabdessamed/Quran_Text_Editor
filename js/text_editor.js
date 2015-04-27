@@ -167,7 +167,7 @@ function postCitation()
 	    if(hr.readyState == 4 && hr.status == 200) {
 		    return_data =hr.responseText;
 		    var jsonObj = $.parseJSON(return_data);
-		    InsererBalise(jsonObj );
+		    InsererBaliseCitation(jsonObj );
             $('#InsererCitationWindow').modal('hide');
 	    }
     }
@@ -175,11 +175,11 @@ function postCitation()
     }
 
 
-function postSearch () {
+function postSearch (page) {
     var hr = new XMLHttpRequest();
     var url = "../Quran_Text_Editor/controllers/SearchController.php";
     var query=document.getElementById('query').value
-    var vars = "query="+query+"&function="+"simple";
+    var vars = "query="+query+"&function="+"simple&page="+page;
     var return_data ="";
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -359,6 +359,26 @@ function getJson (verset) {
    var versetCitation = new Array({"0":getSouraName(verset.souraId)},verset.ayaId,verset.ayaId,verset.texte);
    return versetCitation; 
 }
+
+function suivant () {
+    var last=parseInt($(".pagination li").eq(-2).text());
+    for(var i=1,j=6; i<j; i++){
+      var p=last+i;
+      $(".pagination li").eq(i-1).html('<a>'+p+'</a>');
+      $(".pagination li").removeClass('active');
+      
+    };
+}
+
+$(".pagination li").click(function(){
+
+        $(".pagination li").removeClass('active');
+        $(this).addClass('active');
+        $("#result").html("<img src='loading.gif' class='img-responsive'/>")
+        postSearch(parseInt(this.textContent));
+});
+  
+
 
 InitSouraArray('souraVerset');
 InitSouraArray('soura');
