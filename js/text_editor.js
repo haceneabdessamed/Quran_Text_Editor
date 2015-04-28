@@ -377,6 +377,13 @@ $(".pagination li").click(function(){
         $("#result").html("<img src='loading.gif' class='img-responsive'/>")
         postSearch(parseInt(this.textContent));
 });
+
+$("#ajouterBtn").click(function(){
+    var choice=$('input[name=sex]:checked', '#AdvancedOptions').val();   
+    switch(choice){
+        
+    }
+});
   
 
 

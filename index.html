@@ -163,6 +163,7 @@
       <div class="modal-header">
        <button type="button" class="close" data-deismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
        <h4 class="modal-title">Recherche</h4>
+       <br/><br />
        <ul class="nav nav-tabs">
 		  <li role="presentation" class="active"><a href="#simple" data-toggle="tab">Simple</a></li>
 		  <li role="presentation"><a href="#advanced" data-toggle="tab">Avancée</a></li>
@@ -257,29 +258,41 @@
 			<br /><br>
 			</div>
 			<div class="row collapse" id="collapseExample">
-				<div class="col-md-10 col-md-offset-1">
-  					<div>
-						<div class="radio">
-  <label>
-    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-    Option one is this and that&mdash;be sure to include why it's great
-  </label>
-</div>
-<div class="radio">
-  <label>
-    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-    Option two can be something else and selecting it will deselect option one
-  </label>
-</div>
-<div class="radio disabled">
-  <label>
-    <input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" disabled>
-    Option three is disabled
-  </label>
-</div>
-					</div>
-				</div>
+				<form class="well col-lg-10 col-md-offset-1" id="AdvancedOptions">
+					<input type="radio" name="sex" value="and" checked>	tous les termes		'+'
+					<br>
+					<input type="radio" name="sex" value="or">	au moin un des termes		'|'
+					<br>
+					<input type="radio" name="sex" value="not">	tous les termes sauf		'!'
+					<br>
+					<input type="radio" name="sex" value="phrase">	une phrase exacte			" "
+					<br>
+					<input type="radio" name="sex" value="near">	distance entre les termes	'NEAR'
+					<br>
+					<input type="radio" name="sex" value="order">	Ordre d'appatition des termes	'>>'
+					<br>
+					<input type="radio" name="sex" value="begin">	Rechercher dans les débuts de verset	'^'
+					<br>
+					<input type="radio" name="sex" value="end">	Rechercher dans les fin de verset	'$'	
+				</form>
+				<form class="form-inline text-center" role="form">
+				    <div class="form-group">
+				      <label for="email">Terme 1:</label>
+				      <input type="text" class="form-control" id="email" placeholder="Terme 1 ...">
+				    </div>
+				    <div class="form-group">
+				      <label for="pwd">Terme 2:</label>
+				      <input type="text" class="form-control" id="pwd" placeholder="Terme 2 ...">
+				    </div>
+				    <br/><br />
+  				</form>
+  				<div class"text-center">
+					<button  class="btn btn-primary" id="ajouterBtn">Ajouter</button>  					
+  				</div>
+
 			</div>
+			
+			
 			<br><br>
 			<!---input type="button" class="form-control btn btn-primary" value="Rechercher Avancée" onclick="postSearch()"--->
             
