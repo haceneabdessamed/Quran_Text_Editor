@@ -370,6 +370,10 @@ function suivant () {
     };
 }
 
+function add (argument) {
+  
+}
+
 $(".pagination li").click(function(){
 
         $(".pagination li").removeClass('active');
@@ -381,11 +385,48 @@ $(".pagination li").click(function(){
 $("#ajouterBtn").click(function(){
     var choice=$('input[name=sex]:checked', '#AdvancedOptions').val();   
     switch(choice){
-        
+        case 'and':
+        $('#queryadvanced').val($('#queryadvanced').val()+' '+$('#term1').val()+' + '+$('#term2').val());
+        break;
+        case 'or':
+        $('#queryadvanced').val($('#queryadvanced').val()+' '+$('#term1').val()+' | '+$('#term2').val());
+        break;
+        case 'not':
+        $('#queryadvanced').val($('#queryadvanced').val()+' '+$('#term1').val()+' ! '+$('#term2').val());
+        break;
+        case 'phrase':
+        $('#queryadvanced').val($('#queryadvanced').val()+' \"'+$('#term1').val()+'\"');
+        break;
+        case 'near':
+        $('#queryadvanced').val($('#queryadvanced').val()+' '+$('#term1').val()+' NEAR\/'+ $('#distance').val()+' '+$('#term2').val());
+        break;
+        case 'near':
+        $('#queryadvanced').val($('#queryadvanced').val()+' '+$('#term1').val()+'   >> '+$('#term2').val());
+        break;
     }
 });
-  
 
+$('input[value=phrase]:radio').click(function(){
+    ///hider text2
+    $('#term2').hide();
+    $('#labelTerme2').hide();
+});
+ 
+$('input[value!=phrase]:radio').click(function(){
+    ///hider text2
+    $('#term2').show();
+    $('#labelTerme2').show();
+});
+$('input[value=near]:radio').click(function(){
+    ///hider text2
+    $('#distance').show();
+    $('#labelDistance').show();
+});
+$('input[value!=near]:radio').click(function(){
+    ///hider text2
+    $('#distance').hide();
+    $('#labelDistance').hide();
+});
 
 InitSouraArray('souraVerset');
 InitSouraArray('soura');

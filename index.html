@@ -244,18 +244,21 @@
 			 <br><br>
 			<div class="row">
             	<div class="input-group col-md-6 col-md-offset-3">
-            		<input type="text" class="form-control search-query" placeholder="Search..."/> <span class="input-group-btn">
+            		<input type="text" class="form-control search-query" placeholder="Search..."/ id="queryadvanced"> <span class="input-group-btn">
             		<button  class="btn btn-primary"onclick="postSearch()"> Search</button>
             		</span>
             	</div>
 			</div>
 			<br/><br/>
 			<div class="row">
-				<a class="col-md-6 col-md-offset-3 text-center" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+				<div class="text-center">
+					<a class="col-md-6 col-md-offset-3 text-center" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
 					<i class="glyphicon glyphicon-question-sign"></i>
         			Aide [+]
-				</a>
-			<br /><br>
+					</a>
+				<br /><br>
+				</div>
+				
 			</div>
 			<div class="row collapse" id="collapseExample">
 				<form class="well col-lg-10 col-md-offset-1" id="AdvancedOptions">
@@ -274,20 +277,28 @@
 					<input type="radio" name="sex" value="begin">	Rechercher dans les débuts de verset	'^'
 					<br>
 					<input type="radio" name="sex" value="end">	Rechercher dans les fin de verset	'$'	
+					<br>
+					<input type="radio" name="sex" value="end">	Rechercher une partie de verset	'*'	
 				</form>
-				<form class="form-inline text-center" role="form">
+				<form class="col-lg-10 col-md-offset-1" role="form">
 				    <div class="form-group">
-				      <label for="email">Terme 1:</label>
-				      <input type="text" class="form-control" id="email" placeholder="Terme 1 ...">
+				      <label for="email" id="labelTerme1">Terme 1:</label>
+				      <input type="text" class="form-control" id="term1" placeholder="Terme 1 ...">
 				    </div>
 				    <div class="form-group">
-				      <label for="pwd">Terme 2:</label>
-				      <input type="text" class="form-control" id="pwd" placeholder="Terme 2 ...">
+				      <label for="pwd" id="labelTerme2">Terme 2:</label>
+				      <input type="text" class="form-control" id="term2" placeholder="Terme 2 ...">
+				    </div>
+				     <div class="form-group">
+				      <label for="pwd" id="labelDistance">Distance</label>
+				      <input type="number" class="form-control" id="distance" placeholder="Distance ...">
 				    </div>
 				    <br/><br />
   				</form>
-  				<div class"text-center">
-					<button  class="btn btn-primary" id="ajouterBtn">Ajouter</button>  					
+  				<div  class"row">
+					<div class="col-lg-10 col-md-offset-1 text-center">
+						<button  class="btn btn-primary" id="ajouterBtn">Ajouter</button>  											
+					</div>
   				</div>
 
 			</div>
