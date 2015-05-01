@@ -58,7 +58,7 @@ $(function() {
             source: availableTags
             });
         }
-    }
+    };
     hr.send(vars); 
     availableTags=[]; 
      
@@ -136,8 +136,8 @@ function inserer(text) {
             InsererBaliseCitation(jsonObj);
 		    $('#InsererVersetWindows').modal('hide');
 
-            }
-    }
+        }
+    };
     hr.send(vars); 
                           
    }
@@ -170,7 +170,7 @@ function postCitation()
 		    InsererBaliseCitation(jsonObj );
             $('#InsererCitationWindow').modal('hide');
 	    }
-    }
+    };
     hr.send(vars);               
     }
 
@@ -178,7 +178,7 @@ function postCitation()
 function postSearch (page) {
     var hr = new XMLHttpRequest();
     var url = "../Quran_Text_Editor/controllers/SearchController.php";
-    var query=document.getElementById('query').value
+    var query=document.getElementById('query').value;
     var vars = "query="+query+"&function="+"simple&page="+page;
     var return_data ="";
     hr.open("POST", url, true);
@@ -238,7 +238,7 @@ function postSearch (page) {
             var info= "Mots-clés : "+Object.keys(jsonObj[2]).length+"; Résultats : "+jsonObj[0]+"; Temps d'exécution : "+jsonObj[1]+" s";
             resultData.innerHTML=info;
         }
-    }
+    };
     hr.send(vars);    
     } 
 
@@ -276,7 +276,7 @@ function insererBalise(text) {
 
 function InsererBaliseCitation(JsonObj){
 	 
-	 var citation='[ '
+	 var citation='[ ';
 	 var ayaBegin=JsonObj[1];
 	 var ayaEnd=JsonObj[2];
 	 var count=3;
@@ -335,7 +335,7 @@ function getSouraName(souraId)
 }
 
 function normalize (str) {
-var str1 = str.replace(/َ|ً|ُ|ٌ|ِ|ٍ|ْ|ْ|ّ| ۗ| ۚ|/g,'')
+var str1 = str.replace(/َ|ً|ُ|ٌ|ِ|ٍ|ْ|ْ|ّ| ۗ| ۚ|/g,'');
 return(str1);
 }
 
@@ -378,7 +378,7 @@ $(".pagination li").click(function(){
 
         $(".pagination li").removeClass('active');
         $(this).addClass('active');
-        $("#result").html("<img src='loading.gif' class='img-responsive'/>")
+        $("#result").html("<img src='loading.gif' class='img-responsive'/>");
         postSearch(parseInt(this.textContent));
 });
 
@@ -400,19 +400,31 @@ $("#ajouterBtn").click(function(){
         case 'near':
         $('#queryadvanced').val($('#queryadvanced').val()+' '+$('#term1').val()+' NEAR\/'+ $('#distance').val()+' '+$('#term2').val());
         break;
-        case 'near':
+        case 'before':
         $('#queryadvanced').val($('#queryadvanced').val()+' '+$('#term1').val()+'   >> '+$('#term2').val());
+        break;
+        case 'after':
+        $('#queryadvanced').val($('#queryadvanced').val()+' '+$('#term1').val()+'   << '+$('#term2').val());
+        break;
+        case 'begin':
+        $('#queryadvanced').val($('#queryadvanced').val()+' ^'+$('#term1').val());
+        break;
+        case 'end':
+        $('#queryadvanced').val($('#queryadvanced').val()+' '+$('#term1').val()+'$');
+        break;
+        case 'part':
+        $('#queryadvanced').val($('#queryadvanced').val()+' *'+$('#term1').val()+' * ');
         break;
     }
 });
 
-$('input[value=phrase]:radio').click(function(){
+$('input[class=need]:radio').click(function(){
     ///hider text2
     $('#term2').hide();
     $('#labelTerme2').hide();
 });
  
-$('input[value!=phrase]:radio').click(function(){
+$('input[class!=need]:radio').click(function(){
     ///hider text2
     $('#term2').show();
     $('#labelTerme2').show();
@@ -427,6 +439,61 @@ $('input[value!=near]:radio').click(function(){
     $('#distance').hide();
     $('#labelDistance').hide();
 });
+
+
+
+function autocompleteEditor(selection){
+    
+    var hr = new XMLHttpRequest();
+    var url = "../Quran_Text_Editor/controllers/SearchController.php";
+    var vars = "query="+selection+"&function="+"simple&page=1";
+    var return_data ="";
+    hr.open("POST", url, true);
+    hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    hr.onreadystatechange = function() {
+        
+        if(hr.readyState == 4 && hr.status == 200) {
+            return_data =hr.responseText;
+            var jsonObj = $.parseJSON(return_data);
+            for (var i=0; i < jsonObj[3].length; i++) {
+                addSuggestionMenu(CKEDITOR.instances.editor1,jsonObj[3][i],i);
+            };  
+        }
+    };
+    hr.send(vars);   
+}
+
+function addSuggestionMenu(editor,text,i){
+                var ss=text;
+                var step=i.toString();
+                alert(step);
+                editor.addCommand(step, {
+                    exec : function( editor,text)
+                    {
+                        InsererBaliseCitation(getJsonBold(ss));
+                    }
+                });
+                
+                var myCommand = {
+                label : editor.lang.image.menu,
+                command : step,
+                group : 'image'
+                };
+                
+                editor.contextMenu.addListener( function( element, selection ) {
+                    return { 
+                        myCommand : CKEDITOR.TRISTATE_OFF 
+                    };
+                });
+                
+                editor.addMenuItems({
+                    myCommand : {
+                        label : editor.lang.image.menu,
+                        command : step,
+                        group : 'image',
+                        order : 1
+                    }});
+ }
 
 InitSouraArray('souraVerset');
 InitSouraArray('soura');

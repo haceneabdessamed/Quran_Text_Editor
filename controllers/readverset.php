@@ -79,7 +79,7 @@ function getSoura($id)
 {
 	$connection =new SqlConexion("localhost","root","","quran");
 	$connection->connecter();
-	$stmt=$connection->SelectQuery("select * from quran where ID=".$id);
+	$stmt=$connection->SelectQuery("select * from quran where id=".$id);
 	$row = $stmt->fetch();
 	$aya=new aya(0,0,0);
 	$aya->souraId=$row['SuraID'];
