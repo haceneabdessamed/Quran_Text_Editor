@@ -455,45 +455,95 @@ function autocompleteEditor(selection){
         if(hr.readyState == 4 && hr.status == 200) {
             return_data =hr.responseText;
             var jsonObj = $.parseJSON(return_data);
-            for (var i=0; i < jsonObj[3].length; i++) {
-                addSuggestionMenu(CKEDITOR.instances.editor1,jsonObj[3][i],i);
-            };  
+ 
+              addSuggestionMenu(CKEDITOR.instances.editor1,jsonObj[3],0);
+              ///CKEDITOR.instances.editor1.contextMenu.show(CKEDITOR.instances.editor1.document.getBody(), null, 100, 0);
+              ///CKEDITOR.instances.editor1.contextMenu.hide();
+              ///CKEDITOR.instances.editor1.contextMenu.items[i+3].label=jsonObj[3][i].texte;
         }
     };
     hr.send(vars);   
 }
 
 function addSuggestionMenu(editor,text,i){
-                var ss=text;
-                var step=i.toString();
-                alert(step);
-                editor.addCommand(step, {
-                    exec : function( editor,text)
-                    {
-                        InsererBaliseCitation(getJsonBold(ss));
-                    }
-                });
-                
-                var myCommand = {
-                label : editor.lang.image.menu,
-                command : step,
-                group : 'image'
-                };
-                
+
+            
+                var res=text[i];                
                 editor.contextMenu.addListener( function( element, selection ) {
-                    return { 
-                        myCommand : CKEDITOR.TRISTATE_OFF 
-                    };
+                   return { 
+                      1 : CKEDITOR.TRISTATE_OFF 
+                   };
                 });
-                
                 editor.addMenuItems({
-                    myCommand : {
-                        label : editor.lang.image.menu,
-                        command : step,
-                        group : 'image',
-                        order : 1
+                    1: {
+                    id:i,
+                    label : text[0].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                            alert(this.label);
+                                         }
                     }});
- }
+                    
+                    
+                    editor.contextMenu.addListener( function( element, selection ) {
+                   return { 
+                      2 : CKEDITOR.TRISTATE_OFF 
+                   };
+                });
+                editor.addMenuItems({
+                    2: {
+                    id:i,
+                    label : text[1].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                            alert(this.label);
+                                         }
+                    }});
+                    
+                    
+                    
+                    editor.contextMenu.addListener( function( element, selection ) {
+                   return { 
+                      3 : CKEDITOR.TRISTATE_OFF 
+                   };
+                });
+                editor.addMenuItems({
+                    3: {
+                    id:i,
+                    label : text[2].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                            alert(this.label);
+                                         }
+                    }});
+                    
+                    
+                    editor.contextMenu.addListener( function( element, selection ) {
+                   return { 
+                      4 : CKEDITOR.TRISTATE_OFF 
+                   };
+                });
+                editor.addMenuItems({
+                    4: {
+                    id:i,
+                    label : text[3].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                            alert(this.label);
+                                         }
+                    }});
+                    
+       
+                
+}
 
 InitSouraArray('souraVerset');
 InitSouraArray('soura');
