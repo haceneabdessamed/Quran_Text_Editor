@@ -13,6 +13,12 @@ switch ($function=$_POST["function"]) {
 		$page =(int)$_POST["page"];
 		echo getResults($query,$page);
 		break;
+	case 'service':
+		$query=$_POST["query"];
+		///echo $query;
+		$page =(int)$_POST["page"];
+		echo getWebserviceResult($query,$page);
+		break;
 	case 'suggestion':
 		$query=$_POST["query"];
 		echo getRealTimeSuggestion($query);
@@ -203,6 +209,57 @@ $result = $cl->RunQueries();
    }
    
 } 
+
+
+
+function getWebserviceResult($query,$page){
+	
+	$inf=$page-1;
+	$resultats=array();
+	$cl = new SphinxClient();
+	$cl->SetServer('127.0.0.1', 9300);
+	$cl->SetLimits(20*($page-1),20);
+	//$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
+	$cl->SetMatchMode(SPH_MATCH_EXTENDED2);
+	$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
+	$cl->AddQuery($query, 'test1');
+	$result = $cl->RunQueries();
+	if ($result == false)
+	{
+	   return 'Query failed: ' . $cl->GetLastError() . "\n";
+	}else{	
+	if ($cl->GetLastWarning())
+   	{
+        return 'WARNING: ' . $sphinx->GetLastWarning() . "\n";
+   	}
+   	$metadata=array(); 
+   	$metadata[0]=$result[0]['total'];
+   	$metadata[1]=$result[0]['time'];
+   	$metadata[2]=$result[0]['words'];
+   	if($result[0]['total']>0)
+   	{
+   	 
+  		$resultat=array();
+   	  	$indice=0;
+   	  	foreach($result[0]['matches'] as $x => $x_value) 
+    	{
+       	    
+		    $aya=getSoura($x);
+			$resultat[$indice]=$aya;
+			$resultat[$indice]->texte=str_replace('a','a', $resultat[$indice]->texte);
+		    $indice=$indice+1;
+	   	}	    
+		$metadata[3]=$resultat;
+   		return  (json_encode($metadata,JSON_UNESCAPED_UNICODE));
+   	}
+  	else{
+   	$metadata[3]="0";
+  	$metadata[4]=getMotsAlternatifQuery($query);
+    return  (json_encode($metadata,JSON_UNESCAPED_UNICODE));
+   	} 
+  
+	}
+}
 
 function getNormalizedVerset($soura,$aya)
 {
