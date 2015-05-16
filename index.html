@@ -55,24 +55,35 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Inserer Un Verset</h4>
       </div>
-      <div class="modal-body">
- <div class="row">
-  <div class="col-lg-6">
-    <div class="input-group">
-      <select class="form-control" id="souraVerset"></select>
-    </div><!-- /input-group -->
-  </div><!-- /.col-lg-6 -->
-  <div class="col-lg-6">
-    <div class="input-group">
-      <input type="number" class="form-control" id="ayaVerset">
-    </div><!-- /input-group -->
-  </div><!-- /.col-lg-6 -->
-</div><!-- /.row -->
-
+  	<div class="modal-body">
+		<form class="col-lg-10 col-md-offset-1" role="form">
+			<div class="form-group">
+				<br /></br>
+				<label for="email" id="labelTerme1">Soura:</label>
+				<select class="form-control" id="souraVerset"></select>
+			</div>
+			<div class="form-group">
+				<label for="pwd" id="labelTerme2">Aya:</label>
+      			<input type="number" class="form-control" id="ayaVerset">
+			</div>
+			<br/><br />
+  		</form>
+  		<div  class"row">
+					<div class="col-lg-10 col-md-offset-1 text-center">
+						<button  class="btn btn-primary" id="VerfierBtn" onclick="visualiser('1')">Visualiser</button>  
+						<br /><br />
+						<hr />											
+					</div>
+  				</div>
+  		<div class="row">
+  			<div class="col-lg-10 col-md-offset-1 text-center" id="verify" style="font-family:KFGQPC Uthmanic Script HAFS;font-size:20px; line-height: 130%;" dir="rtl">
+  		     
+  			</div>
+  		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="post()">Inserer</button>
+        <button type="button" class="btn btn-primary" onclick="post()">Ajouter au document</button>
       </div>
     </div>
   </div>
@@ -89,28 +100,58 @@
         <h4 class="modal-title" id="myModalLabel">Inserer Un Verset</h4>
       </div>
       <div class="modal-body">
- <div class="row">
-  <div class="col-lg-6">
-    <div class="input-group">
-      <select class="form-control" id="soura"></select>
-    </div><!-- /input-group -->
-  </div><!-- /.col-lg-6 -->
-  <div class="col-lg-6">
+ 		<!--div class="row">
+  			<div class="col-lg-6">
+    			<div class="input-group">
+      				<select class="form-control" id="soura"></select>
+    			</div>
+  			</div><
+  		<div class="col-lg-6">
     <div class="input-group">
       <input type="number" class="form-control" id="ayaBegin">
-    </div><!-- /input-group -->
-  </div><!-- /.col-lg-6 -->
+    </div>
+  </div>
   <div class="col-lg-6">
     <div class="input-group">
       <input type="number" class="form-control" id="ayaEnd">
-    </div><!-- /input-group -->
-  </div><!-- /.col-lg-6 -->
+    </div>
+  </div>
 </div><!-- /.row -->
-
+		<form class="col-lg-10 col-md-offset-1" role="form">
+			<div class="form-group">
+				<br /></br>
+				<label for="email" id="labelTerme1">Soura:</label>
+				<select class="form-control" id="soura"></select>
+			</div>
+			<div class="form-group">
+				<label for="pwd" id="labelTerme2">Aya de début:</label>
+      			<input type="number" class="form-control" id="ayaBegin">
+			</div>
+			<div class="form-group">
+				<label for="pwd" id="labelTerme2">Aya de fin:</label>
+      			<input type="number" class="form-control" id="ayaEnd">
+			</div>
+			<br/><br />
+  		</form>
+  		<div  class"row">
+					<div class="col-lg-10 col-md-offset-1 text-center">
+						<button  class="btn btn-primary" id="VerfierBtnCitation" onclick="visualiser('2')">Visualiser</button>  
+						<br /><br />
+						<hr />											
+					</div>
+  				</div>
+  		<div class="row">
+  			<div class="col-lg-10 col-md-offset-1 text-center" id="verifyCitation" style="font-family:KFGQPC Uthmanic Script HAFS;font-size:20px; line-height: 130%;" dir="rtl">
+  		     
+  			</div>
+  		</div>
       </div>
+      
+      
+      
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="postCitation()">Inserer</button>
+        <button type="button" class="btn btn-primary" onclick="postCitation()">Ajouter au document</button>
       </div>
     </div>
   </div>
@@ -128,24 +169,28 @@
         <h4 class="modal-title" id="myModalLabel">Importer un fichier word</h4>
       </div>
       <div class="modal-body">
- <div class="row">
-  <div class="col-lg-6">
-    <div class="input-group">
-      <form id="myForm" action="controllers/upload.php" method="post" enctype="multipart/form-data">
-                                        Select image to upload:
-                                        <input type="file" name="fileToUpload" id="fileToUpload">
-                                        <input type="submit" class="btn btn-primary" value="Upload Image" name="submit">
-                            </form>
-		                 	<div class="progress">
-										  	<div class="progress-bar progress-bar-striped active" role="progressbar"
-										  	aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
-						    				</div>
-							</div>
-				
-    </div><!-- /input-group -->
-  </div><!-- /.col-lg-6 -->
-</div><!-- /.row -->
-
+ 		<div class="row">
+	  		<div class="col-lg-12">
+		    	<div class="input-group text-center">
+		      		<form id="myForm" action="controllers/upload.php" method="post" enctype="multipart/form-data" class="col-lg-10 col-md-offset-1" role="form">
+		      			<div class="form-group">
+							<label for="pwd" id="labelTerme2" class="form-control">Select image to upload:</label>
+						</div>
+						<div class="form-group">
+							<input type="file" name="fileToUpload" id="fileToUpload" class="form-control">
+						</div>
+						<br><br><br><br>
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary form-control" value="Upload Image" name="submit">
+						</div>
+		      		</form>
+			  		<div class="progress col-md-12">
+			  			<div class="progress-bar progress-bar-striped active form-control" role="progressbar"aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+						</div>
+					</div>			
+		    	</div><!-- /input-group -->
+		  	</div><!-- /.col-lg-6 -->
+		</div><!-- /.row -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -154,6 +199,39 @@
   </div>
 </div>
 <!-- Modal d'iimportation d'un fichier  -->	
+
+
+<!-- Modal Exportation fichier -->	
+<div class="modal fade" id="Exporterdocument" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Exporter le document</h4>
+      </div>
+      <div class="modal-body">
+ <div class="row">
+  <div class="col-lg-6 col-md-offset-3">
+  	<form class="well col-lg-10 col-md-offset-1">
+					<input type="radio" name="sex" value="PDF" checked>	PDF		'+'
+					<br>
+					<input type="radio" name="sex" value="EDQ">	EDQ		'|'
+					<br>
+				</form>
+  </div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="post()">Exporter</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- fin Modal d'insertion d'un verset -->	
 
 <!-- Modal de recherche  -->	
 
@@ -215,23 +293,6 @@
 			</div>
 			<div class="row">
 				<div class="alert alert-success text-center col-md-8 col-md-offset-2 centered hidden" id="suggestion"> 	
-					<!--span class="label label-primary"   >فبشرناها</span>
-					<span class="label label-primary"   >فبشره</span>
-					<span class="label label-primary"   >فبشرناه</span>
-					<span class="label label-primary"   >فبشر</span>
-					<span class="label label-primary"   >بشق</span>
-					<span class="label label-primary"   >فبشرهم</span>
-					<span class="label label-primary"   >فبشرناها</span>
-					<span class="label label-primary"   >فبشره</span>
-					<span class="label label-primary"   >فبشرناه</span>
-					<span class="label label-primary"   >فبشر</span>
-					<span class="label label-primary"   >بشق</span>
-					<span class="label label-primary"   >فبشرهم</span>
-					<span class="label label-primary"   >فبشرناها</span>
-					<span class="label label-primary"   >فبشره</span>
-					<span class="label label-primary"   >فبشرناه</span>
-					<span class="label label-primary"   >فبشر</span>
-					<span class="label label-primary"   >بشق</span -->
 				</div>
 			</div>
 			
@@ -338,8 +399,7 @@
     </div>
      </-->
      <div id="result" style="font-family:KFGQPC Uthmanic Script HAFS;font-size:20px; line-height: 130%;" dir="rtl" background="loading.gif">
-      
-           
+          
     </div>
     <div class="text-center">
 		<ul class="pagination">

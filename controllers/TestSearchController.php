@@ -8,7 +8,7 @@ header('Content-Type: text/html; charset=utf-8');
 ///$query=$_POST["query"];
 ///echo getResults($query);
 echo "<pre>";
-$propositions=getMotsAlternatifQuery("ييبلبيسليسايلساسياقفلالياسيلاسيسايلاسي");
+$propositions=getTaffsir(100,10,'en_sahih');
 print_r($propositions);
  
  /*

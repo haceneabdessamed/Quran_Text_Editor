@@ -109,6 +109,10 @@ function search() {
      $('#recherche').modal('show');
 }
 
+function ExporterFile(){
+    $('#Exporterdocument').modal('show');
+}
+
 function ImporterWord(){
      $('#ImportWord').modal('show');    
 }
@@ -133,6 +137,8 @@ function inserer(text) {
 	    if(hr.readyState == 4 && hr.status == 200) {
 		    return_data =hr.responseText;
             var jsonObj = $.parseJSON(return_data);
+            $('#verify').html("");
+            $('#verify').append(getFormattedCitation(jsonObj));
             InsererBaliseCitation(jsonObj);
 		    $('#InsererVersetWindows').modal('hide');
 
@@ -141,13 +147,60 @@ function inserer(text) {
     hr.send(vars); 
                           
    }
+   
+function visualiser(type){
+    
+    switch (type){
+        case '1':
+        var hr = new XMLHttpRequest();
+        var url = "../Quran_Text_Editor/controllers/readverset.php";
+        var fn = document.getElementById("ayaVerset").value;
+        var ln = document.getElementById("souraVerset").value;
+        var vars = "aya="+fn+"&soura="+ln+"&function=LireVerset";
+        var return_data ="";
+        hr.open("POST", url, true);
+        hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        hr.onreadystatechange = function() {
+            if(hr.readyState == 4 && hr.status == 200) {
+                return_data =hr.responseText;
+                var jsonObj = $.parseJSON(return_data);
+                $('#verify').html("");
+                $('#verify').append(getFormattedCitation(jsonObj));
+            }
+        };
+        hr.send(vars); 
+        break;
+        case '2':
+        var hr = new XMLHttpRequest();
+        var url = "../Quran_Text_Editor/controllers/readverset.php";
+        var soura = document.getElementById("soura").value;
+        var ayab = document.getElementById("ayaBegin").value;
+        var ayae = document.getElementById("ayaEnd").value;
+        var vars = "soura="+soura+"&ayaBegin="+ayab+"&ayaEnd="+ayae+"&function=LireCitation";
+        var return_data ="";
+        hr.open("POST", url, true);
+        hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        hr.onreadystatechange = function() {
+            if(hr.readyState == 4 && hr.status == 200) {
+                return_data =hr.responseText;
+                var jsonObj = $.parseJSON(return_data);
+                $('#verifyCitation').html("");
+                $('#verifyCitation').append(getFormattedCitation(jsonObj));
+            }
+        };
+        hr.send(vars); 
+        break;
+    }
+    
+}
+
 function ImporterWord(){
      $('#ImportWord').modal('show');    
 }                                  
                             
 
 function InsererCitation(){
-
+         $('#verifyCitation').html('');
          $('#InsererCitationWindow').modal('show');
          
 }
@@ -206,25 +259,55 @@ function postSearch (page) {
             $(function() { 
                 if (jsonObj[3][i].texte[0].length==1) {
                   $("#result").append("<span style='color: #0088cc;'>[</span>");
-                  $("#result").append("<span>"+jsonObj[3][i].texte+"</span>");
-                  $("#result").append("<span style='color: #0088cc; '>]</span></br></br>");
-                  $("#result").append(
-                    $('<button/>', {
-                    text: 'imprimer', //set text 1 to 10
-                    click: function () { InsererBaliseCitation(getJsonBold(citation)); }
-                    })
+                  $("#result").append("<span>"+jsonObj[3][i].texte+" "+jsonObj[3][i].ayaId+"</span>");
+                  $("#result").append("<span style='color: #0088cc;'>] ("+window.sourates[jsonObj[3][i].souraId-1]+"-"+jsonObj[3][i].ayaId+")</span></br></br>");
+                  $("#result").append(                     
+                    $('<button\>', {
+                    text: 'Ajouter', //set text 1 to 10
+                    click: function () { InsererBaliseCitation(getJsonBold(citation));},
+                    style: 'margin-right:8.33%'
+                    }).addClass( "btn btn-primary col-md-offset-1 col-xs-offset-1" )
                     
                 );
-                  
+                
+                 $("#result").append(
+                    $('<button\>', {
+                    text: 'Tafssir', //set text 1 to 10
+                    click: function () {afficherTaffsir(jsonObj[3][i].souraId,jsonObj[3][i].ayaId);},
+                    style: ''
+                    }).addClass( "btn btn-primary col-md-offset-1" )
+                );
+                $("#result").append(
+                    $('<button\>', {
+                    text: 'Traduction', //set text 1 to 10
+                    click: function () { afficherTraduction(jsonObj[3][i].souraId,jsonObj[3][i].ayaId);},
+                    style: 'btn btn-primary'
+                    }).addClass( "btn btn-primary col-md-offset-1" )
+                    
+                );
+                $("#result").append(
+                    $('<button\>', {
+                    text: 'Citation', //set text 1 to 10
+                    click: function () { 
+                        $('#recherche').modal('hide');
+                        $('#soura').val(citation.souraId);
+                        $('#ayaBegin').val(citation.ayaId);
+                        $('#ayaEnd').val(citation.ayaId);
+                        InsererCitation();},
+                    style: 'btn btn-primary'
+                    }).addClass( "btn btn-primary col-md-offset-1" )
+                    
+                );
                 } else{
                   $("#result").append("<span style='color: #0088cc;'>[</span>");
-                  $("#result").append("<span>"+jsonObj[3][i].texte["0"]+"</span>");
+                  $("#result").append("<span>"+jsonObj[3][i].texte["0"]+" "+jsonObj[3][i].ayaId+"</span>");
                   $("#result").append("<span style='color: #0088cc; '>]</span></br></br>");
                   $("#result").append(
                     $('<button/>', {
-                    text: 'imprimer', //set text 1 to 10
-                    click: function () { InsererBaliseCitation(getJson(citation)); }
-                    })
+                    text: 'Ajouter au document', //set text 1 to 10
+                    click: function () { InsererBaliseCitation(getJson(citation));},
+                    
+                    }).addClass( "btn btn-primary" )
                     
                 );
                 };
@@ -274,22 +357,28 @@ function insererBalise(text) {
 }
 
 
-function InsererBaliseCitation(JsonObj){
-	 
-	 var citation='[ ';
-	 var ayaBegin=JsonObj[1];
-	 var ayaEnd=JsonObj[2];
-	 var count=3;
-	 var ayaCount=ayaBegin;
+function getFormattedCitation (JsonObj) {
+     var citation='[ ';
+     var ayaBegin=JsonObj[1];
+     var ayaEnd=JsonObj[2];
+     var count=3;
+     var ayaCount=ayaBegin;
      while (ayaCount<=ayaEnd)
      {
-     	citation=citation+JsonObj[count]["0"]+'  '+ayaCount+'  ';
-     	count=count+1;
-     	ayaCount=ayaCount+1;
+        citation=citation+JsonObj[count]["0"]+'  '+ayaCount+'  ';
+        count=count+1;
+        ayaCount=ayaCount+1;
      }
      citation=citation+'] ';
      var reference =' ('+JsonObj[0]["0"]+' '+ayaBegin+' - '+ayaEnd+' )';
-     insererBalise(citation+reference);
+     return citation+reference ;
+  
+}
+
+function InsererBaliseCitation(JsonObj){
+	 
+     insererBalise(getFormattedCitation(JsonObj));
+     
 }
 
 function showDiv(divId) {
@@ -317,11 +406,13 @@ function loadXMLDoc(filename)
 
 function InitSouraArray(id){
     xmlDoc=loadXMLDoc("quran-data.xml");
+    sourates =new Array();
     x=xmlDoc.getElementsByTagName("sura");
     var sel = document.getElementById(id);
     for(var i = 0; i < x.length; i++) {
         var opt = document.createElement('option');
         opt.innerHTML = x[i].getAttribute('name');
+        sourates.push(x[i].getAttribute('name'));
         opt.value = i+1;
         sel.appendChild(opt);
     }

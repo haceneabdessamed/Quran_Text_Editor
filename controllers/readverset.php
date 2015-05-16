@@ -37,6 +37,10 @@ function getVetset($soura,$aya){
 	
 }
 
+function getTafssir($soura,$aya){
+	
+}
+
 function getCitation($soura,$ayaBegin,$ayaEnd)
 {
 
@@ -86,6 +90,64 @@ function getSoura($id)
     $aya->ayaId=$row['VerseID'];
 	$aya->texte=getVetset($aya->souraId,$aya->ayaId);
 	return $aya;
+	
+}
+
+function getTaffsirFromId($id,$source)
+{
+	$connection =new SqlConexion("localhost","root","","quran");
+	$connection->connecter();
+	$stmt=$connection->SelectQuery("select * from ".$source." where id=".$id);
+	$row = $stmt->fetch();
+	$tafssir=new tafssir(0,0,0);
+	$tafssir->souraId=$row['sura'];
+    $tafssir->ayaId=$row['aya'];
+	$tafssir->texte=$row['text'];
+	$tafssir->type=$source;
+	return $tafssir;
+	
+}
+function getTaffsir($sura,$aya,$source)
+{
+	$connection =new SqlConexion("localhost","root","","quran");
+	$connection->connecter();
+	$stmt=$connection->SelectQuery("select * from ".$source." where sura= ".$sura." and aya=".$aya);
+	$row = $stmt->fetch();
+	$tafssir=new tafssir(0,0,0);
+	$tafssir->souraId=$row['sura'];
+    $tafssir->ayaId=$row['aya'];
+	$tafssir->texte=$row['text'];
+	$tafssir->type=$source;
+	return $tafssir;
+	
+}
+
+function getTraductionFromId($id,$source)
+{
+	$connection =new SqlConexion("localhost","root","","quran");
+	$connection->connecter();
+	$stmt=$connection->SelectQuery("select * from ".$source." where id=".$id);
+	$row = $stmt->fetch();
+	$tafssir=new tafssir(0,0,0);
+	$tafssir->souraId=$row['sura'];
+    $tafssir->ayaId=$row['aya'];
+	$tafssir->texte=$row['text'];
+	$tafssir->type=$source;
+	return $tafssir;
+	
+}
+function getTraduction($sura,$aya,$source)
+{
+	$connection =new SqlConexion("localhost","root","","quran");
+	$connection->connecter();
+	$stmt=$connection->SelectQuery("select * from ".$source." where sura= ".$sura." and aya=".$aya);
+	$row = $stmt->fetch();
+	$tafssir=new tafssir(0,0,0);
+	$tafssir->souraId=$row['sura'];
+    $tafssir->ayaId=$row['aya'];
+	$tafssir->texte=$row['text'];
+	$tafssir->type=$source;
+	return $tafssir;
 	
 }
 
