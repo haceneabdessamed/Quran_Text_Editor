@@ -9,14 +9,15 @@ switch ($function) {
 	case 'LireVerset':
 		$ayaNumber=(int)$_POST['aya'];
 		$souraNumber=(int)$_POST['soura'];
-		echo getCitation($souraNumber, $ayaNumber, $ayaNumber);
-		///echo getVetset($souraNumber, $ayaNumber);
+		$type=$_POST['type'];
+		echo getCitation($souraNumber, $ayaNumber, $ayaNumber,$type);
 		break;
 	case 'LireCitation':
 		$souraNumber=(int)$_POST['soura'];
 		$ayaBegin=(int)$_POST['ayaBegin'];
 		$ayaEnd=(int)$_POST['ayaEnd'];
-		echo getCitation($souraNumber, $ayaBegin, $ayaEnd);
+		$type=$_POST['type'];
+		echo getCitation($souraNumber, $ayaBegin, $ayaEnd,$type);
 		break;
 	default:                                                                    
 		
@@ -41,30 +42,69 @@ function getTafssir($soura,$aya){
 	
 }
 
-function getCitation($soura,$ayaBegin,$ayaEnd)
+function getCitation($soura,$ayaBegin,$ayaEnd,$reference)
 {
-
+    
 	$count=$ayaBegin;
 	$indice=3;
 	$citation=array();
-	$citation[0]=getSouraName($soura);
 	$citation[1]=$ayaBegin;
 	$citation[2]=$ayaEnd;
-	while ($count <= $ayaEnd) {
+	switch ($reference) {
+		case 'quran':
+		$citation[0]=getSouraName($soura,'ar');
+		while ($count <= $ayaEnd) {
 		$citation[$indice]=getVetset($soura, $count);
 		$indice=$indice+1;
 		$count=$count+1;
+		}
+		break;
+		case 'sa3dy':
+		$citation[0][0]=" تفسير السعدي - ".getSouraName($soura,'ar');
+		while ($count <= $ayaEnd) {
+		$citation[$indice][0]=getTaffsir($soura, $count, 'sa3dy')->texte;
+		$indice=$indice+1;
+		$count=$count+1;
+		}
+		break;
+		case 'fr_hamidullah':
+		$citation[0]=getSouraName($soura,'fr');
+		while ($count <= $ayaEnd) {
+		$citation[$indice][0]=getTaffsir($soura, $count, 'fr_hamidullah')->texte;
+		$indice=$indice+1;
+		$count=$count+1;
+		}
+		break;
+		case 'en_sahih':
+		$citation[0]=getSouraName($soura,'en');
+		while ($count <= $ayaEnd) {
+		$citation[$indice][0]=getTaffsir($soura, $count, 'en_sahih')->texte;
+		$indice=$indice+1;
+		$count=$count+1;
+		}
+		break;
 	}
+	
 	return (json_encode($citation,JSON_UNESCAPED_UNICODE));
 }
 
-function getSouraName($soura)
+function getSouraName($soura,$lang)
 {
 	if ($soura<=114 and $soura>0) {
-		$filename = "quran-simple.xml";
+		$filename = "quran-data.xml";
 		$xml_file=simplexml_load_file($filename);
-		$attr= $xml_file->sura[$soura-1]->attributes();
-	    return $attr['name'];
+		$attr= $xml_file->suras[0]->sura[$soura-1]->attributes();
+		switch ($lang) {
+			case 'ar':
+			return $attr['name'];
+			break;
+			case 'fr':
+			return $attr['tname'];
+			break;
+			case 'en':
+			return $attr['tname'];
+			break;
+		}
 	} else {
 		return 0;
 	}

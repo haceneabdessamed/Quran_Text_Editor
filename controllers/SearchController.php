@@ -8,10 +8,10 @@ header('Content-Type: text/html; charset=utf-8');
 ///print_r(getMotsAlternatifQuery("لبيالسلاسيلاس"));
 switch ($function=$_POST["function"]) {
 	case 'simple':
+		$cl = new SphinxClient();
 		$query=$_POST["query"];
-		///echo $query;
 		$page =(int)$_POST["page"];
-		echo getResults($query,$page);
+		echo getResults($query,$page,$cl);
 		break;
 	case 'service':
 		$query=$_POST["query"];
@@ -22,6 +22,12 @@ switch ($function=$_POST["function"]) {
 	case 'suggestion':
 		$query=$_POST["query"];
 		echo getRealTimeSuggestion($query);
+		break;
+	case 'avance':
+		$cl = new SphinxClient();
+		$query=$_POST["query"];
+		$page =(int)$_POST["page"];
+		echo getResults($query,$page,$cl);
 		break;
 	default:
 		break;
@@ -95,7 +101,7 @@ function getRealTimeSuggestion($query){
 	$cl->SetServer('127.0.0.1', 9300);
 	$cl->SetLimits(0,20);
 	//$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
-	$cl->SetMatchMode(SPH_MATCH_PHRASE);
+	$cl->SetMatchMode(SPH_MATCH_ANY);
 	$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
 	$cl->AddQuery($query, 'test1');
 	$result = $cl->RunQueries();
@@ -138,7 +144,7 @@ function getRealTimeSuggestion($query){
 
 
 
-function getResults($query,$page)
+function getResults($query,$page,$cl)
 {
 $inf=$page-1;
 $resultats=array();

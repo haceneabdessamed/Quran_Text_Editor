@@ -32,7 +32,6 @@
 		 <script src="js/angular-sanitize.js"></script>
 		<script type="text/javascript" src="js/text_editor.js"></script> 
 		<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-		
 		<script src="js/angularCtrl.js"></script>
 
 		<script type = "text/javascript">
@@ -56,6 +55,14 @@
         <h4 class="modal-title" id="myModalLabel">Inserer Un Verset</h4>
       </div>
   	<div class="modal-body">
+
+ 		<form class="well col-lg-10 col-md-offset-1 form-horizontal" id="CitationType">
+			<input type="radio" name="type" value="quran" checked>	Coran
+			<input type="radio" name="type" value="sa3dy">	Tafssir
+			<input type="radio" name="type" value="fr_hamidullah">	Traduction français
+			<input type="radio" name="type" value="en_sahih">	Traduction anglais
+			<br>
+		</form>
 		<form class="col-lg-10 col-md-offset-1" role="form">
 			<div class="form-group">
 				<br /></br>
@@ -117,6 +124,13 @@
     </div>
   </div>
 </div><!-- /.row -->
+		<form class="well col-lg-10 col-md-offset-1 form-horizontal" id="CitationTypeCitation">
+			<input type="radio" name="type" value="quran" checked>	Coran
+			<input type="radio" name="type" value="sa3dy">	Tafssir
+			<input type="radio" name="type" value="fr_hamidullah">	Traduction français
+			<input type="radio" name="type" value="en_sahih">	Traduction anglais
+			<br>
+		</form>
 		<form class="col-lg-10 col-md-offset-1" role="form">
 			<div class="form-group">
 				<br /></br>
@@ -166,7 +180,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Importer un fichier word</h4>
+        <h4 class="modal-title" id="myModalLabel">Importer un fichier word texte ou CK</h4>
       </div>
       <div class="modal-body">
  		<div class="row">
@@ -174,14 +188,14 @@
 		    	<div class="input-group text-center">
 		      		<form id="myForm" action="controllers/upload.php" method="post" enctype="multipart/form-data" class="col-lg-10 col-md-offset-1" role="form">
 		      			<div class="form-group">
-							<label for="pwd" id="labelTerme2" class="form-control">Select image to upload:</label>
+							<label for="pwd" id="labelTerme2" class="form-control">Choisir un fichier</label>
 						</div>
 						<div class="form-group">
 							<input type="file" name="fileToUpload" id="fileToUpload" class="form-control">
 						</div>
 						<br><br><br><br>
 						<div class="form-group">
-							<input type="submit" class="btn btn-primary form-control" value="Upload Image" name="submit">
+							<input type="submit" class="btn btn-primary form-control" value="Uploader fichier" name="submit">
 						</div>
 		      		</form>
 			  		<div class="progress col-md-12">
@@ -213,18 +227,19 @@
  <div class="row">
   <div class="col-lg-6 col-md-offset-3">
   	<form class="well col-lg-10 col-md-offset-1">
-					<input type="radio" name="sex" value="PDF" checked>	PDF		'+'
+					<input type="radio" name="format" value="PDF" checked>	PDF
 					<br>
-					<input type="radio" name="sex" value="EDQ">	EDQ		'|'
+					<input type="radio" name="format" value="EDQ">	EDQ
 					<br>
-				</form>
-  </div><!-- /.col-lg-6 -->
+					<a download="Document.EDQ" id="downloadlink" style="display: none">Download</a>
+	</form>
+</div><!-- /.col-lg-6 -->
 </div><!-- /.row -->
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="post()">Exporter</button>
+        <button type="button" class="btn btn-primary" onclick="Exporter()" id="create">Exporter</button>
       </div>
     </div>
   </div>
@@ -271,7 +286,7 @@
             			<input type="text" dir="rtl" class="form-control search-query ui-widget" placeholder="Search..." id="query" vki_attached="true" autocomplete="off"/> 
             		</div>
             		<span class="input-group-btn">
-            			<button  class="btn btn-primary"onclick="postSearch(1)"> Search</button>
+            			<button  class="btn btn-primary" id="simpleBtn"> Search</button>
             		</span>
             	</div>
 			</div>
@@ -295,6 +310,11 @@
 				<div class="alert alert-success text-center col-md-8 col-md-offset-2 centered hidden" id="suggestion"> 	
 				</div>
 			</div>
+			<div class="text-center">
+				<ul class="pagination" id="pager">
+		
+				</ul>
+			</div>
 			
 			
 		</div><!-- /input-group -->
@@ -306,14 +326,19 @@
 			<div class="row">
             	<div class="input-group col-md-6 col-md-offset-3">
             		<input type="text" class="form-control search-query" placeholder="Search..."/ id="queryadvanced"> <span class="input-group-btn">
-            		<button  class="btn btn-primary"onclick="postSearch()"> Search</button>
+            		<button  class="btn btn-primary" id="advancedBtn"> Search</button>
             		</span>
             	</div>
+			</div>
+			<div class="text-center">
+				<ul class="pagination" id="pager2">
+		
+				</ul>
 			</div>
 			<br/><br/>
 			<div class="row">
 				<div class="text-center">
-					<a class="col-md-6 col-md-offset-3 text-center" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+					<a class="col-md-6 col-md-offset-3 text-center" data-toggle="collapse" data-target="#collapseExample">
 					<i class="glyphicon glyphicon-question-sign"></i>
         			Aide [+]
 					</a>
@@ -401,16 +426,7 @@
      <div id="result" style="font-family:KFGQPC Uthmanic Script HAFS;font-size:20px; line-height: 130%;" dir="rtl" background="loading.gif">
           
     </div>
-    <div class="text-center">
-		<ul class="pagination">
-			<li class="active"><a>1</a></li>
-			<li><a>2</a></li>
-			<li><a>3</a></li>
-			<li><a>4</a></li>
-			<li><a>5</a></li>
-			<li><a onclick="suivant()">next</a></li>
-		</ul>
-	</div>
+    
 
       </div>
       <div class="modal-footer">

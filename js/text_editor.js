@@ -87,7 +87,9 @@ $(function() {
                         alert('Sorry, there was an error uploading your file.');
                     } 
                     else {
-                        inserer(response.responseText);
+                        
+                        ///inserer(response.responseText);
+                        CKEDITOR.instances.editor1.insertHtml(response.responseText);
                     }
                     $('#ImportWord').modal('hide');  
 
@@ -129,7 +131,8 @@ function inserer(text) {
     var url = "../Quran_Text_Editor/controllers/readverset.php";
     var fn = document.getElementById("ayaVerset").value;
     var ln = document.getElementById("souraVerset").value;
-    var vars = "aya="+fn+"&soura="+ln+"&function=LireVerset";
+    var type=$('input[name=type]:checked', '#CitationType').val(); 
+    var vars = "aya="+fn+"&soura="+ln+"&function=LireVerset&type="+type;
     var return_data ="";
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -148,15 +151,16 @@ function inserer(text) {
                           
    }
    
-function visualiser(type){
+function visualiser(data){
     
-    switch (type){
+    switch (data){
         case '1':
         var hr = new XMLHttpRequest();
         var url = "../Quran_Text_Editor/controllers/readverset.php";
         var fn = document.getElementById("ayaVerset").value;
         var ln = document.getElementById("souraVerset").value;
-        var vars = "aya="+fn+"&soura="+ln+"&function=LireVerset";
+        var type=$('input[name=type]:checked', '#CitationType').val(); 
+        var vars = "aya="+fn+"&soura="+ln+"&function=LireVerset&type="+type;
         var return_data ="";
         hr.open("POST", url, true);
         hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -166,6 +170,17 @@ function visualiser(type){
                 var jsonObj = $.parseJSON(return_data);
                 $('#verify').html("");
                 $('#verify').append(getFormattedCitation(jsonObj));
+                switch(type){
+                    case 'quran':
+                    $('#verify').attr('dir','rtl');
+                    case 'sa3dy':
+                    $('#verify').attr('dir','rtl');
+                    case 'fr_hamidullah':
+                    $('#verify').attr('dir','ltr');
+                    case 'en_sahih':
+                    $('#verify').attr('dir','ltr');
+                }
+                
             }
         };
         hr.send(vars); 
@@ -176,7 +191,8 @@ function visualiser(type){
         var soura = document.getElementById("soura").value;
         var ayab = document.getElementById("ayaBegin").value;
         var ayae = document.getElementById("ayaEnd").value;
-        var vars = "soura="+soura+"&ayaBegin="+ayab+"&ayaEnd="+ayae+"&function=LireCitation";
+        var type=$('input[name=type]:checked', '#CitationTypeCitation').val(); 
+        var vars = "soura="+soura+"&ayaBegin="+ayab+"&ayaEnd="+ayae+"&function=LireCitation&type="+type;
         var return_data ="";
         hr.open("POST", url, true);
         hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -212,7 +228,8 @@ function postCitation()
     var soura = document.getElementById("soura").value;
     var ayab = document.getElementById("ayaBegin").value;
     var ayae = document.getElementById("ayaEnd").value;
-    var vars = "soura="+soura+"&ayaBegin="+ayab+"&ayaEnd="+ayae+"&function=LireCitation";
+    var type=$('input[name=type]:checked', '#CitationTypeCitation').val(); 
+    var vars = "soura="+soura+"&ayaBegin="+ayab+"&ayaEnd="+ayae+"&function=LireCitation&type="+type;
     var return_data ="";
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -228,11 +245,11 @@ function postCitation()
     }
 
 
-function postSearch (page) {
+function postSearch (page,type,query) {
     var hr = new XMLHttpRequest();
     var url = "../Quran_Text_Editor/controllers/SearchController.php";
-    var query=document.getElementById('query').value;
-    var vars = "query="+query+"&function="+"simple&page="+page;
+    ///var query=document.getElementById('query').value;
+    var vars = "query="+query+"&function="+type+"&page="+page;
     var return_data ="";
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -248,13 +265,21 @@ function postSearch (page) {
                 showDiv('suggestion');
                 for (var i=0; i < jsonObj[4].length; i++) {
                     $('#suggestion').append("<span class='label label-primary' style'position:relative; right:5px;'> "+jsonObj[4][i]+" </span><vr>");
-                }
+                }  
             }
             else{
                 hideDiv('danger');
                 hideDiv('suggestion');
                 $('#suggestion').html('');
                 $("#result").html('');
+                if(page == 1)
+                {
+                    if (jsonObj[0]%20==0) {
+                        NbPages=jsonObj[0]/20;
+                    } else{
+                        NbPages=Math.floor(jsonObj[0]/20) + 1;
+                    };
+                }
            for (var i=0; i < jsonObj[3].length; i++) {
             $(function() { 
                 if (jsonObj[3][i].texte[0].length==1) {
@@ -266,8 +291,7 @@ function postSearch (page) {
                     text: 'Ajouter', //set text 1 to 10
                     click: function () { InsererBaliseCitation(getJsonBold(citation));},
                     style: 'margin-right:8.33%'
-                    }).addClass( "btn btn-primary col-md-offset-1 col-xs-offset-1" )
-                    
+                    }).addClass( "btn btn-primary col-md-offset-1 col-xs-offset-1" ) 
                 );
                 
                  $("#result").append(
@@ -306,23 +330,37 @@ function postSearch (page) {
                     $('<button/>', {
                     text: 'Ajouter au document', //set text 1 to 10
                     click: function () { InsererBaliseCitation(getJson(citation));},
-                    
                     }).addClass( "btn btn-primary" )
                     
                 );
-                };
+                }
                 $("#result").append("</br></br>");
                 var citation=jsonObj[3][i];
             });
-           };
-                
+           }
+           
+           
+              
             }
             var resultData=document.getElementById('searchInfo');
             var info= "Mots-clés : "+Object.keys(jsonObj[2]).length+"; Résultats : "+jsonObj[0]+"; Temps d'exécution : "+jsonObj[1]+" s";
             resultData.innerHTML=info;
+            
+            if(page==1){
+            
+            $('#pager').html('');
+            $('#pager').append('<li><a>previous</a></li>');
+            for (var i=1; i <= Math.min(5,window.NbPages); i++) {
+                $('#pager').append("<li><a>"+i+"</a></li>");
+                }  
+            $('#pager').append("<li><a>next</a></li>");
+            pageClick();
+            }
+            
         }
     };
     hr.send(vars);    
+    $("#result").html("<img src='loading.gif' class='img-responsive'/>");
     } 
 
 function InsererAya(){
@@ -452,26 +490,83 @@ function getJson (verset) {
 }
 
 function suivant () {
-    var last=parseInt($(".pagination li").eq(-2).text());
+    var last=parseInt($("#pager li").eq(-2).text());
+    if(last==window.NbPages)
+    last=0;
+    $("#pager li").html('');
+    $('#pager').append('<li><a>previous</a></li>');
     for(var i=1,j=6; i<j; i++){
       var p=last+i;
-      $(".pagination li").eq(i-1).html('<a>'+p+'</a>');
-      $(".pagination li").removeClass('active');
-      
-    };
+      if (p<=window.NbPages) {
+      $('#pager').append('<li><a>'+p+'</a></li>');
+      $(".pager li").removeClass('active');  
+      }
+    }
+    $('#pager').append('<li><a>next</a></li>');
+    pageClick();
+
+}
+function previous () {
+    var last=parseInt($(".pager li").eq(-6).text())-6;
+    if(last==window.NbPages)
+    last=0;
+    if ($(".pager li").eq(-2).text()<5) {return 0;}
+    $(".pager li").html('');
+    $('#pager').append('<li><a>previous</a></li>');
+    for(var i=1,j=6; i<j; i++){
+      var p=last+i;
+      if (p<=window.NbPages) {
+      $('#pager').append('<li><a>'+p+'</a></li>');
+      $(".pager li").removeClass('active');  
+      }
+    }
+    $('#pager').append('<li><a>next</a></li>');
+    pageClick();
+
 }
 
-function add (argument) {
-  
-}
-
-$(".pagination li").click(function(){
-
-        $(".pagination li").removeClass('active');
-        $(this).addClass('active');
-        $("#result").html("<img src='loading.gif' class='img-responsive'/>");
-        postSearch(parseInt(this.textContent));
+function pageClick()
+{
+    $("#pager li").click(function(){
+        switch(this.textContent){
+            case 'next' :
+            suivant();
+            break;
+            
+            case 'previous' :
+            
+            previous();
+            break;
+            
+            default:
+            $("#pager li").removeClass('active');
+            $(this).addClass('active');
+            $("#result").html("<img src='loading.gif' class='img-responsive'/>");
+            postSearch(parseInt(this.textContent),'simple',document.getElementById('query').value);
+            break;
+        }
+        
+        /*
+        if (this.textContent =='next') 
+        {            
+            suivant();
+        }
+        if (this.textContent =='previous') 
+        {            
+            previous();
+        }
+        else{
+            $("#pager li").removeClass('active');
+            $(this).addClass('active');
+            alert('salam');
+            $("#result").html("<img src='loading.gif' class='img-responsive'/>");
+            postSearch(parseInt(this.textContent));
+        }
+        */
+        
 });
+}
+
 
 $("#ajouterBtn").click(function(){
     var choice=$('input[name=sex]:checked', '#AdvancedOptions').val();   
@@ -556,10 +651,37 @@ function autocompleteEditor(selection){
     hr.send(vars);   
 }
 
-function addSuggestionMenu(editor,text,i){
+function Exporter(format){
+    switch (format){
+        case EDQ:
+        var source=CKEDITOR.instances.editor1.getData();
+        
+        break;
+    }
+}
+function Valider(){
+    var query=CKEDITOR.instances.editor1.getSelection().getSelectedText();
+    var hr = new XMLHttpRequest();
+    var url = "../Quran_Text_Editor/controllers/SearchController.php";
+    var vars = "query="+query+"&function=simple&page=1";
+    var return_data ="";
+    hr.open("POST", url, true);
+    hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    hr.onreadystatechange = function() {
+        
+        if(hr.readyState == 4 && hr.status == 200) {
+            return_data =hr.responseText;
+            var jsonObj = $.parseJSON(return_data);
+            CKEDITOR.instances.editor1.contextMenu.removeAll();
+            addSuggestionMenu(CKEDITOR.instances.editor1,jsonObj[3]);
+            CKEDITOR.instances.editor1.contextMenu.show(CKEDITOR.instances.editor1.document.getBody(), null, 0, 0);
+        }
+    };
+    hr.send(vars);  
+}
 
-            
-                var res=text[i];                
+function addSuggestionMenu(editor,text){
+             
                 editor.contextMenu.addListener( function( element, selection ) {
                    return { 
                       1 : CKEDITOR.TRISTATE_OFF 
@@ -567,13 +689,13 @@ function addSuggestionMenu(editor,text,i){
                 });
                 editor.addMenuItems({
                     1: {
-                    id:i,
+                    id:1,
                     label : text[0].texte,
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            alert(this.label);
+                                          InsererBaliseCitation(getJsonBold(text[0])); 
                                          }
                     }});
                     
@@ -585,13 +707,13 @@ function addSuggestionMenu(editor,text,i){
                 });
                 editor.addMenuItems({
                     2: {
-                    id:i,
+                    id:2,
                     label : text[1].texte,
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            alert(this.label);
+                                            InsererBaliseCitation(getJsonBold(text[1])); 
                                          }
                     }});
                     
@@ -604,13 +726,13 @@ function addSuggestionMenu(editor,text,i){
                 });
                 editor.addMenuItems({
                     3: {
-                    id:i,
+                    id:3,
                     label : text[2].texte,
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            alert(this.label);
+                                            InsererBaliseCitation(getJsonBold(text[2])); 
                                          }
                     }});
                     
@@ -622,13 +744,13 @@ function addSuggestionMenu(editor,text,i){
                 });
                 editor.addMenuItems({
                     4: {
-                    id:i,
+                    id:4,
                     label : text[3].texte,
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            alert(this.label);
+                                            InsererBaliseCitation(getJsonBold(text[3])); 
                                          }
                     }});
                     
@@ -636,5 +758,32 @@ function addSuggestionMenu(editor,text,i){
                 
 }
 
+$("#simpleBtn").click(function(){postSearch('1','simple',$("#query").val())});
+$("#advancedBtn").click(function(){postSearch('1','simple',$("#queryadvanced").val())});
+
 InitSouraArray('souraVerset');
 InitSouraArray('soura');
+
+
+
+(function () {
+var textFile = null,
+  makeTextFile = function (text) {
+    var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+    textFile = window.URL.createObjectURL(data);
+    return textFile;
+  };
+  var create = document.getElementById('create'),
+  textbox = document.getElementById('textbox');
+  create.addEventListener('click', function () {
+    var link = document.getElementById('downloadlink');
+    link.href = makeTextFile(CKEDITOR.instances.editor1.getData());
+    link.style.display = 'block';
+  }, false);
+})();
