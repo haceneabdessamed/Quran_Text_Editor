@@ -36,13 +36,14 @@ CKEDITOR.plugins.add( 'quran', {
                search();
             }
         });
-         editor.addCommand( 'Validate', {
+         editor.addCommand( 'validate', {
             
             exec: function( editor ) {
                 
                Valider();
             }
         });
+        
         editor.ui.addButton( 'quran', {
             icon:'verset',
             label: 'Inserer un verset',
@@ -78,14 +79,13 @@ CKEDITOR.plugins.add( 'quran', {
         command: 'ExportFile',
         toolbar: 'insert'
          });
-         
-         
-        editor.ui.addButton( 'quran', {
+        
+        editor.ui.addButton( 'Timestamp5', {
             icon:'validate',
-            label: 'Inserer un verset',
-            command: 'Validate',
+            label: 'Valider un verset',
+            command: 'validate',
             toolbar: 'insert'
             
-        });
+        }); 
     }
 });

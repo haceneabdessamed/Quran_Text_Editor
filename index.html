@@ -1,7 +1,7 @@
 <html>
 		<head>
 		<meta charset="utf-8">
-		<title>DevOOPS</title>
+		<title>صفحة التحرير</title>
 		<meta name="description" content="description">
 		<meta name="author" content="DevOOPS">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -47,37 +47,40 @@
 <body>
 	
 <!-- Modal d'insertion d'un verset -->	
-<div class="modal fade" id="InsererVersetWindows" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+<div class="modal fade" id="InsererVersetWindows" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" dir="rtl">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserer Un Verset</h4>
+        <h4 class="modal-title" id="myModalLabel">كتابة آية</h4>
       </div>
   	<div class="modal-body">
 
  		<form class="well col-lg-10 col-md-offset-1 form-horizontal" id="CitationType">
-			<input type="radio" name="type" value="quran" checked>	Coran
-			<input type="radio" name="type" value="sa3dy">	Tafssir
-			<input type="radio" name="type" value="fr_hamidullah">	Traduction français
-			<input type="radio" name="type" value="en_sahih">	Traduction anglais
+			<input type="radio" name="type" value="quran" checked>	القرآن
+			<br />
+			<input type="radio" name="type" value="sa3dy">	التفسير
+			<br />
+			<input type="radio" name="type" value="fr_hamidullah">	الفرنسية
+			<br />
+			<input type="radio" name="type" value="en_sahih">	الإنجليزية
 			<br>
 		</form>
 		<form class="col-lg-10 col-md-offset-1" role="form">
 			<div class="form-group">
 				<br /></br>
-				<label for="email" id="labelTerme1">Soura:</label>
+				<label for="email" id="labelTerme1">السورة:</label>
 				<select class="form-control" id="souraVerset"></select>
 			</div>
 			<div class="form-group">
-				<label for="pwd" id="labelTerme2">Aya:</label>
+				<label for="pwd" id="labelTerme2">الأية :</label>
       			<input type="number" class="form-control" id="ayaVerset">
 			</div>
 			<br/><br />
   		</form>
   		<div  class"row">
 					<div class="col-lg-10 col-md-offset-1 text-center">
-						<button  class="btn btn-primary" id="VerfierBtn" onclick="visualiser('1')">Visualiser</button>  
+						<button  class="btn btn-primary" id="VerfierBtn" onclick="visualiser('1')">الرؤية</button>  
 						<br /><br />
 						<hr />											
 					</div>
@@ -89,8 +92,8 @@
   		</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="post()">Ajouter au document</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">إغلق</button>
+        <button type="button" class="btn btn-primary" onclick="post()">أضف إلى الوثيقة</button>
       </div>
     </div>
   </div>
@@ -99,12 +102,12 @@
 <!-- fin Modal d'insertion d'un verset -->	
 
 <!-- Modal d'insertion d'une citation  -->	
-<div class="modal fade" id="InsererCitationWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+<div dir="rtl" class="modal fade" id="InsererCitationWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Inserer Un Verset</h4>
+        <h4 class="modal-title" id="myModalLabel">كتابة مجموعة آيات</h4>
       </div>
       <div class="modal-body">
  		<!--div class="row">
@@ -125,31 +128,34 @@
   </div>
 </div><!-- /.row -->
 		<form class="well col-lg-10 col-md-offset-1 form-horizontal" id="CitationTypeCitation">
-			<input type="radio" name="type" value="quran" checked>	Coran
-			<input type="radio" name="type" value="sa3dy">	Tafssir
-			<input type="radio" name="type" value="fr_hamidullah">	Traduction français
-			<input type="radio" name="type" value="en_sahih">	Traduction anglais
+			<input type="radio" name="type" value="quran" checked>	القرآن
+			<br />
+			<input type="radio" name="type" value="sa3dy">	التفسير
+			<br />
+			<input type="radio" name="type" value="fr_hamidullah">	الفرنسية
+			<br />
+			<input type="radio" name="type" value="en_sahih">	الإنجليزية
 			<br>
 		</form>
 		<form class="col-lg-10 col-md-offset-1" role="form">
 			<div class="form-group">
 				<br /></br>
-				<label for="email" id="labelTerme1">Soura:</label>
+				<label for="email" id="labelTerme1">السورة :</label>
 				<select class="form-control" id="soura"></select>
 			</div>
 			<div class="form-group">
-				<label for="pwd" id="labelTerme2">Aya de début:</label>
+				<label for="pwd" id="labelTerme2">آية البداية :</label>
       			<input type="number" class="form-control" id="ayaBegin">
 			</div>
 			<div class="form-group">
-				<label for="pwd" id="labelTerme2">Aya de fin:</label>
+				<label for="pwd" id="labelTerme2">آية النهاية :</label>
       			<input type="number" class="form-control" id="ayaEnd">
 			</div>
 			<br/><br />
   		</form>
   		<div  class"row">
 					<div class="col-lg-10 col-md-offset-1 text-center">
-						<button  class="btn btn-primary" id="VerfierBtnCitation" onclick="visualiser('2')">Visualiser</button>  
+						<button  class="btn btn-primary" id="VerfierBtnCitation" onclick="visualiser('2')">الرؤية</button>  
 						<br /><br />
 						<hr />											
 					</div>
@@ -164,8 +170,8 @@
       
       
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="postCitation()">Ajouter au document</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">إغلق</button>
+        <button type="button" class="btn btn-primary" onclick="postCitation()">أضف إلى الوثيقة</button> 
       </div>
     </div>
   </div>
