@@ -264,7 +264,7 @@ function postSearch (page,type,query) {
                 showDiv('danger');
                 showDiv('suggestion');
                 for (var i=0; i < jsonObj[4].length; i++) {
-                    $('#suggestion').append("<span class='label label-primary' style'position:relative; right:5px;'> "+jsonObj[4][i]+" </span><vr>");
+                    $('#suggestion').append("<span class='label label-primary' style'position:relative; right:5px; margin-left: 5px;'> "+jsonObj[4][i]+" </span><vr>");
                 }  
             }
             else{
@@ -288,37 +288,22 @@ function postSearch (page,type,query) {
                   $("#result").append("<span style='color: #0088cc;'>] ("+window.sourates[jsonObj[3][i].souraId-1]+"-"+jsonObj[3][i].ayaId+")</span></br></br>");
                   $("#result").append(                     
                     $('<button\>', {
-                    text: 'Ajouter', //set text 1 to 10
+                    text: 'أضف إلى الوثيقة', //set text 1 to 10
                     click: function () { InsererBaliseCitation(getJsonBold(citation));},
-                    style: 'margin-right:8.33%'
+                    style: 'margin-right:8%'
                     }).addClass( "btn btn-primary col-md-offset-1 col-xs-offset-1" ) 
                 );
-                
-                 $("#result").append(
-                    $('<button\>', {
-                    text: 'Tafssir', //set text 1 to 10
-                    click: function () {afficherTaffsir(jsonObj[3][i].souraId,jsonObj[3][i].ayaId);},
-                    style: ''
-                    }).addClass( "btn btn-primary col-md-offset-1" )
-                );
+
                 $("#result").append(
                     $('<button\>', {
-                    text: 'Traduction', //set text 1 to 10
-                    click: function () { afficherTraduction(jsonObj[3][i].souraId,jsonObj[3][i].ayaId);},
-                    style: 'btn btn-primary'
-                    }).addClass( "btn btn-primary col-md-offset-1" )
-                    
-                );
-                $("#result").append(
-                    $('<button\>', {
-                    text: 'Citation', //set text 1 to 10
+                    text: 'المزيد', //set text 1 to 10
                     click: function () { 
                         $('#recherche').modal('hide');
                         $('#soura').val(citation.souraId);
                         $('#ayaBegin').val(citation.ayaId);
                         $('#ayaEnd').val(citation.ayaId);
                         InsererCitation();},
-                    style: 'btn btn-primary'
+                        style: 'margin-right:32%'
                     }).addClass( "btn btn-primary col-md-offset-1" )
                     
                 );
@@ -328,9 +313,23 @@ function postSearch (page,type,query) {
                   $("#result").append("<span style='color: #0088cc; '>]</span></br></br>");
                   $("#result").append(
                     $('<button/>', {
-                    text: 'Ajouter au document', //set text 1 to 10
+                    text:'أضف إلى الوثيقة', //set text 1 to 10
                     click: function () { InsererBaliseCitation(getJson(citation));},
+                    style: 'margin-right:8%'
                     }).addClass( "btn btn-primary" )
+                    
+                );
+                 $("#result").append(
+                    $('<button\>', {
+                    text: 'المزيد', //set text 1 to 10
+                    click: function () { 
+                        $('#recherche').modal('hide');
+                        $('#soura').val(citation.souraId);
+                        $('#ayaBegin').val(citation.ayaId);
+                        $('#ayaEnd').val(citation.ayaId);
+                        InsererCitation();},
+                        style: 'margin-right:32%'
+                    }).addClass( "btn btn-primary col-md-offset-1" )
                     
                 );
                 }

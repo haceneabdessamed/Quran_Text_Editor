@@ -17,11 +17,13 @@
         <link href="css/quran_style.css" rel="stylesheet">
         <link href="plugins/ckeditor/assets/styles.css" rel="stylesheet" media="screen">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+        <script src="js/jquery1.7.js"></script>
         <script type="text/javascript" src="js/bootbox.js"></script>
         <link href="plugins/ckeditor/vendors/easypiechart/jquery.easy-pie-chart.css" rel="stylesheet" media="screen">
 		<script src="plugins/ckeditor/ckeditor.js"></script>
 		<script src="plugins/ckeditor/samples/sample.js"></script>
-        <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <script src="http://malsup.github.com/jquery.form.js"></script>
+        <script src="js/jquery.form.js"></script>
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/keyboard.css" />
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -29,7 +31,7 @@
 		<script src="http://malsup.github.com/jquery.form.js"></script> 
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-		 <script src="js/angular-sanitize.js"></script>
+		<script src="js/angular-sanitize.js"></script>
 		<script type="text/javascript" src="js/text_editor.js"></script> 
 		<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
 		<script src="js/angularCtrl.js"></script>
@@ -181,27 +183,27 @@
 
 <!-- Modal d'importation d'un fichier  -->	
 
-<div class="modal fade" id="ImportWord" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+<div class="modal fade" id="ImportWord" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" dir="rtl">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Importer un fichier word texte ou CK</h4>
+        <h4 class="modal-title" id="myModalLabel">إدخال ملف</h4>
       </div>
       <div class="modal-body">
  		<div class="row">
-	  		<div class="col-lg-12">
+	  		<div class="col-lg-12" style="margin-right: 20%;">
 		    	<div class="input-group text-center">
 		      		<form id="myForm" action="controllers/upload.php" method="post" enctype="multipart/form-data" class="col-lg-10 col-md-offset-1" role="form">
 		      			<div class="form-group">
-							<label for="pwd" id="labelTerme2" class="form-control">Choisir un fichier</label>
+							<label for="pwd" id="labelTerme2" class="form-control">إختر ملفا</label>
 						</div>
 						<div class="form-group">
-							<input type="file" name="fileToUpload" id="fileToUpload" class="form-control">
+							<input type="file" name="fileToUpload" id="fileToUpload" class="form-control" lang="ar">
 						</div>
 						<br><br><br><br>
 						<div class="form-group">
-							<input type="submit" class="btn btn-primary form-control" value="Uploader fichier" name="submit">
+							<input type="submit" class="btn btn-primary form-control" value="تأكيد الإختيار" name="submit">
 						</div>
 		      		</form>
 			  		<div class="progress col-md-12">
@@ -213,7 +215,7 @@
 		</div><!-- /.row -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button>
       </div>
     </div>
   </div>
@@ -227,7 +229,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Exporter le document</h4>
+        <h4 class="modal-title" id="myModalLabel">تصدير ملف</h4>
       </div>
       <div class="modal-body">
  <div class="row">
@@ -237,15 +239,15 @@
 					<br>
 					<input type="radio" name="format" value="EDQ">	EDQ
 					<br>
-					<a download="Document.EDQ" id="downloadlink" style="display: none">Download</a>
+					<a download="Document.EDQ" id="downloadlink" style="display: none">تحميل</a>
 	</form>
 </div><!-- /.col-lg-6 -->
 </div><!-- /.row -->
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="Exporter()" id="create">Exporter</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button>
+        <button type="button" class="btn btn-primary" onclick="Exporter()" id="create">تصدير</button>
       </div>
     </div>
   </div>
@@ -261,12 +263,12 @@
     <div class="modal-content">
       <div class="modal-header">
        <button type="button" class="close" data-deismiss="modal" aria-label="Close"><span aria-hidden="false">&times;</span></button>
-       <h4 class="modal-title">Recherche</h4>
+       <h4 class="modal-title">البحث</h4>
        <br/><br />
        <ul class="nav nav-tabs">
-		  <li role="presentation" class="active"><a href="#simple" data-toggle="tab">Simple</a></li>
-		  <li role="presentation"><a href="#advanced" data-toggle="tab">Avancée</a></li>
-		  <li role="presentation"><a href="#advanced" data-toggle="tab">Coran</a></li>
+		  <li role="presentation" class="active"><a href="#simple" data-toggle="tab">عادي</a></li>
+		  <li role="presentation"><a href="#advanced" data-toggle="tab">متقدم</a></li>
+		  <li role="presentation"><a href="#advanced" data-toggle="tab">بنية القرآن</a></li>
 	   </ul>
       </div>
       <div class="modal-body">
@@ -289,10 +291,10 @@
         	 	
             	<div class="input-group col-md-6 col-md-offset-3">
             		<div class="ui-front">
-            			<input type="text" dir="rtl" class="form-control search-query ui-widget" placeholder="Search..." id="query" vki_attached="true" autocomplete="off"/> 
+            			<input type="text" dir="rtl" class="form-control search-query ui-widget" placeholder="بحث" id="query" vki_attached="true" autocomplete="off"/> 
             		</div>
             		<span class="input-group-btn">
-            			<button  class="btn btn-primary" id="simpleBtn"> Search</button>
+            			<button  class="btn btn-primary" id="simpleBtn"> إبحث</button>
             		</span>
             	</div>
 			</div>
@@ -300,16 +302,16 @@
 			<div class="row-fluid">
 				<div class="col-md-9 col-md-offset-1 text-center">
 					<div id="searchInfo"	class="muted">
-			 Mots-clés : 0;
-			 Résultats : 0;
-			 Temps d'exécution : 0 s
+			 كلمات  مفتاحية : 0;
+			 نتائج : 0;
+			 الوقت المستغرق ثا : 0 
 			 </div>
 				</div>
 			</div>
 			<br /><br /><br />
 			<div class="row">
 				<div class="alert alert-danger text-center col-md-8 col-md-offset-2 centered hidden" id="danger">	
-					Désolé! il n'y a pas de résultats à cette recherche
+					للأسف ! لا توجد أية آية توافق كلمات البحث
 				</div>
 			</div>
 			<div class="row">
@@ -332,7 +334,7 @@
 			<div class="row">
             	<div class="input-group col-md-6 col-md-offset-3">
             		<input type="text" class="form-control search-query" placeholder="Search..."/ id="queryadvanced"> <span class="input-group-btn">
-            		<button  class="btn btn-primary" id="advancedBtn"> Search</button>
+            		<button  class="btn btn-primary" id="advancedBtn">إبحث</button>
             		</span>
             	</div>
 			</div>
@@ -346,7 +348,7 @@
 				<div class="text-center">
 					<a class="col-md-6 col-md-offset-3 text-center" data-toggle="collapse" data-target="#collapseExample">
 					<i class="glyphicon glyphicon-question-sign"></i>
-        			Aide [+]
+        			المساعدة [+]
 					</a>
 				<br /><br>
 				</div>
@@ -354,44 +356,44 @@
 			</div>
 			<div class="row collapse" id="collapseExample">
 				<form class="well col-lg-10 col-md-offset-1" id="AdvancedOptions">
-					<input type="radio" name="sex" value="and" checked>	tous les termes		'+'
+					<input type="radio" name="sex" value="and" checked>	كل الكلمات		'+'
 					<br>
-					<input type="radio" name="sex" value="or">	au moin un des termes		'|'
+					<input type="radio" name="sex" value="or">	كلمة على الأقل		'|'
 					<br>
-					<input type="radio" name="sex" value="not">	tous les termes sauf		'!'
+					<input type="radio" name="sex" value="not">	إستثناء كلمات		'!'
 					<br>
-					<input type="radio" name="sex" value="phrase" class="need">	une phrase exacte			" "
+					<input type="radio" name="sex" value="phrase" class="need">	بحث عن جملة			" "
 					<br>
-					<input type="radio" name="sex" value="near">	distance entre les termes	'NEAR'
+					<input type="radio" name="sex" value="near">	المسافة بين الكلمات	'NEAR'
 					<br>
-					<input type="radio" name="sex" value="before">	Ordre d'appatition des termes	'>>'
+					<input type="radio" name="sex" value="before">	ترتيب الكلمات قبل	'>>'
 					<br>
-					<input type="radio" name="sex" value="after">	Ordre d'appatition des termes	'>>'
+					<input type="radio" name="sex" value="after">	ترتيب الكلمات بعد	'>>'
 					<br>
-					<input type="radio" name="sex" value="begin" class="need">	Rechercher dans les débuts de verset	'^'
+					<input type="radio" name="sex" value="begin" class="need">	بحث في بداية الأية	'^'
 					<br>
-					<input type="radio" name="sex" value="end" class="need">	Rechercher dans les fin de verset	'$'	
+					<input type="radio" name="sex" value="end" class="need">	بحث في آخر الأية	'$'	
 					<br>
-					<input type="radio" name="sex" value="part" class="need">	Rechercher une partie de verset	'*'	
+					<input type="radio" name="sex" value="part" class="need">	بحث عن جزء من آية	'*'	
 				</form>
 				<form class="col-lg-10 col-md-offset-1" role="form">
 				    <div class="form-group">
-				      <label for="email" id="labelTerme1">Terme 1:</label>
+				      <label for="email" id="labelTerme1">الكلمة الأولى</label>
 				      <input type="text" class="form-control" id="term1" placeholder="Terme 1 ...">
 				    </div>
 				    <div class="form-group">
-				      <label for="pwd" id="labelTerme2">Terme 2:</label>
+				      <label for="pwd" id="labelTerme2">الكلمة الثانية</label>
 				      <input type="text" class="form-control" id="term2" placeholder="Terme 2 ...">
 				    </div>
 				     <div class="form-group">
-				      <label for="pwd" id="labelDistance">Distance</label>
+				      <label for="pwd" id="labelDistance">المسافة</label>
 				      <input type="number" class="form-control" id="distance" placeholder="Distance ...">
 				    </div>
 				    <br/><br />
   				</form>
   				<div  class"row">
 					<div class="col-lg-10 col-md-offset-1 text-center">
-						<button  class="btn btn-primary" id="ajouterBtn">Ajouter</button>  											
+						<button  class="btn btn-primary" id="ajouterBtn">أضف إلى خانة البحث</button>  											
 					</div>
   				</div>
 
@@ -436,7 +438,7 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">إغلاق</button>
       </div>
     </div>
   </div>

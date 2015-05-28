@@ -101,7 +101,7 @@ function getRealTimeSuggestion($query){
 	$cl->SetServer('127.0.0.1', 9300);
 	$cl->SetLimits(0,20);
 	//$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
-	$cl->SetMatchMode(SPH_MATCH_ANY);
+	$cl->SetMatchMode(SPH_MATCH_PHRASE);
 	$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
 	$cl->AddQuery($query, 'test1');
 	$result = $cl->RunQueries();
@@ -155,8 +155,8 @@ $cl = new SphinxClient();
 $cl->SetServer('127.0.0.1', 9300);
 $cl->SetLimits(20*($page-1),20);
 //$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
-$cl->SetMatchMode(SPH_MATCH_EXTENDED2);
-$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
+$cl->SetMatchMode(SPH_MATCH_ANY);
+//$cl->SetRankingMode (SPH_RANK_BM25);
 $cl->AddQuery($query, 'test1');
 $result = $cl->RunQueries();
 
