@@ -1,26 +1,6 @@
 $(function() {
-    var availableTags = [
-          "محمد رسل الله",
-          "ما كان محمد أبا أحد من رجالكم",
-          "نبيا من بعدي اسمه أحمد",
-          "C++",
-          "Clojure",
-          "COBOL",
-          "ColdFusion",
-          "Erlang",
-          "Fortran",
-          "Groovy",
-          "Haskell",
-          "Java",
-          "JavaScript",
-          "Lisp",
-          "Perl",
-          "PHP",
-          "Python",
-          "Ruby",
-          "Scala",
-          "Scheme"
-    ];
+    Quran.init();
+    var availableTags =Quran._data.RootList.split(" ");
     /*
     $( "#query" ).autocomplete({
         source: availableTags
@@ -37,7 +17,7 @@ $(function() {
             .append("<a>" + newText + "</a>")
             .appendTo(ul);
     };
-    
+    /*
     $('#query').unbind('keyup').bind('keyup', function (e) {
         var hr = new XMLHttpRequest();
         var url = "../Quran_Text_Editor/controllers/SearchController.php";
@@ -60,12 +40,12 @@ $(function() {
         }
     };
     hr.send(vars); 
-    availableTags=[]; 
-     
+    availableTags=[];  
    });
    
+   */
 });
-    
+   
 
 $(function() { 
 	        
@@ -133,6 +113,8 @@ function inserer(text) {
     var ln = document.getElementById("souraVerset").value;
     var type=$('input[name=type]:checked', '#CitationType').val(); 
     var vars = "aya="+fn+"&soura="+ln+"&function=LireVerset&type="+type;
+    var taille=$('#sizeVerset').val();
+    
     var return_data ="";
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -142,14 +124,38 @@ function inserer(text) {
             var jsonObj = $.parseJSON(return_data);
             $('#verify').html("");
             $('#verify').append(getFormattedCitation(jsonObj));
-            InsererBaliseCitation(jsonObj);
+            switch(type){
+                    case 'quran':
+                    $('#verify').attr('dir','rtl');
+                    InsererBaliseCitation(jsonObj,'rtl',taille);
+                    break;
+                    case 'sa3dy':
+                    $('#verify').attr('dir','rtl');
+                    InsererBaliseCitation(jsonObj,'rtl',taille);
+                    break;
+                    case 'fr_hamidullah':
+                    $('#verify').attr('dir','ltr');
+                    InsererBaliseCitation(jsonObj,'ltr',taille);
+                    break;
+                    case 'en_sahih':
+                    $('#verify').attr('dir','ltr');
+                    InsererBaliseCitation(jsonObj,'ltr',taille);
+                    break;
+                }
 		    $('#InsererVersetWindows').modal('hide');
 
         }
     };
-    hr.send(vars); 
+    Quran.init();
+    var detail = Quran.surah.detail(ln);
+    if (detail.ayahs<fn) {
+    showDiv('dangerVerset');
+    } 
+    else{hr.send(vars); 
+        hideDiv('dangerVerset');
+    };
                           
-   }
+ }
    
 function visualiser(data){
     
@@ -173,17 +179,28 @@ function visualiser(data){
                 switch(type){
                     case 'quran':
                     $('#verify').attr('dir','rtl');
+                    break;
                     case 'sa3dy':
                     $('#verify').attr('dir','rtl');
+                    break;
                     case 'fr_hamidullah':
                     $('#verify').attr('dir','ltr');
+                    break;
                     case 'en_sahih':
                     $('#verify').attr('dir','ltr');
+                    break;
                 }
                 
             }
         };
-        hr.send(vars); 
+        Quran.init();
+        var detail = Quran.surah.detail(ln);
+        if (detail.ayahs<fn) {
+        showDiv('dangerVerset');
+        } 
+        else{hr.send(vars); 
+            hideDiv('dangerVerset');
+        };
         break;
         case '2':
         var hr = new XMLHttpRequest();
@@ -202,9 +219,31 @@ function visualiser(data){
                 var jsonObj = $.parseJSON(return_data);
                 $('#verifyCitation').html("");
                 $('#verifyCitation').append(getFormattedCitation(jsonObj));
+                switch(type){
+                    case 'quran':
+                    alert('quran');
+                    $('#verifyCitation').attr('dir','rtl');
+                    break;
+                    case 'sa3dy':
+                    $('#verifyCitation').attr('dir','rtl');
+                    break;
+                    case 'fr_hamidullah':
+                    $('#verifyCitation').attr('dir','ltr');
+                    break;
+                    case 'en_sahih':
+                    $('#verifyCitation').attr('dir','ltr');
+                    break;
+                }
             }
         };
-        hr.send(vars); 
+                Quran.init();
+        var detail = Quran.surah.detail(soura);
+        if (detail.ayahs<ayab || detail.ayahs<ayae || ayab>ayae) {
+        showDiv('dangerCitation');
+        } 
+        else{hr.send(vars);
+            hideDiv('dangerCitation');
+        };
         break;
     }
     
@@ -237,12 +276,37 @@ function postCitation()
 	    if(hr.readyState == 4 && hr.status == 200) {
 		    return_data =hr.responseText;
 		    var jsonObj = $.parseJSON(return_data);
-		    InsererBaliseCitation(jsonObj );
+		    var taille =$('#sizeCitation').val();
+		    switch(type){
+                    case 'quran':
+                    $('#verify').attr('dir','rtl');
+                    InsererBaliseCitation(jsonObj,'rtl',taille);
+                    break;
+                    case 'sa3dy':
+                    $('#verify').attr('dir','rtl');
+                    InsererBaliseCitation(jsonObj,'rtl',taille);
+                    break;
+                    case 'fr_hamidullah':
+                    $('#verify').attr('dir','ltr');
+                    InsererBaliseCitation(jsonObj,'ltr',taille);
+                    break;
+                    case 'en_sahih':
+                    $('#verify').attr('dir','ltr');
+                    InsererBaliseCitation(jsonObj,'ltr',taille);
+                    break;
+                }
             $('#InsererCitationWindow').modal('hide');
 	    }
     };
-    hr.send(vars);               
-    }
+        Quran.init();
+        var detail = Quran.surah.detail(soura);
+        if (detail.ayahs<ayab || detail.ayahs<ayae || ayab>ayae) {
+        showDiv('dangerCitation');
+        } 
+        else{hr.send(vars);
+            hideDiv('dangerCitation');
+        };
+     }
 
 
 function postSearch (page,type,query) {
@@ -274,11 +338,16 @@ function postSearch (page,type,query) {
                 $("#result").html('');
                 if(page == 1)
                 {
-                    if (jsonObj[0]%20==0) {
+                    switch(type){
+                        case 'simple':
+                        if (jsonObj[0]%20==0) {
                         NbPages=jsonObj[0]/20;
                     } else{
                         NbPages=Math.floor(jsonObj[0]/20) + 1;
                     };
+                        break;
+                    }
+
                 }
            for (var i=0; i < jsonObj[3].length; i++) {
             $(function() { 
@@ -289,7 +358,7 @@ function postSearch (page,type,query) {
                   $("#result").append(                     
                     $('<button\>', {
                     text: 'أضف إلى الوثيقة', //set text 1 to 10
-                    click: function () { InsererBaliseCitation(getJsonBold(citation));},
+                    click: function () {InsererBaliseCitation(getJsonBold(citation),'rtl',25);},
                     style: 'margin-right:8%'
                     }).addClass( "btn btn-primary col-md-offset-1 col-xs-offset-1" ) 
                 );
@@ -314,7 +383,7 @@ function postSearch (page,type,query) {
                   $("#result").append(
                     $('<button/>', {
                     text:'أضف إلى الوثيقة', //set text 1 to 10
-                    click: function () { InsererBaliseCitation(getJson(citation));},
+                    click: function () { InsererBaliseCitation(getJson(citation),'rtl',25);},
                     style: 'margin-right:8%'
                     }).addClass( "btn btn-primary" )
                     
@@ -344,24 +413,268 @@ function postSearch (page,type,query) {
             var resultData=document.getElementById('searchInfo');
             var info= "Mots-clés : "+Object.keys(jsonObj[2]).length+"; Résultats : "+jsonObj[0]+"; Temps d'exécution : "+jsonObj[1]+" s";
             resultData.innerHTML=info;
-            
-            if(page==1){
-            
-            $('#pager').html('');
-            $('#pager').append('<li><a>previous</a></li>');
-            for (var i=1; i <= Math.min(5,window.NbPages); i++) {
-                $('#pager').append("<li><a>"+i+"</a></li>");
-                }  
-            $('#pager').append("<li><a>next</a></li>");
-            pageClick();
+            switch(type)
+            {
+                case 'simple':            
+                if(page==1){
+                $('#pager').html('');
+                $('#pager').append('<li><a>previous</a></li>');
+                for (var i=1; i <= Math.min(5,window.NbPages); i++) {
+                    $('#pager').append("<li><a>"+i+"</a></li>");
+                    }  
+                $('#pager').append("<li><a>next</a></li>");
+                pageClick('pager');
+                }
+                break;
             }
-            
+
         }
     };
     hr.send(vars);    
     $("#result").html("<img src='loading.gif' class='img-responsive'/>");
     } 
 
+
+function postSearch2 (page,type,query) {
+    var hr = new XMLHttpRequest();
+    var url = "../Quran_Text_Editor/controllers/SearchController.php";
+    ///var query=document.getElementById('query').value;
+    var vars = "query="+query+"&function="+type+"&page="+page;
+    var return_data ="";
+    hr.open("POST", url, true);
+    hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    hr.onreadystatechange = function() {
+        
+        if(hr.readyState == 4 && hr.status == 200) {
+            return_data =hr.responseText;
+            var jsonObj = $.parseJSON(return_data);
+            if (jsonObj[3] == "0")
+            {   
+                $("#result").html('');
+                showDiv('danger2');
+                showDiv('suggestion2');
+                for (var i=0; i < jsonObj[4].length; i++) {
+                    $('#suggestion2').append("<span class='label label-primary' style'position:relative; right:5px; margin-left: 5px;'> "+jsonObj[4][i]+" </span><vr>");
+                }  
+            }
+            else{
+                hideDiv('danger2');
+                hideDiv('suggestion2');
+                $('#suggestion2').html('');
+                $("#result").html('');
+                if(page == 1)
+                {
+                    switch(type){
+                        case 'simple':
+                        if (jsonObj[0]%20==0) {
+                        NbPages2=jsonObj[0]/20;
+                    } else{
+                        NbPages2=Math.floor(jsonObj[0]/20) + 1;
+                    };
+                        break;
+                    }
+
+                }
+           for (var i=0; i < jsonObj[3].length; i++) {
+            $(function() { 
+                if (jsonObj[3][i].texte[0].length==1) {
+                  $("#result").append("<span style='color: #0088cc;'>[</span>");
+                  $("#result").append("<span>"+jsonObj[3][i].texte+" "+jsonObj[3][i].ayaId+"</span>");
+                  $("#result").append("<span style='color: #0088cc;'>] ("+window.sourates[jsonObj[3][i].souraId-1]+"-"+jsonObj[3][i].ayaId+")</span></br></br>");
+                  $("#result").append(                     
+                    $('<button\>', {
+                    text: 'أضف إلى الوثيقة', //set text 1 to 10
+                    click: function () {InsererBaliseCitation(getJsonBold(citation),'rtl',25);},
+                    style: 'margin-right:8%'
+                    }).addClass( "btn btn-primary col-md-offset-1 col-xs-offset-1" ) 
+                );
+
+                $("#result").append(
+                    $('<button\>', {
+                    text: 'المزيد', //set text 1 to 10
+                    click: function () { 
+                        $('#recherche').modal('hide');
+                        $('#soura').val(citation.souraId);
+                        $('#ayaBegin').val(citation.ayaId);
+                        $('#ayaEnd').val(citation.ayaId);
+                        InsererCitation();},
+                        style: 'margin-right:32%'
+                    }).addClass( "btn btn-primary col-md-offset-1" )
+                    
+                );
+                } else{
+                  $("#result").append("<span style='color: #0088cc;'>[</span>");
+                  $("#result").append("<span>"+jsonObj[3][i].texte["0"]+" "+jsonObj[3][i].ayaId+"</span>");
+                  $("#result").append("<span style='color: #0088cc; '>]</span></br></br>");
+                  $("#result").append(
+                    $('<button/>', {
+                    text:'أضف إلى الوثيقة', //set text 1 to 10
+                    click: function () { InsererBaliseCitation(getJson(citation),'rtl',25);},
+                    style: 'margin-right:8%'
+                    }).addClass( "btn btn-primary" )
+                    
+                );
+                 $("#result").append(
+                    $('<button\>', {
+                    text: 'المزيد', //set text 1 to 10
+                    click: function () { 
+                        $('#recherche').modal('hide');
+                        $('#soura').val(citation.souraId);
+                        $('#ayaBegin').val(citation.ayaId);
+                        $('#ayaEnd').val(citation.ayaId);
+                        InsererCitation();},
+                        style: 'margin-right:32%'
+                    }).addClass( "btn btn-primary col-md-offset-1" )
+                    
+                );
+                }
+                $("#result").append("</br></br>");
+                var citation=jsonObj[3][i];
+            });
+           }
+           
+           
+              
+            }
+            var resultData=document.getElementById('searchInfo2');
+            var info= "Mots-clés : "+Object.keys(jsonObj[2]).length+"; Résultats : "+jsonObj[0]+"; Temps d'exécution : "+jsonObj[1]+" s";
+            resultData.innerHTML=info;
+            switch(type)
+            {
+                case 'simple':            
+                if(page==1){
+                $('#pager2').html('');
+                $('#pager2').append('<li><a>previous</a></li>');
+                for (var i=1; i <= Math.min(5,window.NbPages2); i++) {
+                    $('#pager2').append("<li><a>"+i+"</a></li>");
+                    }  
+                $('#pager2').append("<li><a>next</a></li>");
+                pageClick2('pager2');
+                }
+                break;
+            }
+
+        }
+    };
+    hr.send(vars);    
+    $("#result").html("<img src='loading.gif' class='img-responsive'/>");
+    } 
+
+function postSearch3 (page,type,query,filter1,filter2) {
+    var hr = new XMLHttpRequest();
+    var url = "../Quran_Text_Editor/controllers/SearchController.php";
+    
+    ///var query=document.getElementById('query').value;
+    var vars = "query="+query+"&function="+type+"&page="+page+"&sourab="+filter1+"&sourae="+filter2;
+    var return_data ="";
+    hr.open("POST", url, true);
+    hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    hr.onreadystatechange = function() {
+        
+        if(hr.readyState == 4 && hr.status == 200) {
+            return_data =hr.responseText;
+            var jsonObj = $.parseJSON(return_data);
+            if (jsonObj[3] == "0")
+            {   
+                $("#result").html('');
+                showDiv('danger3');
+                showDiv('suggestion3');
+                for (var i=0; i < jsonObj[4].length; i++) {
+                    $('#suggestion3').append("<span class='label label-primary' style'position:relative; right:5px; margin-left: 5px;'> "+jsonObj[4][i]+" </span><vr>");
+                }  
+            }
+            else{
+                hideDiv('danger3');
+                hideDiv('suggestion3');
+                $('#suggestion3').html('');
+                $("#result").html('');
+                if(page == 1)
+                {
+                        if (jsonObj[0]%20==0) {
+                        NbPages3=jsonObj[0]/20;
+                    } else{
+                        NbPages3=Math.floor(jsonObj[0]/20) + 1;
+                    };  
+                }
+           for (var i=0; i < jsonObj[3].length; i++) {
+            $(function() { 
+                if (jsonObj[3][i].texte[0].length==1) {
+                  $("#result").append("<span style='color: #0088cc;'>[</span>");
+                  $("#result").append("<span>"+jsonObj[3][i].texte+" "+jsonObj[3][i].ayaId+"</span>");
+                  $("#result").append("<span style='color: #0088cc;'>] ("+window.sourates[jsonObj[3][i].souraId-1]+"-"+jsonObj[3][i].ayaId+")</span></br></br>");
+                  $("#result").append(                     
+                    $('<button\>', {
+                    text: 'أضف إلى الوثيقة', //set text 1 to 10
+                    click: function () {InsererBaliseCitation(getJsonBold(citation),'rtl',25);},
+                    style: 'margin-right:8%'
+                    }).addClass( "btn btn-primary col-md-offset-1 col-xs-offset-1" ) 
+                );
+
+                $("#result").append(
+                    $('<button\>', {
+                    text: 'المزيد', //set text 1 to 10
+                    click: function () { 
+                        $('#recherche').modal('hide');
+                        $('#soura').val(citation.souraId);
+                        $('#ayaBegin').val(citation.ayaId);
+                        $('#ayaEnd').val(citation.ayaId);
+                        InsererCitation();},
+                        style: 'margin-right:32%'
+                    }).addClass( "btn btn-primary col-md-offset-1" )
+                    
+                );
+                } else{
+                  $("#result").append("<span style='color: #0088cc;'>[</span>");
+                  $("#result").append("<span>"+jsonObj[3][i].texte["0"]+" "+jsonObj[3][i].ayaId+"</span>");
+                  $("#result").append("<span style='color: #0088cc; '>]</span></br></br>");
+                  $("#result").append(
+                    $('<button/>', {
+                    text:'أضف إلى الوثيقة', //set text 1 to 10
+                    click: function () { InsererBaliseCitation(getJson(citation),'rtl',25);},
+                    style: 'margin-right:8%'
+                    }).addClass( "btn btn-primary" )
+                    
+                );
+                 $("#result").append(
+                    $('<button\>', {
+                    text: 'المزيد', //set text 1 to 10
+                    click: function () { 
+                        $('#recherche').modal('hide');
+                        $('#soura').val(citation.souraId);
+                        $('#ayaBegin').val(citation.ayaId);
+                        $('#ayaEnd').val(citation.ayaId);
+                        InsererCitation();},
+                        style: 'margin-right:32%'
+                    }).addClass( "btn btn-primary col-md-offset-1" )
+                    
+                );
+                }
+                $("#result").append("</br></br>");
+                var citation=jsonObj[3][i];
+            });
+           }
+           
+           
+              
+            }
+            var resultData=document.getElementById('searchInfo3');
+            var info= "Mots-clés : "+Object.keys(jsonObj[2]).length+"; Résultats : "+jsonObj[0]+"; Temps d'exécution : "+jsonObj[1]+" s";
+            resultData.innerHTML=info;          
+                if(page==1){
+                $('#pager3').html('');
+                $('#pager3').append('<li><a>previous</a></li>');
+                for (var i=1; i <= Math.min(5,window.NbPages3); i++) {
+                    $('#pager3').append("<li><a>"+i+"</a></li>");
+                    }  
+                $('#pager3').append("<li><a>next</a></li>");
+                pageClick3('pager3');
+                }
+
+        }
+    };
+    hr.send(vars);    
+    $("#result").html("<img src='loading.gif' class='img-responsive'/>");
+    } 
 function InsererAya(){
     $('#InsererVersetWindows').modal('show');
     
@@ -380,13 +693,13 @@ function insererBaliseComplet(balise,direction,size,indice,font,text)
         CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
 }
 
-function insererBalise(text) {
+function insererBalise(text,direction,taille) {
                 
         para =document.createElement("div");
         CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
         para =document.createElement("div");
-        para.setAttribute("dir","rtl");
-        para.setAttribute("style","font-family:KFGQPC Uthmanic Script HAFS;font-size:25px;");
+        para.setAttribute("dir",direction);
+        para.setAttribute("style","font-family:KFGQPC Uthmanic Script HAFS;font-size:"+taille+"px;");
         para.innerHTML = text;
         para.setAttribute("contenteditable","false");
         CKEDITOR.instances.editor1.insertHtml(para.outerHTML); 
@@ -412,9 +725,9 @@ function getFormattedCitation (JsonObj) {
   
 }
 
-function InsererBaliseCitation(JsonObj){
+function InsererBaliseCitation(JsonObj,direction,taille){
 	 
-     insererBalise(getFormattedCitation(JsonObj));
+     insererBalise(getFormattedCitation(JsonObj),direction,taille);
      
 }
 
@@ -502,67 +815,156 @@ function suivant () {
       }
     }
     $('#pager').append('<li><a>next</a></li>');
-    pageClick();
-
+    pageClick('pager');
 }
-function previous () {
-    var last=parseInt($(".pager li").eq(-6).text())-6;
+
+function suivant2() {
+    var last=parseInt($("#pager2 li").eq(-2).text());
     if(last==window.NbPages)
     last=0;
-    if ($(".pager li").eq(-2).text()<5) {return 0;}
-    $(".pager li").html('');
+    $("#pager2 li").html('');
+    $('#pager2').append('<li><a>previous</a></li>');
+    for(var i=1,j=6; i<j; i++){
+      var p=last+i;
+      if (p<=window.NbPages2) {
+      $('#pager2').append('<li><a>'+p+'</a></li>');
+      $("#pager2 li").removeClass('active');  
+      }
+    }
+    $('#pager2').append('<li><a>next</a></li>');
+    pageClick2('pager');
+}
+
+function suivant3() {
+    var last=parseInt($("#pager3 li").eq(-2).text());
+    if(last==window.NbPages3)
+    last=0;
+    $("#pager3 li").html('');
+    $('#pager3').append('<li><a>previous</a></li>');
+    for(var i=1,j=6; i<j; i++){
+      var p=last+i;
+      if (p<=window.NbPages3) {
+      $('#pager3').append('<li><a>'+p+'</a></li>');
+      $("#pager3 li").removeClass('active');  
+      }
+    }
+    $('#pager3').append('<li><a>next</a></li>');
+    pageClick3('pager3');
+}
+
+function previous () {
+    var last=parseInt($("#pager li").eq(-6).text())-6;
+    if (parseInt($("#pager li").eq(-2).text())<=5) {return 0;}
+    else{
+    $("#pager li").html('');
     $('#pager').append('<li><a>previous</a></li>');
     for(var i=1,j=6; i<j; i++){
       var p=last+i;
       if (p<=window.NbPages) {
       $('#pager').append('<li><a>'+p+'</a></li>');
-      $(".pager li").removeClass('active');  
+      $("#pager li").removeClass('active');  
       }
     }
     $('#pager').append('<li><a>next</a></li>');
-    pageClick();
+    pageClick('pager');
+    }
+
+}
+function previous2 () {
+    var last=parseInt($("#pager2 li").eq(-6).text())-6;
+    if (parseInt($("#pager2 li").eq(-2).text())<=5) {return 0;}
+    else{
+    $("#pager2 li").html('');
+    $('#pager2').append('<li><a>previous</a></li>');
+    for(var i=1,j=6; i<j; i++){
+      var p=last+i;
+      if (p<=window.NbPages2) {
+      $('#pager2').append('<li><a>'+p+'</a></li>');
+      $("#pager2 li").removeClass('active');  
+      }
+    }
+    $('#pager2').append('<li><a>next</a></li>');
+    pageClick2('pager2');
+    }
 
 }
 
-function pageClick()
+function previous3 () {
+    var last=parseInt($("#pager3 li").eq(-6).text())-6;
+    if (parseInt($("#pager3 li").eq(-2).text())<=5) {return 0;}
+    else{
+    $("#pager3 li").html('');
+    $('#pager3').append('<li><a>previous</a></li>');
+    for(var i=1,j=6; i<j; i++){
+      var p=last+i;
+      if (p<=window.NbPages3) {
+      $('#pager3').append('<li><a>'+p+'</a></li>');
+      $("#pager3 li").removeClass('active');  
+      }
+    }
+    $('#pager3').append('<li><a>next</a></li>');
+    pageClick3('pager3');
+    }
+
+}
+
+function pageClick(pager)
 {
-    $("#pager li").click(function(){
+    $("#"+pager+" li").click(function(){
         switch(this.textContent){
             case 'next' :
             suivant();
-            break;
-            
-            case 'previous' :
-            
+            break;     
+            case 'previous' :  
             previous();
-            break;
-            
+            break; 
             default:
-            $("#pager li").removeClass('active');
+            $("#"+pager+" li").removeClass('active');
             $(this).addClass('active');
             $("#result").html("<img src='loading.gif' class='img-responsive'/>");
             postSearch(parseInt(this.textContent),'simple',document.getElementById('query').value);
             break;
-        }
-        
-        /*
-        if (this.textContent =='next') 
-        {            
-            suivant();
-        }
-        if (this.textContent =='previous') 
-        {            
-            previous();
-        }
-        else{
-            $("#pager li").removeClass('active');
+        }        
+});
+}
+
+function pageClick2(pager)
+{
+    $("#"+pager+" li").click(function(){
+        switch(this.textContent){
+            case 'next' :
+            suivant2();
+            break;     
+            case 'previous' :  
+            previous2();
+            break; 
+            default:
+            $("#"+pager+" li").removeClass('active');
             $(this).addClass('active');
-            alert('salam');
             $("#result").html("<img src='loading.gif' class='img-responsive'/>");
-            postSearch(parseInt(this.textContent));
-        }
-        */
-        
+            postSearch2(parseInt(this.textContent),'simple',document.getElementById('queryadvanced').value);
+            break;
+        }        
+});
+}
+
+function pageClick3(pager)
+{
+    $("#"+pager+" li").click(function(){
+        switch(this.textContent){
+            case 'next' :
+            suivant3();
+            break;     
+            case 'previous' :  
+            previous3();
+            break; 
+            default:
+            $("#"+pager+" li").removeClass('active');
+            $(this).addClass('active');
+            $("#result").html("<img src='loading.gif' class='img-responsive'/>");
+            postSearch3(parseInt(this.textContent),'structure',document.getElementById('querystructure').value,$('#sourasearch').val(),$('#sourasearch').val());
+            break;
+        }        
 });
 }
 
@@ -671,17 +1073,43 @@ function Valider(){
         if(hr.readyState == 4 && hr.status == 200) {
             return_data =hr.responseText;
             var jsonObj = $.parseJSON(return_data);
-            CKEDITOR.instances.editor1.contextMenu.removeAll();
+            if (jsonObj[3][0]!='0' && CKEDITOR.instances.editor1.contextMenu.items.length==0) 
+            {
+            CKEDITOR.instances.editor1.removeMenuItem('copy');
+            CKEDITOR.instances.editor1.removeMenuItem('cut');
+            CKEDITOR.instances.editor1.removeMenuItem('paste');
             addSuggestionMenu(CKEDITOR.instances.editor1,jsonObj[3]);
-            CKEDITOR.instances.editor1.contextMenu.show(CKEDITOR.instances.editor1.document.getBody(), null, 0, 0);
+            CKEDITOR.instances.editor1.contextMenu.show(CKEDITOR.instances.editor1.document.getBody(), null, 0, 0); 
+            }
+            
         }
     };
     hr.send(vars);  
 }
 
 function addSuggestionMenu(editor,text){
-             
-                editor.contextMenu.addListener( function( element, selection ) {
+                var nb_suggestion=text.length;
+                switch (nb_suggestion){
+                    case 1:
+                    editor.contextMenu.addListener( function( element, selection ) {
+                   return { 
+                      1 : CKEDITOR.TRISTATE_OFF 
+                            };
+                    });
+                editor.addMenuItems({
+                    1: {
+                    id:1,
+                    label : text[0].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                          InsererBaliseCitation(getJsonBold(text[0]),'rtl','20'); 
+                                         }
+                    }});
+                    break;
+                    case 2:
+                    editor.contextMenu.addListener( function( element, selection ) {
                    return { 
                       1 : CKEDITOR.TRISTATE_OFF 
                    };
@@ -694,7 +1122,7 @@ function addSuggestionMenu(editor,text){
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                          InsererBaliseCitation(getJsonBold(text[0])); 
+                                          InsererBaliseCitation(getJsonBold(text[0]),'rtl','20'); 
                                          }
                     }});
                     
@@ -712,7 +1140,43 @@ function addSuggestionMenu(editor,text){
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            InsererBaliseCitation(getJsonBold(text[1])); 
+                                            InsererBaliseCitation(getJsonBold(text[1]),'rtl','20'); 
+                                         }
+                    }});
+                    break;
+                    case 3:
+                    editor.contextMenu.addListener( function( element, selection ) {
+                   return { 
+                      1 : CKEDITOR.TRISTATE_OFF 
+                   };
+                });
+                editor.addMenuItems({
+                    1: {
+                    id:1,
+                    label : text[0].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                          InsererBaliseCitation(getJsonBold(text[0]),'rtl','20'); 
+                                         }
+                    }});
+                    
+                    
+                    editor.contextMenu.addListener( function( element, selection ) {
+                   return { 
+                      2 : CKEDITOR.TRISTATE_OFF 
+                   };
+                });
+                editor.addMenuItems({
+                    2: {
+                    id:2,
+                    label : text[1].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                            InsererBaliseCitation(getJsonBold(text[1]),'rtl','20'); 
                                          }
                     }});
                     
@@ -731,7 +1195,62 @@ function addSuggestionMenu(editor,text){
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            InsererBaliseCitation(getJsonBold(text[2])); 
+                                            InsererBaliseCitation(getJsonBold(text[2]),'rtl','20'); 
+                                         }
+                    }});
+                    break;
+                    default:
+                    editor.contextMenu.addListener( function( element, selection ) {
+                   return { 
+                      1 : CKEDITOR.TRISTATE_OFF 
+                   };
+                });
+                editor.addMenuItems({
+                    1: {
+                    id:1,
+                    label : text[0].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                          InsererBaliseCitation(getJsonBold(text[0]),'rtl','20'); 
+                                         }
+                    }});
+                    
+                    
+                    editor.contextMenu.addListener( function( element, selection ) {
+                   return { 
+                      2 : CKEDITOR.TRISTATE_OFF 
+                   };
+                });
+                editor.addMenuItems({
+                    2: {
+                    id:2,
+                    label : text[1].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                            InsererBaliseCitation(getJsonBold(text[1]),'rtl','20'); 
+                                         }
+                    }});
+                    
+                    
+                    
+                    editor.contextMenu.addListener( function( element, selection ) {
+                   return { 
+                      3 : CKEDITOR.TRISTATE_OFF 
+                   };
+                });
+                editor.addMenuItems({
+                    3: {
+                    id:3,
+                    label : text[2].texte,
+                    group : "image",
+                    order : 1,
+                    toto:'zeb',
+                    onClick : function() {
+                                            InsererBaliseCitation(getJsonBold(text[2]),'rtl','20'); 
                                          }
                     }});
                     
@@ -749,18 +1268,21 @@ function addSuggestionMenu(editor,text){
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            InsererBaliseCitation(getJsonBold(text[3])); 
+                                            InsererBaliseCitation(getJsonBold(text[3]),'rtl','20'); 
                                          }
                     }});
-                    
-       
-                
+                    break;
+                }
+         
 }
 
 $("#simpleBtn").click(function(){postSearch('1','simple',$("#query").val())});
-$("#advancedBtn").click(function(){postSearch('1','simple',$("#queryadvanced").val())});
+$("#advancedBtn").click(function(){postSearch2('1','simple',$("#queryadvanced").val())});
+$("#coranBtn").click(function(){postSearch3('1','structure',$("#querystructure").val(),$('#sourasearch').val(),$('#sourasearch').val())});
+
 
 InitSouraArray('souraVerset');
+InitSouraArray('sourasearch');
 InitSouraArray('soura');
 
 

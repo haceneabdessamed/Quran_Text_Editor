@@ -1,8 +1,8 @@
 <?php
 
-require '../classes/aya.php';
-require '../classes/SqlConnexion.php';
-header('Content-Type: text/html; charset=utf-8');
+require 'aya.php';
+require 'SqlConnexion.php';
+
 
 $function =$_POST['function'];
 switch ($function) {

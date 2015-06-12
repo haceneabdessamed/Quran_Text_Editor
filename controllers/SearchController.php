@@ -15,7 +15,6 @@ switch ($function=$_POST["function"]) {
 		break;
 	case 'service':
 		$query=$_POST["query"];
-		///echo $query;
 		$page =(int)$_POST["page"];
 		echo getWebserviceResult($query,$page);
 		break;
@@ -27,6 +26,17 @@ switch ($function=$_POST["function"]) {
 		$cl = new SphinxClient();
 		$query=$_POST["query"];
 		$page =(int)$_POST["page"];
+		echo getResults($query,$page,$cl);
+		break;
+	case 'structure':
+		$cl = new SphinxClient();
+		$filters=array();
+		$surab=(int)$_POST["sourab"];
+		$surae=(int)$_POST["sourae"];
+		$query=$_POST["query"];
+		$page =(int)$_POST["page"];
+		array_push($filters,$surae);
+		$cl->setFilter('SuraID',$filters);
 		echo getResults($query,$page,$cl);
 		break;
 	default:
@@ -151,11 +161,10 @@ $resultats=array();
 $opts=array();
 $opts["before_match"]="<b>";
 $opts["limit"]="100000000000000";
-$cl = new SphinxClient();
 $cl->SetServer('127.0.0.1', 9300);
 $cl->SetLimits(20*($page-1),20);
-//$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
-$cl->SetMatchMode(SPH_MATCH_ANY);
+$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
+$cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 //$cl->SetRankingMode (SPH_RANK_BM25);
 $cl->AddQuery($query, 'test1');
 $result = $cl->RunQueries();
@@ -200,7 +209,7 @@ $result = $cl->RunQueries();
 			if (substr($value, 0, 1)=="<"){
 				/// $word les mots de resultats
 				$word=explode(" ", $result_copy[$key1]->texte);
-				$resultat[$key1]->texte=str_replace($word[$key],"&#x200d;<b>".$word[$key]."</b>", $resultat[$key1]->texte);
+			    $resultat[$key1]->texte=str_replace($word[$key],"&#x200d;<b>".$word[$key]."</b>", $resultat[$key1]->texte);
 			}
 		
 			}
@@ -360,5 +369,8 @@ function getMotsAlternatifQuery($query){
 	}
 	return $suggestion;
 }
+
+
+
 
 ?>	
