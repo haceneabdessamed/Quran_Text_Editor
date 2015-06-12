@@ -13,6 +13,12 @@ switch ($function=$_POST["function"]) {
 		$page =(int)$_POST["page"];
 		echo getResults($query,$page,$cl);
 		break;
+	case 'validate':
+		$cl = new SphinxClient();
+		$query=$_POST["query"];
+		$page =(int)$_POST["page"];
+		echo getResults2($query,$page,$cl);
+		break;
 	case 'service':
 		$query=$_POST["query"];
 		$page =(int)$_POST["page"];
@@ -225,7 +231,77 @@ $result = $cl->RunQueries();
    
 } 
 
+function getResults2($query,$page,$cl)
+{
+$inf=$page-1;
+$resultats=array();
+$opts=array();
+$opts["before_match"]="<b>";
+$opts["limit"]="100000000000000";
+$cl->SetServer('127.0.0.1', 9300);
+$cl->SetLimits(20*($page-1),20);
+//$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
+$cl->SetMatchMode(SPH_MATCH_PHRASE);
+//$cl->SetRankingMode (SPH_RANK_BM25);
+$cl->AddQuery($query, 'test1');
+$result = $cl->RunQueries();
 
+  if ($result == false)
+  {
+   return 'Query failed: ' . $cl->GetLastError() . "\n";
+  }
+   
+  else {
+   if ($cl->GetLastWarning())
+   	{
+        return 'WARNING: ' . $sphinx->GetLastWarning() . "\n";
+   	}
+   $metadata=array(); 
+   $metadata[0]=$result[0]['total'];
+   $metadata[1]=$result[0]['time'];
+   $metadata[2]=$result[0]['words'];
+   if($result[0]['total']>0)
+   {
+   	 
+   	  $resultat=array();
+   	  $indice=0;
+   	  foreach($result[0]['matches'] as $x => $x_value) 
+       {
+       	    
+		    $aya=getSoura($x);
+			$resultat[$indice]=$aya;
+			$resultats[$indice]=getNormalizedVerset($aya->souraId, $aya->ayaId);
+		    $indice=$indice+1;
+	   }
+	   /*
+	        $result_copy=array();
+			$result_copy=$resultat;
+			$res=array();
+			/// $res contient les versets notmalisés et hilighted
+		    $res=$cl->BuildExcerpts($resultats,"test1",$query,$opts);
+			/// pour chaque resultat hilighted key1=indice de resultat 
+			foreach ($res as $key1 => $value1) {
+			/// pour chaqu terme de $res
+			/// key =position de mot highlighted
+			foreach (explode(" ",$res[$key1]) as $key => $value) {
+			if (substr($value, 0, 1)=="<"){
+				/// $word les mots de resultats
+				$word=explode(" ", $result_copy[$key1]->texte);
+			    $resultat[$key1]->texte=str_replace($word[$key],"&#x200d;<b>".$word[$key]."</b>", $resultat[$key1]->texte);
+			}
+		
+			}
+		 }*/
+	$metadata[3]=$resultat;
+   	   return  (json_encode($metadata,JSON_UNESCAPED_UNICODE));
+   }
+   else 
+   	$metadata[3]="0";
+    $metadata[4]=getMotsAlternatifQuery($query);
+    return  (json_encode($metadata,JSON_UNESCAPED_UNICODE));
+   }
+   
+} 
 
 function getWebserviceResult($query,$page){
 	

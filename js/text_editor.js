@@ -1,4 +1,6 @@
+$('#loading').hide();
 $(function() {
+    toto1=0;
     Quran.init();
     var availableTags =Quran._data.RootList.split(" ");
     /*
@@ -1064,12 +1066,12 @@ function Valider(){
     var query=CKEDITOR.instances.editor1.getSelection().getSelectedText();
     var hr = new XMLHttpRequest();
     var url = "../Quran_Text_Editor/controllers/SearchController.php";
-    var vars = "query="+query+"&function=simple&page=1";
+    var vars = "query="+query+"&function=validate&page=1";
     var return_data ="";
     hr.open("POST", url, true);
     hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     hr.onreadystatechange = function() {
-        
+        $('#loading').hide();
         if(hr.readyState == 4 && hr.status == 200) {
             return_data =hr.responseText;
             var jsonObj = $.parseJSON(return_data);
@@ -1080,17 +1082,58 @@ function Valider(){
             CKEDITOR.instances.editor1.removeMenuItem('paste');
             addSuggestionMenu(CKEDITOR.instances.editor1,jsonObj[3]);
             CKEDITOR.instances.editor1.contextMenu.show(CKEDITOR.instances.editor1.document.getBody(), null, 0, 0); 
+            }else
+            {
+            updateSuggestion(CKEDITOR.instances.editor1,jsonObj[3]);
+            CKEDITOR.instances.editor1.contextMenu.show(CKEDITOR.instances.editor1.document.getBody(), null, 0, 0);   
             }
-            
+             
         }
     };
-    hr.send(vars);  
+    hr.send(vars); 
+    $('#loading').show();
+ 
 }
-
-function addSuggestionMenu(editor,text){
+function updateSuggestion(editor,text){
+                window.toto1=text;
                 var nb_suggestion=text.length;
                 switch (nb_suggestion){
                     case 1:
+                    InsererBaliseCitation(getJson(window.toto1[0]),'rtl','20'); 
+                    CKEDITOR.instances.editor1.contextMenu.items[0].label=window.toto1[0].texte[0];
+                    CKEDITOR.instances.editor1.contextMenu.items[1].label=' ';
+                    CKEDITOR.instances.editor1.contextMenu.items[2].label=' ';
+                    CKEDITOR.instances.editor1.contextMenu.items[3].label=' ';
+                    break;
+                    case 2:
+                    CKEDITOR.instances.editor1.contextMenu.items[0].label=window.toto1[0].texte[0];
+                    CKEDITOR.instances.editor1.contextMenu.items[1].label=window.toto1[1].texte[0];
+                    CKEDITOR.instances.editor1.contextMenu.items[2].label=' ';
+                    CKEDITOR.instances.editor1.contextMenu.items[3].label=' ';
+                    break;
+                    case 3:
+                    CKEDITOR.instances.editor1.contextMenu.items[0].label=window.toto1[0].texte[0];
+                    CKEDITOR.instances.editor1.contextMenu.items[1].label=window.toto1[1].texte[0];
+                    CKEDITOR.instances.editor1.contextMenu.items[2].label=window.toto1[2].texte[0];
+                    CKEDITOR.instances.editor1.contextMenu.items[3].label='';
+                    break;
+                    default:
+                    CKEDITOR.instances.editor1.contextMenu.items[0].label=window.toto1[0].texte[0];
+                    CKEDITOR.instances.editor1.contextMenu.items[1].label=window.toto1[1].texte[0];
+                    CKEDITOR.instances.editor1.contextMenu.items[2].label=window.toto1[2].texte[0];
+                    CKEDITOR.instances.editor1.contextMenu.items[3].label=window.toto1[3].texte[0];
+                    break;
+                }
+         
+}
+
+
+function addSuggestionMenu(editor,text){
+                window.toto1=text;
+                var nb_suggestion=text.length;
+                switch (nb_suggestion){
+                    case 1:
+                    InsererBaliseCitation(getJson(window.toto1[0]),'rtl','20'); 
                     editor.contextMenu.addListener( function( element, selection ) {
                    return { 
                       1 : CKEDITOR.TRISTATE_OFF 
@@ -1099,12 +1142,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     1: {
                     id:1,
-                    label : text[0].texte,
+                    label : window.toto1[0].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                          InsererBaliseCitation(getJsonBold(text[0]),'rtl','20'); 
+                                          InsererBaliseCitation(getJson(window.toto1[0]),'rtl','20'); 
                                          }
                     }});
                     break;
@@ -1117,12 +1160,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     1: {
                     id:1,
-                    label : text[0].texte,
+                    label : window.toto1[0].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                          InsererBaliseCitation(getJsonBold(text[0]),'rtl','20'); 
+                                          InsererBaliseCitation(getJson(window.toto1[0]),'rtl','20'); 
                                          }
                     }});
                     
@@ -1135,12 +1178,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     2: {
                     id:2,
-                    label : text[1].texte,
+                    label : window.toto1[1].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            InsererBaliseCitation(getJsonBold(text[1]),'rtl','20'); 
+                                            InsererBaliseCitation(getJson(window.toto1[1]),'rtl','20'); 
                                          }
                     }});
                     break;
@@ -1153,12 +1196,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     1: {
                     id:1,
-                    label : text[0].texte,
+                    label : text[0].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                          InsererBaliseCitation(getJsonBold(text[0]),'rtl','20'); 
+                                          InsererBaliseCitation(getJson(text[0]),'rtl','20'); 
                                          }
                     }});
                     
@@ -1171,12 +1214,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     2: {
                     id:2,
-                    label : text[1].texte,
+                    label : window.toto1[1].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            InsererBaliseCitation(getJsonBold(text[1]),'rtl','20'); 
+                                            InsererBaliseCitation(getJson(window.toto1[1]),'rtl','20'); 
                                          }
                     }});
                     
@@ -1190,12 +1233,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     3: {
                     id:3,
-                    label : text[2].texte,
+                    label : window.toto1[2].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            InsererBaliseCitation(getJsonBold(text[2]),'rtl','20'); 
+                                            InsererBaliseCitation(getJson(window.toto1[2]),'rtl','20'); 
                                          }
                     }});
                     break;
@@ -1208,12 +1251,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     1: {
                     id:1,
-                    label : text[0].texte,
+                    label : window.toto1[0].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                          InsererBaliseCitation(getJsonBold(text[0]),'rtl','20'); 
+                                          InsererBaliseCitation(getJson(window.toto1[0]),'rtl','20'); 
                                          }
                     }});
                     
@@ -1226,12 +1269,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     2: {
                     id:2,
-                    label : text[1].texte,
+                    label : window.toto1[1].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            InsererBaliseCitation(getJsonBold(text[1]),'rtl','20'); 
+                                            InsererBaliseCitation(getJson(window.toto1[1]),'rtl','20'); 
                                          }
                     }});
                     
@@ -1245,12 +1288,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     3: {
                     id:3,
-                    label : text[2].texte,
+                    label : window.toto1[2].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            InsererBaliseCitation(getJsonBold(text[2]),'rtl','20'); 
+                                            InsererBaliseCitation(getJson(window.toto1[2]),'rtl','20'); 
                                          }
                     }});
                     
@@ -1263,12 +1306,12 @@ function addSuggestionMenu(editor,text){
                 editor.addMenuItems({
                     4: {
                     id:4,
-                    label : text[3].texte,
+                    label : window.toto1[3].texte[0],
                     group : "image",
                     order : 1,
                     toto:'zeb',
                     onClick : function() {
-                                            InsererBaliseCitation(getJsonBold(text[3]),'rtl','20'); 
+                                            InsererBaliseCitation(getJson(window.toto1[3]),'rtl','20'); 
                                          }
                     }});
                     break;
