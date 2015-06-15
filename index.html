@@ -53,8 +53,31 @@
     	
 	    	
 	</head>  
-
 <body>
+<div class="top-bar-dark">            
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <ul class="list-inline socials-simple">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                            <li><a href="#"><i class="fa fa-youtube"></i></a></li>
+                            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-8 hidden-xs text-right">
+                        <ul class="list-inline top-dark-right">                      
+                            <li><i class="fa fa-envelope"></i> Support@mail.com</li>
+                            <li><i class="fa fa-phone"></i> +213661255893</li>
+                            <li><a href="shop-login.html"><i class="fa fa-lock"></i>التسجيل</a></li>
+                            <li><a href="shop-register.html"><i class="fa fa-user"></i>تأكيد الدخول</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 <!-- Modal d'insertion d'un verset -->	
 <div class="modal fade" id="InsererVersetWindows" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false" dir="rtl">
   <div class="modal-dialog">
@@ -257,7 +280,7 @@
       <div class="modal-body">
  <div class="row">
   <div class="col-lg-6 col-md-offset-3">
-  	<form class="well col-lg-10 col-md-offset-1">
+  	<form class="well col-lg-10 col-md-offset-1" id="format">
 					<input type="radio" name="format" value="PDF" checked>	PDF
 					<br>
 					<input type="radio" name="format" value="EDQ">	EDQ
@@ -550,7 +573,7 @@
 </div>
 
 <!--Start Container-->
-<div id="main" class="container-fluid">
+<div id="main" class="container-fluid" style="margin-top: 0px;">
 	<div class="row">
 		<div id="sidebar-left" class="col-xs-2 col-sm-2" dir="ltr">
 			<ul class="nav main-menu" >
@@ -667,5 +690,69 @@
   <!---script src="/Quran_Text_Editor/js/bootstrap.js"></script--->
   <!--script src="/Quran_Text_Editor/js/jquery1.7.js"></script--->
   <!--script src="/Quran_Text_Editor/js/jquery-ui.js"></script-->
+  <footer id="footer">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 margin30">
+                        <div class="footer-col">
+                            <h3>حول مشكاة</h3>
+                            <p>
+                              مشكاة هو محررنص خاص بالنصوص القرآنية مقترح من طرف مركز البحث نور مبرمج من طرف حسان عبد الصمد و طالب مصطفى يونس
+                            </p>
+                            <ul class="list-inline social-1">
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+                                <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                            </ul>
+                        </div>                        
+                    </div><!--footer col-->
+                    <div class="col-md-3 col-sm-6 margin30">
+                        <div class="footer-col">
+                            <h3>تواصل</h3>
+
+                            <ul class="list-unstyled contact">
+                                <li><p><strong><i class="fa fa-map-marker"></i> العنوان:</strong>المدينة المنورة - العربية السعودية</p></li> 
+                                <li><p><strong><i class="fa fa-envelope"></i> البريد الإلكتروني:</strong> <a href="#">Support@mail.com</a></p></li>
+                                <li> <p><strong><i class="fa fa-phone"></i> الهاتف:</strong> +661255893</p></li>
+                                <li> <p><strong><i class="fa fa-print"></i> الفاكس</strong> 1800 2345 2132</p></li>
+
+                            </ul>
+                        </div>                        
+                    </div><!--footer col-->
+                    <div class="col-md-3 col-sm-6 margin30">
+                        <div class="footer-col">
+                            <h3>أعمال</h3>
+                        </div>                        
+                    </div><!--footer col-->
+                    <div class="col-md-3 col-sm-6 margin30">
+                        <div class="footer-col">
+                            <h3>إشتراك</h3>
+                            <p>
+                                للحصول على آخر الأخبار
+                            </p>
+                            <form role="form" class="subscribe-form">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="أدخل بريدك الإلكتروني">
+                                    <span class="input-group-btn">
+                                        <button class="btn  btn-theme-dark btn-lg" type="submit">موافق</button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>                        
+                    </div><!--footer col-->
+
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="footer-btm">
+                            <span>©2015. حسان-طالب</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
 </body>
 </html>

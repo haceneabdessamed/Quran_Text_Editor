@@ -340,15 +340,13 @@ function postSearch (page,type,query) {
                 $("#result").html('');
                 if(page == 1)
                 {
-                    switch(type){
-                        case 'simple':
+
                         if (jsonObj[0]%20==0) {
                         NbPages=jsonObj[0]/20;
                     } else{
                         NbPages=Math.floor(jsonObj[0]/20) + 1;
                     };
-                        break;
-                    }
+                        
 
                 }
            for (var i=0; i < jsonObj[3].length; i++) {
@@ -415,9 +413,7 @@ function postSearch (page,type,query) {
             var resultData=document.getElementById('searchInfo');
             var info= "Mots-clés : "+Object.keys(jsonObj[2]).length+"; Résultats : "+jsonObj[0]+"; Temps d'exécution : "+jsonObj[1]+" s";
             resultData.innerHTML=info;
-            switch(type)
-            {
-                case 'simple':            
+           
                 if(page==1){
                 $('#pager').html('');
                 $('#pager').append('<li><a>previous</a></li>');
@@ -427,8 +423,7 @@ function postSearch (page,type,query) {
                 $('#pager').append("<li><a>next</a></li>");
                 pageClick('pager');
                 }
-                break;
-            }
+                
 
         }
     };
@@ -466,15 +461,13 @@ function postSearch2 (page,type,query) {
                 $("#result").html('');
                 if(page == 1)
                 {
-                    switch(type){
-                        case 'simple':
+
                         if (jsonObj[0]%20==0) {
                         NbPages2=jsonObj[0]/20;
                     } else{
                         NbPages2=Math.floor(jsonObj[0]/20) + 1;
                     };
-                        break;
-                    }
+                        
 
                 }
            for (var i=0; i < jsonObj[3].length; i++) {
@@ -541,9 +534,7 @@ function postSearch2 (page,type,query) {
             var resultData=document.getElementById('searchInfo2');
             var info= "Mots-clés : "+Object.keys(jsonObj[2]).length+"; Résultats : "+jsonObj[0]+"; Temps d'exécution : "+jsonObj[1]+" s";
             resultData.innerHTML=info;
-            switch(type)
-            {
-                case 'simple':            
+           
                 if(page==1){
                 $('#pager2').html('');
                 $('#pager2').append('<li><a>previous</a></li>');
@@ -553,8 +544,7 @@ function postSearch2 (page,type,query) {
                 $('#pager2').append("<li><a>next</a></li>");
                 pageClick2('pager2');
                 }
-                break;
-            }
+                
 
         }
     };
@@ -944,7 +934,7 @@ function pageClick2(pager)
             $("#"+pager+" li").removeClass('active');
             $(this).addClass('active');
             $("#result").html("<img src='loading.gif' class='img-responsive'/>");
-            postSearch2(parseInt(this.textContent),'simple',document.getElementById('queryadvanced').value);
+            postSearch2(parseInt(this.textContent),'avance',document.getElementById('queryadvanced').value);
             break;
         }        
 });
@@ -1058,6 +1048,8 @@ function Exporter(format){
     switch (format){
         case EDQ:
         var source=CKEDITOR.instances.editor1.getData();
+        break;
+        case PDF:
         
         break;
     }
@@ -1145,7 +1137,7 @@ function addSuggestionMenu(editor,text){
                     label : window.toto1[0].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                           InsererBaliseCitation(getJson(window.toto1[0]),'rtl','20'); 
                                          }
@@ -1163,7 +1155,7 @@ function addSuggestionMenu(editor,text){
                     label : window.toto1[0].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                           InsererBaliseCitation(getJson(window.toto1[0]),'rtl','20'); 
                                          }
@@ -1181,7 +1173,7 @@ function addSuggestionMenu(editor,text){
                     label : window.toto1[1].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                             InsererBaliseCitation(getJson(window.toto1[1]),'rtl','20'); 
                                          }
@@ -1199,7 +1191,7 @@ function addSuggestionMenu(editor,text){
                     label : text[0].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                           InsererBaliseCitation(getJson(text[0]),'rtl','20'); 
                                          }
@@ -1217,7 +1209,7 @@ function addSuggestionMenu(editor,text){
                     label : window.toto1[1].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                             InsererBaliseCitation(getJson(window.toto1[1]),'rtl','20'); 
                                          }
@@ -1236,7 +1228,7 @@ function addSuggestionMenu(editor,text){
                     label : window.toto1[2].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                             InsererBaliseCitation(getJson(window.toto1[2]),'rtl','20'); 
                                          }
@@ -1254,7 +1246,7 @@ function addSuggestionMenu(editor,text){
                     label : window.toto1[0].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                           InsererBaliseCitation(getJson(window.toto1[0]),'rtl','20'); 
                                          }
@@ -1272,7 +1264,7 @@ function addSuggestionMenu(editor,text){
                     label : window.toto1[1].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                             InsererBaliseCitation(getJson(window.toto1[1]),'rtl','20'); 
                                          }
@@ -1291,7 +1283,7 @@ function addSuggestionMenu(editor,text){
                     label : window.toto1[2].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                             InsererBaliseCitation(getJson(window.toto1[2]),'rtl','20'); 
                                          }
@@ -1309,7 +1301,7 @@ function addSuggestionMenu(editor,text){
                     label : window.toto1[3].texte[0],
                     group : "image",
                     order : 1,
-                    toto:'zeb',
+                    toto:'rrr',
                     onClick : function() {
                                             InsererBaliseCitation(getJson(window.toto1[3]),'rtl','20'); 
                                          }
@@ -1320,7 +1312,7 @@ function addSuggestionMenu(editor,text){
 }
 
 $("#simpleBtn").click(function(){postSearch('1','simple',$("#query").val())});
-$("#advancedBtn").click(function(){postSearch2('1','simple',$("#queryadvanced").val())});
+$("#advancedBtn").click(function(){postSearch2('1','avance',$("#queryadvanced").val())});
 $("#coranBtn").click(function(){postSearch3('1','structure',$("#querystructure").val(),$('#sourasearch').val(),$('#sourasearch').val())});
 
 
@@ -1343,11 +1335,41 @@ var textFile = null,
     textFile = window.URL.createObjectURL(data);
     return textFile;
   };
-  var create = document.getElementById('create'),
-  textbox = document.getElementById('textbox');
+  var create = document.getElementById('create');
+  ///textbox = document.getElementById('textbox');
   create.addEventListener('click', function () {
-    var link = document.getElementById('downloadlink');
-    link.href = makeTextFile(CKEDITOR.instances.editor1.getData());
-    link.style.display = 'block';
+    var format=$('input[name=format]:checked', '#format').val();
+    switch(format){
+        case 'PDF':
+        var sended=CKEDITOR.instances.editor1.getData();
+        sended = sended.replace("KFGQPC Uthmanic Script HAFS","kfgqpcuthmanicscriptnaskh");
+        open('POST', 'controllers/scripte.php', {nom:sended},'_blank');
+        ///window.open('controllers/scripte.php?nom='+sended, 'TheWindow');
+        break;
+        case 'EDQ':    
+        var link = document.getElementById('downloadlink');
+        link.href = makeTextFile(CKEDITOR.instances.editor1.getData());
+        link.style.display = 'block';
+        break;
+    }
   }, false);
 })();
+
+
+open = function(verb, url, data, target) {
+  var form = document.createElement("form");
+  form.action = url;
+  form.method = verb;
+  form.target = target || "_self";
+  if (data) {
+    for (var key in data) {
+      var input = document.createElement("textarea");
+      input.name = key;
+      input.value = typeof data[key] === "object" ? JSON.stringify(data[key]) : data[key];
+      form.appendChild(input);
+    }
+  }
+  form.style.display = 'none';
+  document.body.appendChild(form);
+  form.submit();
+};

@@ -32,6 +32,8 @@ switch ($function=$_POST["function"]) {
 		$cl = new SphinxClient();
 		$query=$_POST["query"];
 		$page =(int)$_POST["page"];
+		$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
+		$cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 		echo getResults($query,$page,$cl);
 		break;
 	case 'structure':
@@ -169,8 +171,6 @@ $opts["before_match"]="<b>";
 $opts["limit"]="100000000000000";
 $cl->SetServer('127.0.0.1', 9300);
 $cl->SetLimits(20*($page-1),20);
-$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
-$cl->SetMatchMode(SPH_MATCH_EXTENDED2);
 //$cl->SetRankingMode (SPH_RANK_BM25);
 $cl->AddQuery($query, 'test1');
 $result = $cl->RunQueries();
