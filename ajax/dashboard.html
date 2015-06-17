@@ -55,11 +55,13 @@
 <div class="row-fluid">
 	<div id="dashboard_links" class="col-xs-12 col-sm-2 pull-right">
 		<ul class="nav nav-pills nav-stacked">
-			<li class="active"><a href="#" class="tab-link" id="overview">Overview</a></li>
-			<li><a href="#" class="tab-link" id="clients">Clients</a></li>
-			<li><a href="#" class="tab-link" id="graph">Statistics</a></li>
-			<li><a href="#" class="tab-link" id="servers">Servers</a></li>
-			<li><a href="#" class="tab-link" id="edition">تحرير</a></li>
+			<li><a id="overview" onclick="InsererAya()">كتابة آية</a></li>
+			<li><a id="clients" onclick="InsererCitation()">مجموعة آيات</a></li>
+			<li><a id="graph" onclick="ImporterWord()">كتابة من ملف</a></li>
+			<li><a id="servers" onclick="ExporterFile()">تصدير ملف</a></li>
+			<li><a id="res" onclick="search()">بحث</a></li>
+			<li><a id="val" onclick="Valider()">مصادقة</a></li>
+			<li class="active"><a href="#" class="tab-link" id="edition">تحرير</a></li>
 		</ul>
 	</div>
 	<div id="dashboard_tabs" class="col-xs-12 col-sm-10">
