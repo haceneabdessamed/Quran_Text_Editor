@@ -55,18 +55,36 @@
 <div class="row-fluid">
 	<div id="dashboard_links" class="col-xs-12 col-sm-2 pull-right">
 		<ul class="nav nav-pills nav-stacked">
+			<li class="active"><a href="#" class="tab-link" id="edition">تحرير</a></li>
 			<li><a id="overview" onclick="InsererAya()">كتابة آية</a></li>
 			<li><a id="clients" onclick="InsererCitation()">مجموعة آيات</a></li>
 			<li><a id="graph" onclick="ImporterWord()">كتابة من ملف</a></li>
 			<li><a id="servers" onclick="ExporterFile()">تصدير ملف</a></li>
 			<li><a id="res" onclick="search()">بحث</a></li>
 			<li><a id="val" onclick="Valider()">مصادقة</a></li>
-			<li class="active"><a href="#" class="tab-link" id="edition">تحرير</a></li>
 		</ul>
 	</div>
 	<div id="dashboard_tabs" class="col-xs-12 col-sm-10">
 		<!--Start Dashboard Tab 1-->
-
+		        <div id="dashboard-edition" class="row" style="width:100%; visibility: hidden; position: absolute;" >
+            <div class="col-xs-12" id="ddd">
+                <br />
+                <h3 class="page-header" align="center">تحرير نصوص شرعية</h3>
+                <!--<div id="stat-graph" style="height: 300px;"></div>-->
+                <div class="muted pull-left col-md-offset-2" align="center" style="margin-left: 0px">
+                    <form method="post" align="center">
+                        <p>
+                         <img id='loading' style="position: absolute;left: 0px;top: 0px; z-index: 5000; alignment-adjust: central; width: inherit;height: inherit;display: none" src="loading.gif"/>
+                            <br />
+                            <textarea id="editor1" name="editor1"></textarea>
+                            <script type="text/javascript">
+                                CKEDITOR.replace( 'editor1' );
+                            </script>
+                        </p>
+                    </form>                    
+                </div>
+            </div>
+        </div>
 		<!--End Dashboard Tab 1-->
 		<!--Start Dashboard Tab 2-->
 		<div id="dashboard-clients" class="row" style="visibility: hidden; position: absolute;">
@@ -271,25 +289,7 @@
 		</div>
 		<!--End Dashboard Tab 4-->
 		<!--Start Dashboard Tab 5-->
-        <div id="dashboard-edition" class="row" style="width:100%; visibility: hidden; position: absolute;" >
-            <div class="col-xs-12" id="ddd">
-                <br />
-                <h3 class="page-header" align="center">تحرير نصوص شرعية</h3>
-                <!--<div id="stat-graph" style="height: 300px;"></div>-->
-                <div class="muted pull-left col-md-offset-2" align="center" style="margin-left: 0px">
-                    <form method="post" align="center">
-                        <p>
-                         <img id='loading' style="position: absolute;left: 0px;top: 0px; z-index: 5000; alignment-adjust: central; width: inherit;height: inherit;display: none" src="loading.gif"/>
-                            <br />
-                            <textarea id="editor1" name="editor1"></textarea>
-                            <script type="text/javascript">
-                                CKEDITOR.replace( 'editor1' );
-                            </script>
-                        </p>
-                    </form>                    
-                </div>
-            </div>
-        </div>
+
         <!--End Dashboard Tab 5-->
 	</div>
 	<div class="clearfix"></div>
