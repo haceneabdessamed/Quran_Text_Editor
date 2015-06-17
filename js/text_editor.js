@@ -2,6 +2,7 @@ $('#loading').hide();
 $(function() {
     toto1=0;
     Quran.init();
+    termes= Quran._data.RootList.split(" ");
     var availableTags =Quran._data.RootList.split(" ");
     /*
     $( "#query" ).autocomplete({
@@ -19,35 +20,40 @@ $(function() {
             .append("<a>" + newText + "</a>")
             .appendTo(ul);
     };
-    /*
+    
     $('#query').unbind('keyup').bind('keyup', function (e) {
-        var hr = new XMLHttpRequest();
-        var url = "../Quran_Text_Editor/controllers/SearchController.php";
-        var query=document.getElementById('query').value;
-        var vars = "query="+query+"&function="+"suggestion";
-        var return_data ="";
-        hr.open("POST", url, true);
-        hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        var suggestionType=$('input[name=sex]:checked', '#suggestiontype').val();
+        switch(suggestionType){
+            case 'mot':
+            availableTags=[];   
+            availableTags=window.termes;
+            break;
+            case 'verset':
+            var hr = new XMLHttpRequest();
+            var url = "../Quran_Text_Editor/controllers/SearchController.php";
+            var query=document.getElementById('query').value;
+            var vars = "query="+query+"&function="+"suggestion";
+            var return_data ="";
+            hr.open("POST", url, true);
+            hr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             hr.onreadystatechange = function() {
-        
-        if(hr.readyState == 4 && hr.status == 200) {
-            return_data =hr.responseText;
-            var jsonObj = $.parseJSON(return_data);
-            for (var i=0; i < jsonObj[3].length; i++) {
-              availableTags[i]=jsonObj[3][i];
+            if(hr.readyState == 4 && hr.status == 200) {
+                return_data =hr.responseText;
+                var jsonObj = $.parseJSON(return_data);
+                for (var i=0; i < jsonObj[3].length; i++) {
+                  availableTags[i]=jsonObj[3][i];
+                }
+                $( "#query" ).autocomplete({
+                source: availableTags
+                });
             }
-            $( "#query" ).autocomplete({
-            source: availableTags
-            });
+        };
+        hr.send(vars); 
+        availableTags=[];   
+        break;
         }
-    };
-    hr.send(vars); 
-    availableTags=[];  
-   });
-   
-   */
 });
-   
+}); 
 
 $(function() { 
 	        
@@ -332,6 +338,11 @@ function postSearch (page,type,query) {
                 for (var i=0; i < jsonObj[4].length; i++) {
                     $('#suggestion').append("<span class='label label-primary' style'position:relative; right:5px; margin-left: 5px;'> "+jsonObj[4][i]+" </span><vr>");
                 }  
+                $('#suggestion span').bind('click', function (e) {
+                    var a=this.innerHTML;
+                    $('#query').val(a);
+                    }
+                 );
             }
             else{
                 hideDiv('danger');
@@ -1373,3 +1384,4 @@ open = function(verb, url, data, target) {
   document.body.appendChild(form);
   form.submit();
 };
+

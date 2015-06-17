@@ -9,24 +9,25 @@ header('Content-Type: text/html; charset=utf-8');
 switch ($function=$_POST["function"]) {
 	case 'simple':
 		$cl = new SphinxClient();
+		$cl->SetMatchMode(SPH_MATCH_ANY);
 		$query=$_POST["query"];
 		$page =(int)$_POST["page"];
-		echo getResults($query,$page,$cl);
+		echo getResults(normalize($query),$page,$cl);
 		break;
 	case 'validate':
 		$cl = new SphinxClient();
 		$query=$_POST["query"];
 		$page =(int)$_POST["page"];
-		echo getResults2($query,$page,$cl);
+		echo getResults2(normalize($query),$page,$cl);
 		break;
 	case 'service':
 		$query=$_POST["query"];
 		$page =(int)$_POST["page"];
-		echo getWebserviceResult($query,$page);
+		echo getWebserviceResult(normalize($query),$page);
 		break;
 	case 'suggestion':
 		$query=$_POST["query"];
-		echo getRealTimeSuggestion($query);
+		echo getRealTimeSuggestion(normalize($query));
 		break;
 	case 'avance':
 		$cl = new SphinxClient();
@@ -34,7 +35,7 @@ switch ($function=$_POST["function"]) {
 		$page =(int)$_POST["page"];
 		$cl->SetRankingMode (SPH_RANK_PROXIMITY_BM25);
 		$cl->SetMatchMode(SPH_MATCH_EXTENDED2);
-		echo getResults($query,$page,$cl);
+		echo getResults(normalize($query),$page,$cl);
 		break;
 	case 'structure':
 		$cl = new SphinxClient();
@@ -45,7 +46,7 @@ switch ($function=$_POST["function"]) {
 		$page =(int)$_POST["page"];
 		array_push($filters,$surae);
 		$cl->setFilter('SuraID',$filters);
-		echo getResults($query,$page,$cl);
+		echo getResults(normalize($query),$page,$cl);
 		break;
 	default:
 		break;
@@ -444,6 +445,13 @@ function getMotsAlternatifQuery($query){
 		
 	}
 	return $suggestion;
+}
+
+
+ function normalize($query)
+{
+	$diacritique=array("ّ", "َ", "ً", "ُ", "ٌ", "ِ", "ٍ", "ْ");
+	return str_replace($diacritique,'', $query);
 }
 
 
